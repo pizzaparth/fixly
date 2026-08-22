@@ -51,7 +51,7 @@ function MainLayout() {
       <footer className="border-t-2 border-zinc-900 bg-zinc-50 py-8 px-4 text-center">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-600 font-bold uppercase tracking-wider">
           <div className="flex items-center gap-2">
-            <span className="size-5 rounded-sm bg-blue-600 text-white flex items-center justify-center font-black text-[10px]">
+            <span className="size-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-[11px]">
               F
             </span>
             <span className="text-zinc-950">Fixly · Open Repair Hub</span>
