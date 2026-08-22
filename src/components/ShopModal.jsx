@@ -42,11 +42,9 @@ export function ShopModal({
     [shops, shopId]
   );
 
-  // Sub-modal states
   const [orderOpen, setOrderOpen] = useState(false);
   const [rateOpen, setRateOpen] = useState(false);
 
-  // Form states
   const [orderForm, setOrderForm] = useState({
     item: '',
     productName: '',
@@ -75,7 +73,6 @@ export function ShopModal({
     callback();
   };
 
-  // 1. Submit Repair Order
   const handleOrderSubmit = (e) => {
     e.preventDefault();
     if (!orderForm.item || !orderForm.productName || !orderForm.mobile) return;
@@ -108,7 +105,6 @@ export function ShopModal({
   };
 
 
-  // 3. Submit Rating
   const handleRatingSubmit = () => {
     if (rateValue === 0) return;
     addRating(shop.id, rateValue);
@@ -119,7 +115,6 @@ export function ShopModal({
 
   return (
     <>
-      {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
           <motion.div
@@ -134,10 +129,8 @@ export function ShopModal({
         )}
       </AnimatePresence>
 
-      {/* Main Shop Profile Modal */}
       <Modal open={true} onClose={onClose} title={shop.name} maxWidth="max-w-3xl">
         <div className="flex flex-col gap-6">
-          {/* Header Card */}
           <Card className="flex flex-col sm:flex-row items-start gap-4 p-5 rounded-2xl bg-zinc-50 border border-zinc-200 shadow-none">
             <div className="size-20 rounded-2xl bg-blue-600 flex items-center justify-center text-4xl text-white shadow-sm shrink-0 font-bold">
               {shop.emoji}
@@ -164,7 +157,6 @@ export function ShopModal({
             </div>
           </Card>
 
-          {/* Quick Metrics */}
           <div className="grid grid-cols-3 gap-3">
             <Card className="p-4 rounded-2xl bg-white border border-zinc-200 text-center shadow-none">
               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">
@@ -192,7 +184,6 @@ export function ShopModal({
             </Card>
           </div>
 
-          {/* Supported Categories */}
           <div>
             <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-2.5">
               Supported Repair Categories
@@ -214,7 +205,6 @@ export function ShopModal({
             </div>
           </div>
 
-          {/* Action CTAs */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-zinc-200">
             <Button
               onClick={() => requireAuth(() => setOrderOpen(true))}
@@ -232,7 +222,6 @@ export function ShopModal({
             </Button>
           </div>
 
-          {/* Reviews Section */}
           <div className="border-t border-zinc-200 pt-4">
             <div className="flex items-center justify-between mb-3">
               <h4 className="text-base font-bold text-zinc-950">
@@ -265,7 +254,6 @@ export function ShopModal({
         </div>
       </Modal>
 
-      {/* Sub-Modal 1: Order Repair */}
       <Modal
         open={orderOpen}
         onClose={() => setOrderOpen(false)}
@@ -373,7 +361,6 @@ export function ShopModal({
         </form>
       </Modal>
 
-      {/* Sub-Modal 3: Rate Shop Quick */}
       <Modal
         open={rateOpen}
         onClose={() => setRateOpen(false)}

@@ -112,7 +112,6 @@ export function AuthModal({ open, onClose }) {
       maxWidth={isShopSignup ? 'max-w-2xl' : 'max-w-md'}
     >
       <form onSubmit={submit} className="flex flex-col gap-4">
-        {/* Role toggle */}
         <div className="grid grid-cols-2 gap-2 p-1.5 rounded-full bg-zinc-100 border border-zinc-200">
           {(['customer', 'shop']).map((r) => (
             <motion.button
@@ -139,7 +138,6 @@ export function AuthModal({ open, onClose }) {
           ))}
         </div>
 
-        {/* Mode tabs */}
         <div className="flex border-b border-zinc-200 pb-2">
           <button
             type="button"
@@ -165,7 +163,6 @@ export function AuthModal({ open, onClose }) {
           </button>
         </div>
 
-        {/* Dynamic Form Content */}
         {!isShopSignup ? (
           <>
             <AnimatePresence mode="wait">

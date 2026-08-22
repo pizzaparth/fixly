@@ -53,13 +53,11 @@ export function ShopDashboard() {
   const [services, setServices] = useState(() => {
     if (!activeShop) return {};
     
-    // First try the backend dict, fallback to defaults
     const backendDict = activeShop.servicePrices || {};
     const fallbackDict = Object.fromEntries(
       (activeShop.categories || []).map((c) => [c, activeShop.estCost || 500])
     );
     
-    // Merge them
     return { ...fallbackDict, ...backendDict };
   });
 
@@ -102,7 +100,6 @@ export function ShopDashboard() {
   return (
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 1. Header Banner */}
         <Card className="p-6 rounded-3xl bg-zinc-50 border-2 border-zinc-900 mb-8 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
@@ -148,7 +145,6 @@ export function ShopDashboard() {
           </div>
         </Card>
 
-        {/* 2. Key Metrics Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <MetricCard
             title="Pending Requests"
@@ -173,7 +169,6 @@ export function ShopDashboard() {
           />
         </div>
 
-        {/* 3. Services & Base Rates Editor */}
         <Card className="mb-10 p-6 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm">
           <CardHeader className="p-0 border-b border-zinc-200 pb-3 mb-4">
             <CardTitle className="text-lg font-black text-zinc-950">
@@ -240,7 +235,6 @@ export function ShopDashboard() {
               );
             })}
 
-            {/* Add Service Button */}
             {CATEGORIES.filter(c => !services[c.key]).length > 0 && (
               <select
                 className="p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 border-dashed text-xs font-bold text-zinc-600 cursor-pointer hover:bg-zinc-100 outline-none appearance-none text-center"
@@ -262,7 +256,6 @@ export function ShopDashboard() {
           </CardContent>
         </Card>
 
-        {/* 4. Order Management Hub */}
         <Card className="p-6 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-4 mb-6">
             <div>
@@ -274,7 +267,6 @@ export function ShopDashboard() {
               </CardDescription>
             </div>
 
-            {/* Tab switchers */}
             <div className="flex p-1.5 rounded-full bg-zinc-100 border border-zinc-200">
               {[
                 { key: 'pending', label: 'Pending', count: pendingOrders.length },
@@ -312,7 +304,6 @@ export function ShopDashboard() {
             </div>
           </div>
 
-          {/* Tab Orders List */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -355,7 +346,6 @@ export function ShopDashboard() {
         </Card>
       </div>
 
-      {/* Accept & Quote Dialog Modal */}
       <Modal
         open={!!acceptTarget}
         onClose={() => setAcceptTarget(null)}
@@ -521,7 +511,6 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
           </div>
         </div>
 
-        {/* Action triggers */}
         <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-zinc-200">
           {order.status === 'pending' && (
             <>

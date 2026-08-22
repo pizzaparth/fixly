@@ -4,11 +4,6 @@ import bcrypt from 'bcryptjs';
 
 const router = express.Router();
 
-// ==========================================
-// 1. AUTH & USERS
-// ==========================================
-
-// Auto-login or register user / technician
 router.post('/auth/register', async (req, res) => {
   try {
     const { email, name, password, role = 'consumer', location, phone, specialties } = req.body;
@@ -94,7 +89,6 @@ router.post('/auth/login', async (req, res) => {
   }
 });
 
-// Get technicians list
 router.get('/technicians', async (req, res) => {
   try {
     const { category, city } = req.query;
@@ -109,7 +103,6 @@ router.get('/technicians', async (req, res) => {
 
     const technicians = await User.find(query).select('-password').lean();
     
-    // Fetch latest feedback for each technician
     for (let t of technicians) {
       const requests = await RepairRequest.find({
         technician: t._id,
@@ -135,11 +128,6 @@ router.get('/technicians', async (req, res) => {
   }
 });
 
-// ==========================================
-// 2. SERVICE LISTINGS
-// ==========================================
-
-// Get listings with filters
 router.get('/listings', async (req, res) => {
   try {
     const { category, technicianId } = req.query;
@@ -162,7 +150,6 @@ router.get('/listings', async (req, res) => {
   }
 });
 
-// Create service listing (for technician)
 router.post('/listings', async (req, res) => {
   try {
     const { technicianId, category, productTypes, title, description, priceRange, estimatedTurnaround } = req.body;
@@ -183,7 +170,6 @@ router.post('/listings', async (req, res) => {
   }
 });
 
-// Update services and prices
 router.patch('/listings/technician/:techId', async (req, res) => {
   try {
     const { services } = req.body; // e.g. { Laptop: 500, Mobile: 600 }
@@ -191,7 +177,6 @@ router.patch('/listings/technician/:techId', async (req, res) => {
     const prices = Object.values(services);
     const minPrice = prices.length > 0 ? Math.min(...prices) : 500;
     
-    // Update Listing
     await Listing.findOneAndUpdate(
       { technician: req.params.techId },
       { 
@@ -201,7 +186,6 @@ router.patch('/listings/technician/:techId', async (req, res) => {
       }
     );
 
-    // Update User specialties
     await User.findByIdAndUpdate(req.params.techId, {
       specialties: categories
     });
@@ -212,12 +196,10 @@ router.patch('/listings/technician/:techId', async (req, res) => {
   }
 });
 
-// Direct shop rating (without order)
 router.post('/technicians/:id/rate', async (req, res) => {
   try {
     const { score } = req.body;
     
-    // We create a dummy completed request just to store the rating
     const request = await RepairRequest.create({
       user: req.body.userId || req.params.id, // Fallback if no user
       technician: req.params.id,
@@ -232,7 +214,6 @@ router.post('/technicians/:id/rate', async (req, res) => {
       }
     });
 
-    // Recalculate
     const allTechnicianRatings = await RepairRequest.find({
       technician: req.params.id,
       'rating.score': { $exists: true, $ne: null },
@@ -254,11 +235,6 @@ router.post('/technicians/:id/rate', async (req, res) => {
   }
 });
 
-// ==========================================
-// 3. REPAIR REQUESTS & LIFECYCLE
-// ==========================================
-
-// Submit new repair request (Consumer)
 router.post('/requests', async (req, res) => {
   try {
     const { userId, technicianId, listingId, productCategory, productName, issueDescription } = req.body;
@@ -283,7 +259,6 @@ router.post('/requests', async (req, res) => {
   }
 });
 
-// Get requests by user or technician
 router.get('/requests', async (req, res) => {
   try {
     const { userId, technicianId, status } = req.query;
@@ -305,7 +280,6 @@ router.get('/requests', async (req, res) => {
   }
 });
 
-// Accept request with quote (Technician)
 router.patch('/requests/:id/accept', async (req, res) => {
   try {
     const { exactPrice, submissionDate, submissionTimeSlot, estimatedDuration, returnDate, returnTimeSlot, technicianNotes } = req.body;
@@ -337,7 +311,6 @@ router.patch('/requests/:id/accept', async (req, res) => {
   }
 });
 
-// Reject request (Technician)
 router.patch('/requests/:id/reject', async (req, res) => {
   try {
     const { reason } = req.body;
@@ -358,7 +331,6 @@ router.patch('/requests/:id/reject', async (req, res) => {
   }
 });
 
-// Update status to in_progress or completed
 router.patch('/requests/:id/status', async (req, res) => {
   try {
     const { status, paymentConfirmed } = req.body;
@@ -379,7 +351,6 @@ router.patch('/requests/:id/status', async (req, res) => {
   }
 });
 
-// Submit review & rating (Consumer)
 router.post('/requests/:id/review', async (req, res) => {
   try {
     const { score, feedback } = req.body;
@@ -394,7 +365,6 @@ router.post('/requests/:id/review', async (req, res) => {
     };
     await request.save();
 
-    // Recalculate technician rating
     const allTechnicianRatings = await RepairRequest.find({
       technician: request.technician,
       'rating.score': { $exists: true, $ne: null },

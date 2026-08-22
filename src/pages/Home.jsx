@@ -29,7 +29,6 @@ export function Home() {
   const [isFocused, setIsFocused] = useState(false);
   const searchInputRef = useRef(null);
 
-  // Filtered shops based on search query and category
   const filteredShops = useMemo(() => {
     return shops.filter((s) => {
       const matchCat =
@@ -46,7 +45,6 @@ export function Home() {
     });
   }, [shops, query, activeCategory]);
 
-  // Grouped shops by category when not searching
   const groupedShops = useMemo(() => {
     const map = new Map();
     for (const cat of CATEGORIES) {
@@ -60,10 +58,8 @@ export function Home() {
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
-      {/* 1. Hero Section */}
       <section className="bg-white pt-10 pb-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
-          {/* Main Title */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -105,7 +101,6 @@ export function Home() {
                   url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                   detectRetina={true}
                 />
-                {/* Hardcoded Red Circles for locations in Bengaluru */}
                 {[
                   [12.9783, 77.6408], // Indiranagar
                   [12.9298, 77.5844], // Jayanagar
@@ -131,7 +126,6 @@ export function Home() {
             </div>
           </motion.div>
 
-          {/* Horizontally Expanding Search Bar on Click/Focus */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -194,7 +188,6 @@ export function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Fully Rounded Category Filter Chips */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -220,7 +213,6 @@ export function Home() {
         </div>
       </section>
 
-      {/* 2. Search & Active Filter Results (Full-width vertical stack) */}
       {(query || activeCategory !== 'All') && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
           <div className="flex items-center justify-between mb-6">
@@ -277,7 +269,6 @@ export function Home() {
         </section>
       )}
 
-      {/* 3. Category Grouped Sections (When not searching - Full width vertical stack) */}
       {!query && activeCategory === 'All' && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-12 space-y-12">
           {Array.from(groupedShops.entries()).map(([catKey, shopList], idx) => {
@@ -309,7 +300,6 @@ export function Home() {
                   </Button>
                 </div>
 
-                {/* Vertical Stack of Full-Width Cards */}
                 <div className="flex flex-col gap-4 w-full">
                   {shopList.map((shop, i) => (
                     <FullWidthShopCard
@@ -327,7 +317,6 @@ export function Home() {
         </section>
       )}
 
-      {/* Active Shop Profile Modal */}
       {activeShopModalId && (
         <ShopModal
           shopId={activeShopModalId}
@@ -369,7 +358,6 @@ function FullWidthShopCard({ shop, index, activeCategory, onOpen }) {
     >
       <Card className="w-full rounded-3xl bg-white border-2 border-zinc-900 shadow-sm hover:shadow-md transition-all overflow-hidden p-0">
         <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          {/* Left info & avatar */}
           <div className="flex items-start gap-5 min-w-0">
             <div className="size-16 sm:size-20 rounded-2xl bg-blue-600 flex items-center justify-center text-4xl sm:text-5xl text-white font-bold shrink-0 shadow-sm">
               {shop.emoji}
@@ -397,7 +385,6 @@ function FullWidthShopCard({ shop, index, activeCategory, onOpen }) {
                 <Stars rating={shop.rating} size={15} count={shop.reviewCount} />
               </div>
 
-              {/* Supported Category Badges */}
               <div className="flex flex-wrap gap-1.5 mt-3.5">
                 {shop.categories.map((cat) => (
                   <Badge
@@ -412,7 +399,6 @@ function FullWidthShopCard({ shop, index, activeCategory, onOpen }) {
             </div>
           </div>
 
-          {/* Right action & price block */}
           <div className="flex md:flex-col items-center md:items-end justify-between gap-3 shrink-0 pt-4 md:pt-0 border-t md:border-t-0 border-zinc-200">
             <div className="flex-1 text-right">
               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">

@@ -63,7 +63,6 @@ export function ShopOnboard() {
       emoji: '🔧',
     });
 
-    // Auto-login as the shop
     login({
       role: 'shop',
       name: formData.owner,
@@ -80,7 +79,6 @@ export function ShopOnboard() {
   return (
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
         <div className="border-b border-zinc-200 pb-6 mb-8">
           <div className="flex items-center gap-2">
             <Badge className="bg-purple-600 text-white font-bold rounded-full">Partner Network</Badge>
@@ -95,7 +93,6 @@ export function ShopOnboard() {
         </div>
 
         <form onSubmit={handlePublish} className="flex flex-col gap-8">
-          {/* 1. Shop Basic Info */}
           <Card className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm">
             <CardHeader className="p-0 mb-5">
               <CardTitle className="text-lg font-black text-zinc-950 flex items-center gap-2">
@@ -175,7 +172,6 @@ export function ShopOnboard() {
             </CardContent>
           </Card>
 
-          {/* 2. Select Services & Base Price */}
           <Card className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm">
             <CardHeader className="p-0 border-b border-zinc-200 pb-3 mb-5">
               <div className="flex items-center justify-between">
@@ -245,7 +241,6 @@ export function ShopOnboard() {
             </CardContent>
           </Card>
 
-          {/* 3. Direct Settle Notice & Submit */}
           <div className="p-4 rounded-2xl bg-green-50 border-2 border-green-600 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <ShieldCheck size={28} className="text-green-700 shrink-0" />

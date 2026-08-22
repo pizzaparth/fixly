@@ -128,9 +128,8 @@
     @apply font-sans;
     }
 }
-/* Custom Leaflet Zoom Controls */
 .leaflet-bar {
-  border: 2px solid #18181b !important; /* matches border-zinc-900 */
+  border: 2px solid #18181b !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
   border-radius: 9999px !important;
   overflow: hidden !important;

@@ -206,7 +206,6 @@ export function StoreProvider({ children }) {
   };
 
   const updateShopServices = (shopId, servicesRecord) => {
-    // For now, no-op or just refresh. Backend doesn't have an endpoint for this easily exposed yet.
     fetchShops();
   };
 
@@ -258,7 +257,6 @@ export function StoreProvider({ children }) {
         })
       });
       
-      // Then mark as in_progress immediately
       await fetch(`/api/requests/${orderId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },

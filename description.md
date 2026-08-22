@@ -70,7 +70,7 @@ Fixly's mission is to promote a sustainable "repair-first" culture through techn
 | :--- | :--- | :--- |
 | **Payments** | Direct peer-to-peer settlement between user and technician | Platform payment processing / escrow / gateway integration |
 | **Authentication** | Streamlined frictionless auth (email + password auto-signup/login) | SMS OTP verifications (avoided for hackathon velocity) |
-| **Quotes & Estimates** | Range estimates on listings + exact quote form on acceptance | Automated AI hardware diagnostic tools |
+| **Quotes & Estimates** | Range estimates on listings + exact quote form on acceptance | Automated hardware diagnostic tools |
 | **Notifications** | Status emails & in-app alerts for quote updates, accept/reject, completion | In-app live chat / VoIP calling |
 | **Tracking** | End-to-end request state transitions (`Pending` $\rightarrow$ `Accepted/Rejected` $\rightarrow$ `In-Progress` $\rightarrow$ `Completed`) | Real-time GPS driver tracking |
 

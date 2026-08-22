@@ -24,18 +24,14 @@ export function Navbar() {
       transition={{ type: 'spring', stiffness: 200, damping: 22 }}
       className="sticky top-4 z-40 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
     >
-      {/* Liquid Frosted Glass Pill Navbar */}
       <div className="w-full bg-white/45 backdrop-blur-2xl backdrop-saturate-200 border border-white/70 ring-1 ring-zinc-900/10 rounded-full px-6 sm:px-8 py-3.5 flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all">
-        {/* Brand Logo */}
         <Link to={session?.role === 'shop' ? "/shop" : "/home"} onClick={closeMobile} className="flex items-center">
           <span className="font-black text-xl text-zinc-950 tracking-tight px-4 py-1.5 rounded-full hover:bg-black hover:text-white transition-colors duration-200">
             Fixly
           </span>
         </Link>
 
-        {/* Desktop Nav Controls with Frosted Translucency */}
         <div className="hidden md:flex items-center gap-2.5">
-          {/* 1. Home / Explore - Hidden for Shops */}
           {session?.role !== 'shop' && (
             <Link to="/home">
               <motion.button
@@ -55,7 +51,6 @@ export function Navbar() {
             </Link>
           )}
 
-          {/* 2. Customer Mode: Only "My Repairs" (No "List Shop") */}
           {(session?.role === 'customer' || session?.role === 'consumer') && (
             <Link to="/my-requests">
               <motion.button
@@ -75,7 +70,6 @@ export function Navbar() {
             </Link>
           )}
 
-          {/* 3. Repair Shop Mode: Only "Dashboard" (No "My Repairs") */}
           {session?.role === 'shop' && (
             <Link to="/shop">
               <motion.button
@@ -96,8 +90,6 @@ export function Navbar() {
           )}
 
 
-
-          {/* 5. Session Auth / Sign Out */}
           {session ? (
             <motion.button
               type="button"
@@ -127,7 +119,6 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Mobile Hamburger Button */}
         <div className="md:hidden flex items-center gap-2">
           {session && (
             <span className="text-xs font-black text-zinc-900 bg-white/60 px-3 py-1 rounded-full border border-zinc-900/10 backdrop-blur-md">
@@ -146,7 +137,6 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Collapsible Frosted Glass Mobile Menu Panel */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -194,7 +184,6 @@ export function Navbar() {
                 </div>
               </Link>
             )}
-
 
 
             <div className="pt-2 border-t border-zinc-900/10 flex justify-stretch">

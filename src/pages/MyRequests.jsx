@@ -54,7 +54,6 @@ export function MyRequests() {
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
-      {/* Toast Alert */}
       <AnimatePresence>
         {toastMessage && (
           <motion.div
@@ -70,7 +69,6 @@ export function MyRequests() {
       </AnimatePresence>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-6 mb-8">
           <div>
             <h1 className="text-3xl font-black text-zinc-950 mt-1 flex items-center gap-2">
@@ -89,7 +87,6 @@ export function MyRequests() {
           </Link>
         </div>
 
-        {/* Filter Tabs using Shadcn */}
         <Tabs 
           value={activeFilter} 
           onValueChange={(val) => setActiveFilter(val)} 
@@ -113,7 +110,6 @@ export function MyRequests() {
           </TabsList>
         </Tabs>
 
-        {/* Orders List */}
         <div className="flex flex-col gap-4">
           {filteredOrders.length === 0 ? (
             <Card className="text-center py-16 p-8 rounded-3xl bg-zinc-50 border border-zinc-200">
@@ -152,7 +148,6 @@ export function MyRequests() {
         </div>
       </div>
 
-      {/* Review & Rating Modal */}
       <Modal
         open={!!ratingTarget}
         onClose={() => setRatingTarget(null)}
@@ -252,7 +247,6 @@ function CustomerOrderCard({ order, onOpenRating }) {
           </div>
         </div>
 
-        {/* Status & Review CTA */}
         <div className="flex flex-col items-start md:items-end gap-2 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-zinc-200">
           {order.status === 'pending' && (
             <Badge className="bg-amber-400 hover:bg-amber-500 text-amber-950 font-black h-8 px-4 text-[13px] shadow-sm border-transparent">
