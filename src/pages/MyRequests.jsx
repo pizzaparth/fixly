@@ -3,27 +3,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   ClipboardList,
-  Clock,
-  Wrench,
   CheckCircle2,
-  AlertCircle,
-  MapPin,
-  Phone,
   Calendar,
   Star,
-  ArrowRight,
-  MessageSquare,
 } from 'lucide-react';
 import { CATEGORIES } from '../data/mockData';
-import { SolidButton, SolidBadge, Stars } from '../components/ui-custom';
+import { Stars } from '../components/ui-custom';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import { Modal } from '../components/Modal';
 import { useStore } from '../context/StoreContext';
 
 export function MyRequests() {
-  const { orders, session, setAuthModalOpen, rateOrder } = useStore();
-  const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'pending' | 'ongoing' | 'completed'
+  const { orders, rateOrder } = useStore();
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  // Rating Modal state
   const [ratingTarget, setRatingTarget] = useState(null);
   const [rateForm, setRateForm] = useState({ score: 5, feedback: '' });
   const [toastMessage, setToastMessage] = useState(null);
@@ -69,16 +71,12 @@ export function MyRequests() {
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-zinc-900 pb-6 mb-8"
-        >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-6 mb-8">
           <div>
             <div className="flex items-center gap-2">
-              <SolidBadge variant="blue">Customer Portal</SolidBadge>
+              <Badge className="bg-blue-600 text-white font-bold">Customer Portal</Badge>
             </div>
             <h1 className="text-3xl font-black text-zinc-950 mt-1 flex items-center gap-2">
               <ClipboardList size={28} className="text-blue-600" />
@@ -90,11 +88,11 @@ export function MyRequests() {
           </div>
 
           <Link to="/">
-            <SolidButton variant="blue" size="sm" className="font-bold">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md">
               <span>+ New Repair Request</span>
-            </SolidButton>
+            </Button>
           </Link>
-        </motion.div>
+        </div>
 
         {/* Filter Tabs */}
         <div className="flex flex-wrap gap-2 mb-6">
@@ -122,20 +120,24 @@ export function MyRequests() {
         {/* Orders List */}
         <div className="flex flex-col gap-4">
           {filteredOrders.length === 0 ? (
-            <div className="text-center py-16 p-8 rounded-md bg-zinc-50 border border-zinc-200">
-              <div className="size-16 rounded-md bg-zinc-200 flex items-center justify-center text-3xl mx-auto mb-4">
-                📦
-              </div>
-              <h3 className="text-xl font-bold text-zinc-900">No repair requests found</h3>
-              <p className="text-xs sm:text-sm text-zinc-600 mt-1 max-w-md mx-auto font-medium">
-                You haven't placed any repair orders in this category yet. Explore local shops to get started!
-              </p>
-              <Link to="/" className="inline-block mt-5">
-                <SolidButton variant="blue" size="sm" className="font-bold">
-                  Browse Repair Shops →
-                </SolidButton>
-              </Link>
-            </div>
+            <Card className="text-center py-16 p-8 rounded-md bg-zinc-50 border border-zinc-200">
+              <CardContent className="flex flex-col items-center">
+                <div className="size-16 rounded-md bg-zinc-200 flex items-center justify-center text-3xl mb-4">
+                  📦
+                </div>
+                <CardTitle className="text-xl font-bold text-zinc-900">
+                  No repair requests found
+                </CardTitle>
+                <CardDescription className="text-xs sm:text-sm text-zinc-600 mt-1 max-w-md mx-auto font-medium">
+                  You haven't placed any repair orders in this category yet. Explore local shops to get started!
+                </CardDescription>
+                <Link to="/" className="inline-block mt-5">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md">
+                    Browse Repair Shops →
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           ) : (
             filteredOrders.map((order) => (
               <CustomerOrderCard
@@ -199,19 +201,19 @@ export function MyRequests() {
               <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                 Your Feedback
               </label>
-              <textarea
+              <Textarea
                 rows={3}
                 required
                 value={rateForm.feedback}
                 onChange={(e) => setRateForm({ ...rateForm, feedback: e.target.value })}
                 placeholder="How was the repair quality, speed, and communication?"
-                className="w-full px-3 py-2 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+                className="text-sm rounded-md bg-white border-zinc-300 resize-none"
               />
             </div>
 
-            <SolidButton type="submit" variant="blue" className="w-full py-2.5 font-bold">
+            <Button type="submit" className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md">
               Submit Review
-            </SolidButton>
+            </Button>
           </form>
         )}
       </Modal>
@@ -223,93 +225,103 @@ function CustomerOrderCard({ order, onOpenRating }) {
   const catMeta = CATEGORIES.find((c) => c.key === order.item);
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6"
-    >
-      <div className="flex items-start gap-4 min-w-0">
-        <div className="size-14 rounded-md bg-blue-600 text-white flex items-center justify-center text-3xl font-bold shrink-0 shadow-sm">
-          {catMeta?.emoji || '🔧'}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-lg font-black text-zinc-950">{order.item} Repair</h3>
-            <SolidBadge variant={order.status}>{order.status}</SolidBadge>
-            <span className="text-sm font-black text-zinc-900">
-              Quoted: ₹{order.price}
-            </span>
+    <motion.div layout initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
+      <Card className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-start gap-4 min-w-0">
+          <div className="size-14 rounded-md bg-blue-600 text-white flex items-center justify-center text-3xl font-bold shrink-0 shadow-sm">
+            {catMeta?.emoji || '🔧'}
           </div>
-
-          <p className="text-xs text-zinc-700 mt-1 font-medium">
-            <strong>Issue:</strong> {order.issue}
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 p-3 rounded-md bg-zinc-50 border border-zinc-200 text-xs">
-            <div className="flex items-center gap-1.5 font-semibold text-zinc-800">
-              <span>🏪 Shop:</span>
-              <span className="text-zinc-950">{order.shopName}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-zinc-600">
-              <span>🕒 Requested:</span>
-              <span>{order.requestedAt}</span>
-            </div>
-            {order.pickupAt && (
-              <div className="flex items-center gap-1.5 text-blue-700 font-bold sm:col-span-2">
-                <Calendar size={13} />
-                <span>Drop-off / Pickup Window: {order.pickupAt}</span>
-              </div>
-            )}
-            {order.completionAt && (
-              <div className="flex items-center gap-1.5 text-green-700 font-bold sm:col-span-2">
-                <CheckCircle2 size={13} />
-                <span>Estimated Completion: {order.completionAt}</span>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Status & Review CTA */}
-      <div className="flex flex-col items-start md:items-end gap-2 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-zinc-200">
-        {order.status === 'pending' && (
-          <div className="p-2.5 rounded-sm bg-yellow-50 border border-yellow-300 text-xs text-yellow-900 font-bold">
-            ⏳ Awaiting technician quote
-          </div>
-        )}
-
-        {order.status === 'ongoing' && (
-          <div className="p-2.5 rounded-sm bg-blue-50 border border-blue-300 text-xs text-blue-900 font-bold">
-            🔧 Repair is in progress on workbench
-          </div>
-        )}
-
-        {order.status === 'completed' && (
-          <div className="flex flex-col md:items-end gap-2">
-            <div className="text-xs font-bold text-green-700 flex items-center gap-1">
-              <CheckCircle2 size={14} />
-              <span>Repair Completed & Verified</span>
-            </div>
-            {order.rating ? (
-              <div className="flex items-center gap-1.5 p-2 rounded-sm bg-zinc-50 border border-zinc-200">
-                <span className="text-[11px] font-bold text-zinc-700">Your Rating:</span>
-                <Stars rating={order.rating.score} size={12} />
-              </div>
-            ) : (
-              <SolidButton
-                variant="yellow"
-                size="sm"
-                onClick={onOpenRating}
-                className="text-xs font-bold"
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <CardTitle className="text-lg font-black text-zinc-950">
+                {order.item} Repair
+              </CardTitle>
+              <Badge
+                className={
+                  order.status === 'pending'
+                    ? 'bg-yellow-400 text-black font-bold'
+                    : order.status === 'ongoing'
+                    ? 'bg-blue-600 text-white font-bold'
+                    : order.status === 'completed'
+                    ? 'bg-green-600 text-white font-bold'
+                    : 'bg-rose-600 text-white font-bold'
+                }
               >
-                <Star size={13} />
-                <span>Rate & Review Technician</span>
-              </SolidButton>
-            )}
+                {order.status}
+              </Badge>
+              <span className="text-sm font-black text-zinc-900">
+                Quoted: ₹{order.price}
+              </span>
+            </div>
+
+            <p className="text-xs text-zinc-700 mt-1 font-medium">
+              <strong>Issue:</strong> {order.issue}
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 p-3 rounded-md bg-zinc-50 border border-zinc-200 text-xs">
+              <div className="flex items-center gap-1.5 font-semibold text-zinc-800">
+                <span>🏪 Shop:</span>
+                <span className="text-zinc-950">{order.shopName}</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-zinc-600">
+                <span>🕒 Requested:</span>
+                <span>{order.requestedAt}</span>
+              </div>
+              {order.pickupAt && (
+                <div className="flex items-center gap-1.5 text-blue-700 font-bold sm:col-span-2">
+                  <Calendar size={13} />
+                  <span>Drop-off / Pickup Window: {order.pickupAt}</span>
+                </div>
+              )}
+              {order.completionAt && (
+                <div className="flex items-center gap-1.5 text-green-700 font-bold sm:col-span-2">
+                  <CheckCircle2 size={13} />
+                  <span>Estimated Completion: {order.completionAt}</span>
+                </div>
+              )}
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+
+        {/* Status & Review CTA */}
+        <div className="flex flex-col items-start md:items-end gap-2 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-zinc-200">
+          {order.status === 'pending' && (
+            <div className="p-2.5 rounded-sm bg-yellow-50 border border-yellow-300 text-xs text-yellow-900 font-bold">
+              ⏳ Awaiting technician quote
+            </div>
+          )}
+
+          {order.status === 'ongoing' && (
+            <div className="p-2.5 rounded-sm bg-blue-50 border border-blue-300 text-xs text-blue-900 font-bold">
+              🔧 Repair is in progress on workbench
+            </div>
+          )}
+
+          {order.status === 'completed' && (
+            <div className="flex flex-col md:items-end gap-2">
+              <div className="text-xs font-bold text-green-700 flex items-center gap-1">
+                <CheckCircle2 size={14} />
+                <span>Repair Completed & Verified</span>
+              </div>
+              {order.rating ? (
+                <div className="flex items-center gap-1.5 p-2 rounded-sm bg-zinc-50 border border-zinc-200">
+                  <span className="text-[11px] font-bold text-zinc-700">Your Rating:</span>
+                  <Stars rating={order.rating.score} size={12} />
+                </div>
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={onOpenRating}
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold rounded-md"
+                >
+                  <Star size={13} />
+                  <span>Rate & Review Technician</span>
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+      </Card>
     </motion.div>
   );
 }
