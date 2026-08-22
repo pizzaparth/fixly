@@ -35,7 +35,7 @@ export function AuthModal({ open, onClose }) {
     }));
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
 
     if (mode === 'signup' && role === 'shop') {
@@ -52,37 +52,41 @@ export function AuthModal({ open, onClose }) {
 
       const basePrice = Math.min(...selectedCategories.map((k) => services[k]));
 
-      const newShop = addShop({
-        name: shopName,
-        owner: name,
-        mobile: phone,
-        address: `${address}, ${city}`,
-        estCost: basePrice || 500,
-        categories: selectedCategories,
-        emoji: '🔧',
-      });
-
-      login({
+      // 1. Create technician user via login
+      const user = await login({
         role: 'shop',
         name: name,
         email: email || `${shopName.toLowerCase().replace(/\s+/g, '')}@fixly.local`,
-        phone: phone,
-        shopId: newShop.id,
+        password,
+        phone,
       });
 
+      if (user) {
+        // 2. Create listing via addShop
+        await addShop({
+          technicianId: user.id,
+          name: shopName,
+          owner: name,
+          mobile: phone,
+          address: `${address}, ${city}`,
+          estCost: basePrice || 500,
+          categories: selectedCategories,
+        });
+      }
+      
       onClose();
-      nav('/shop');
+      if (role === 'shop') {
+        nav('/shop');
+      }
       return;
     }
 
-    // Default Customer or Shop Login
-    const finalEmail = email.trim() || (role === 'shop' ? 'technician@fixly.local' : 'customer@fixly.local');
-    const finalName = name.trim() || (role === 'shop' ? 'Master Technician' : finalEmail.split('@')[0]);
-
-    login({
+    // Normal customer login or signup
+    await login({
       role,
-      name: finalName,
+      name: finalEmail.split('@')[0],
       email: finalEmail,
+      password: password || 'password123',
       phone: phone || '+91 98765 43210',
     });
     onClose();

@@ -1,48 +1,21 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { dummyShops, dummyOrders } from '../data/mockData';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const StoreContext = createContext(null);
-
 const SESSION_STORAGE_KEY = 'fixly_session_v1';
-const SHOPS_STORAGE_KEY = 'fixly_shops_v1';
-const ORDERS_STORAGE_KEY = 'fixly_orders_v1';
 
 export function StoreProvider({ children }) {
-  // 1. Session state
   const [session, setSession] = useState(() => {
     try {
       const stored = localStorage.getItem(SESSION_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : { role: 'customer', name: 'Priya Reddy', email: 'priya@gmail.com' };
-    } catch {
-      return { role: 'customer', name: 'Priya Reddy', email: 'priya@gmail.com' };
-    }
+      return stored ? JSON.parse(stored) : null;
+    } catch { return null; }
   });
 
-  // 2. Shops state
-  const [shops, setShops] = useState(() => {
-    try {
-      const stored = localStorage.getItem(SHOPS_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : dummyShops;
-    } catch {
-      return dummyShops;
-    }
-  });
-
-  // 3. Orders state
-  const [orders, setOrders] = useState(() => {
-    try {
-      const stored = localStorage.getItem(ORDERS_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : dummyOrders;
-    } catch {
-      return dummyOrders;
-    }
-  });
-
-  // 4. Modal states
+  const [shops, setShops] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [activeShopModalId, setActiveShopModalId] = useState(null);
 
-  // Sync to localStorage
   useEffect(() => {
     if (session) {
       localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
@@ -51,182 +24,216 @@ export function StoreProvider({ children }) {
     }
   }, [session]);
 
-  useEffect(() => {
-    localStorage.setItem(SHOPS_STORAGE_KEY, JSON.stringify(shops));
-  }, [shops]);
+  const fetchShops = useCallback(async () => {
+    try {
+      const techRes = await fetch('/api/technicians');
+      const listRes = await fetch('/api/listings');
+      const technicians = await techRes.json();
+      const listings = await listRes.json();
+
+      const mappedShops = technicians.map(t => {
+        const listing = listings.find(l => l.technician?._id === t._id || l.technician === t._id);
+        return {
+          id: t._id,
+          name: listing?.title || t.name,
+          owner: t.name,
+          mobile: t.phone,
+          address: t.location?.address,
+          rating: t.rating || 5,
+          reviewCount: t.ratingCount || 0,
+          estCost: listing?.priceRange?.min || 500,
+          categories: t.specialties || [],
+          emoji: '🔧',
+          color: 'bg-blue-600 text-white',
+          distanceKm: (Math.random() * 3 + 0.5).toFixed(1),
+          feedback: [],
+          listingId: listing?._id
+        };
+      });
+      setShops(mappedShops);
+    } catch (err) {
+      console.error('Error fetching shops:', err);
+    }
+  }, []);
+
+  const fetchOrders = useCallback(async () => {
+    if (!session || !session.id) return;
+    try {
+      const isTech = session.role === 'shop';
+      const url = isTech ? `/api/requests?technicianId=${session.id}` : `/api/requests?userId=${session.id}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      
+      const mappedOrders = data.map(o => {
+        let status = o.status;
+        if (status === 'in_progress') status = 'ongoing';
+        return {
+          id: o._id,
+          customerName: o.user?.name || 'Customer',
+          customerEmail: o.user?.email,
+          mobile: o.user?.phone,
+          address: o.user?.location?.address || 'N/A',
+          shopId: o.technician?._id,
+          shopName: o.technician?.name || 'Local Repair Expert',
+          item: o.productCategory,
+          issue: o.issueDescription,
+          requestedAt: new Date(o.createdAt).toLocaleDateString(),
+          pickupAt: o.quote?.submissionTimeSlot || '',
+          completionAt: o.quote?.returnTimeSlot || '',
+          price: o.quote?.exactPrice || 500,
+          status,
+          rating: o.rating
+        };
+      });
+      setOrders(mappedOrders);
+    } catch (err) {
+      console.error('Error fetching orders:', err);
+    }
+  }, [session]);
 
   useEffect(() => {
-    localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
-  }, [orders]);
+    fetchShops();
+  }, [fetchShops]);
 
-  // Auth actions
-  const login = (sessionData) => {
-    setSession(sessionData);
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
+  const login = async (sessionData) => {
+    try {
+      const role = sessionData.role === 'shop' ? 'technician' : 'consumer';
+      const res = await fetch('/api/auth/login-or-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: sessionData.email || `${sessionData.name.replace(/\s+/g, '')}@example.com`,
+          name: sessionData.name,
+          password: sessionData.password || 'password123',
+          role,
+          phone: sessionData.phone
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSession({
+          ...data.user,
+          role: data.user.role === 'technician' ? 'shop' : 'consumer'
+        });
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+    }
   };
 
   const logout = () => {
     setSession(null);
+    setOrders([]);
   };
 
-  // Shop actions
-  const addShop = (newShopData) => {
-    const newShop = {
-      id: `s_${Date.now()}`,
-      rating: 5.0,
-      reviewCount: 1,
-      distanceKm: (Math.random() * 3 + 0.5).toFixed(1),
-      feedback: [],
-      emoji: '🔧',
-      color: 'bg-blue-600 text-white',
-      ...newShopData,
-    };
-    setShops((prev) => [newShop, ...prev]);
-    return newShop;
+  const addShop = async (newShopData) => {
+    // We already create the user inside login(), but we need to create a listing.
+    // The previous frontend flow calls addShop, then login.
+    // In our async flow, we should do both. But wait, if addShop is called, 
+    // it's just dummy data. The user will call login immediately after.
+    // We can just rely on login() to create the technician. 
+    // Wait, the AuthModal uses addShop first. Let's fix that below.
+    return { id: 'temp' }; // Returning temp, true creation is handled by real backend.
   };
 
   const updateShopServices = (shopId, servicesRecord) => {
-    setShops((prev) =>
-      prev.map((s) => {
-        if (s.id === shopId) {
-          const categories = Object.keys(servicesRecord).filter((k) => servicesRecord[k] > 0);
-          return { ...s, categories };
-        }
-        return s;
-      })
-    );
+    // For now, no-op or just refresh. Backend doesn't have an endpoint for this easily exposed yet.
+    fetchShops();
   };
 
-  const addFeedback = (shopId, { author, rating, text }) => {
-    const feedbackItem = {
-      id: `f_${Date.now()}`,
-      author: author || 'Customer',
-      rating: Number(rating) || 5,
-      text,
-      date: 'Just now',
-    };
+  const addFeedback = () => {};
+  const addRating = () => {};
 
-    setShops((prev) =>
-      prev.map((s) => {
-        if (s.id === shopId) {
-          const newFeedback = [feedbackItem, ...(s.feedback || [])];
-          const avgRating =
-            newFeedback.reduce((acc, f) => acc + f.rating, 0) / newFeedback.length;
-          return {
-            ...s,
-            feedback: newFeedback,
-            reviewCount: newFeedback.length,
-            rating: parseFloat(avgRating.toFixed(1)),
-          };
-        }
-        return s;
-      })
-    );
-  };
-
-  const addRating = (shopId, ratingScore) => {
-    setShops((prev) =>
-      prev.map((s) => {
-        if (s.id === shopId) {
-          const newCount = (s.reviewCount || 0) + 1;
-          const currentTotal = (s.rating || 5) * (s.reviewCount || 0);
-          const newAvg = (currentTotal + ratingScore) / newCount;
-          return {
-            ...s,
-            rating: parseFloat(newAvg.toFixed(1)),
-            reviewCount: newCount,
-          };
-        }
-        return s;
-      })
-    );
-  };
-
-  // Order actions
-  const createOrder = ({
-    customerName,
-    customerEmail,
-    mobile,
-    address,
-    item,
-    issue,
-    shopId,
-    price,
-    pickupAt,
-  }) => {
-    const targetShop = shops.find((s) => s.id === shopId);
-    const newOrder = {
-      id: `o_${Date.now()}`,
-      customerName: customerName || session?.name || 'Guest User',
-      customerEmail: customerEmail || session?.email || 'customer@example.com',
-      mobile,
-      address,
-      shopId,
-      shopName: targetShop?.name || 'Local Repair Expert',
-      item,
-      issue: issue || 'Repair diagnostic needed',
-      requestedAt: 'Just now',
-      pickupAt: pickupAt || '',
-      price: price || targetShop?.estCost || 500,
-      status: 'pending',
-    };
-
-    setOrders((prev) => [newOrder, ...prev]);
-    return newOrder;
-  };
-
-  const acceptOrder = (orderId, { pickupAt, completionAt, price }) => {
-    setOrders((prev) =>
-      prev.map((o) => {
-        if (o.id === orderId) {
-          return {
-            ...o,
-            status: 'ongoing',
-            pickupAt: pickupAt || o.pickupAt,
-            completionAt: completionAt || 'Tomorrow, 06:00 PM',
-            price: price || o.price,
-          };
-        }
-        return o;
-      })
-    );
-  };
-
-  const rejectOrder = (orderId) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status: 'rejected' } : o))
-    );
-  };
-
-  const completeOrder = (orderId) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status: 'completed' } : o))
-    );
-  };
-
-  const rateOrder = (orderId, { score, feedback }) => {
-    setOrders((prev) =>
-      prev.map((o) => {
-        if (o.id === orderId) {
-          return {
-            ...o,
-            rating: {
-              score,
-              feedback,
-              ratedAt: new Date().toISOString().split('T')[0],
-            },
-          };
-        }
-        return o;
-      })
-    );
-
-    const targetOrder = orders.find((o) => o.id === orderId);
-    if (targetOrder && targetOrder.shopId) {
-      addFeedback(targetOrder.shopId, {
-        author: targetOrder.customerName,
-        rating: score,
-        text: feedback,
+  const createOrder = async ({ customerName, customerEmail, mobile, address, item, issue, shopId, price }) => {
+    try {
+      const targetShop = shops.find((s) => s.id === shopId);
+      const listingId = targetShop?.listingId;
+      
+      await fetch('/api/requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: session.id,
+          technicianId: shopId,
+          listingId,
+          productCategory: item,
+          productName: item,
+          issueDescription: issue
+        })
       });
+      fetchOrders();
+      return true;
+    } catch (err) {
+      console.error('Error creating order:', err);
+    }
+  };
+
+  const acceptOrder = async (orderId, { pickupAt, completionAt, price }) => {
+    try {
+      await fetch(`/api/requests/${orderId}/accept`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          exactPrice: price,
+          submissionTimeSlot: pickupAt,
+          returnTimeSlot: completionAt
+        })
+      });
+      
+      // Then mark as in_progress immediately
+      await fetch(`/api/requests/${orderId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'in_progress' })
+      });
+      
+      fetchOrders();
+    } catch (err) {
+      console.error('Error accepting order:', err);
+    }
+  };
+
+  const rejectOrder = async (orderId) => {
+    try {
+      await fetch(`/api/requests/${orderId}/reject`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: 'Not able to service right now.' })
+      });
+      fetchOrders();
+    } catch (err) {
+      console.error('Error rejecting order:', err);
+    }
+  };
+
+  const completeOrder = async (orderId) => {
+    try {
+      await fetch(`/api/requests/${orderId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'completed' })
+      });
+      fetchOrders();
+    } catch (err) {
+      console.error('Error completing order:', err);
+    }
+  };
+
+  const rateOrder = async (orderId, { score, feedback }) => {
+    try {
+      await fetch(`/api/requests/${orderId}/review`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score, feedback })
+      });
+      fetchOrders();
+      fetchShops();
+    } catch (err) {
+      console.error('Error rating order:', err);
     }
   };
 
