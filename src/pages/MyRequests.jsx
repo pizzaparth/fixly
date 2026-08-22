@@ -120,9 +120,9 @@ export function MyRequests() {
         {/* Orders List */}
         <div className="flex flex-col gap-4">
           {filteredOrders.length === 0 ? (
-            <Card className="text-center py-16 p-8 rounded-md bg-zinc-50 border border-zinc-200">
+            <Card className="text-center py-16 p-8 rounded-3xl bg-zinc-50 border border-zinc-200">
               <CardContent className="flex flex-col items-center">
-                <div className="size-16 rounded-md bg-zinc-200 flex items-center justify-center text-3xl mb-4">
+                <div className="size-16 rounded-3xl bg-zinc-200 flex items-center justify-center text-3xl mb-4">
                   📦
                 </div>
                 <CardTitle className="text-xl font-bold text-zinc-900">
@@ -226,9 +226,9 @@ function CustomerOrderCard({ order, onOpenRating }) {
 
   return (
     <motion.div layout initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
-      <Card className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <Card className="p-6 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-start gap-4 min-w-0">
-          <div className="size-14 rounded-md bg-blue-600 text-white flex items-center justify-center text-3xl font-bold shrink-0 shadow-sm">
+          <div className="size-14 rounded-full bg-blue-600 text-white flex items-center justify-center text-3xl font-bold shrink-0 shadow-sm">
             {catMeta?.emoji || '🔧'}
           </div>
           <div className="min-w-0 flex-1">
@@ -258,7 +258,7 @@ function CustomerOrderCard({ order, onOpenRating }) {
               <strong>Issue:</strong> {order.issue}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 p-3 rounded-md bg-zinc-50 border border-zinc-200 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 p-3 rounded-3xl bg-zinc-50 border border-zinc-200 text-xs">
               <div className="flex items-center gap-1.5 font-semibold text-zinc-800">
                 <span>🏪 Shop:</span>
                 <span className="text-zinc-950">{order.shopName}</span>
@@ -312,7 +312,7 @@ function CustomerOrderCard({ order, onOpenRating }) {
                 <Button
                   size="sm"
                   onClick={onOpenRating}
-                  className="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold rounded-md"
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold rounded-full"
                 >
                   <Star size={13} />
                   <span>Rate & Review Technician</span>
