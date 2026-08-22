@@ -10,7 +10,7 @@
 | Domain | Status | Completion % | Notes |
 | :--- | :--- | :--- | :--- |
 | **Project Setup & Tooling** | ✅ Completed | 100% | Vite, React 19, Tailwind CSS v4, shadcn UI installed & configured |
-| **Styling & Design System** | ✅ Completed | 100% | [`stylerule.md`](file:///Users/parth/University/swifthack/fixly/stylerule.md) created; Solid black OLED theme configured in [`src/index.css`](file:///Users/parth/University/swifthack/fixly/src/index.css) |
+| **Styling & Design System** | ✅ Completed | 100% | [`stylerule.md`](file:///Users/parth/University/swifthack/fixly/stylerule.md) updated: Solid White background + vibrant Solid Colors (Pink, Blue, Purple, Green, Yellow), strictly NO PILL elements; CSS tokens configured in [`src/index.css`](file:///Users/parth/University/swifthack/fixly/src/index.css) |
 | **shadcn Skills Status** | ✅ Active | 100% | Skill verified at [`.agents/skills/shadcn/`](file:///Users/parth/University/swifthack/fixly/.agents/skills/shadcn) with all rules active |
 | **Database & Backend Layer** | ✅ Configured | 100% | MongoDB + Mongoose models, Express REST API, and `.env` configured |
 | **Product Specifications** | ✅ Completed | 100% | [`plan.md`](file:///Users/parth/University/swifthack/fixly/plan.md) and [`description.md`](file:///Users/parth/University/swifthack/fixly/description.md) defined |
@@ -26,7 +26,8 @@
 ### 2.1. Environment, Base UI & Design System
 - [x] **Vite + React 19 Setup:** Scaffolded and running with HMR.
 - [x] **Tailwind CSS v4 Integration:** Modern `@theme inline` setup with CSS custom properties in [`src/index.css`](file:///Users/parth/University/swifthack/fixly/src/index.css).
-- [x] **Solid Black Theme:** Pitch black background (`oklch(0 0 0)`), crisp white text, and light grey secondary accents active by default.
+- [x] **Solid White & Vibrant Theme:** Crisp solid white canvas (`#ffffff`), high-contrast dark text, solid color blocks (Pink, Blue, Purple, Green, Yellow).
+- [x] **Strict No-Pill Geometry:** `rounded-full` prohibited; rectangular / box geometry (`rounded-none`, `rounded-sm`, `rounded-md`) enforced.
 - [x] **Styling Rules Documented:** [`stylerule.md`](file:///Users/parth/University/swifthack/fixly/stylerule.md) defines layout, typography, cards, badges, forms, and component composition.
 - [x] **Typography & Icons:** Geist Variable font configured; `lucide-react` installed.
 - [x] **shadcn UI Components Installed (`src/components/ui/`):**
