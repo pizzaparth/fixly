@@ -83,7 +83,7 @@ export function ShopOnboard() {
         {/* Header */}
         <div className="border-b border-zinc-200 pb-6 mb-8">
           <div className="flex items-center gap-2">
-            <Badge className="bg-purple-600 text-white font-bold">Partner Network</Badge>
+            <Badge className="bg-purple-600 text-white font-bold rounded-full">Partner Network</Badge>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-zinc-950 mt-2 flex items-center gap-3">
             <Store size={32} className="text-purple-600" />
@@ -96,10 +96,10 @@ export function ShopOnboard() {
 
         <form onSubmit={handlePublish} className="flex flex-col gap-8">
           {/* 1. Shop Basic Info */}
-          <Card className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
-            <CardHeader className="p-0 mb-4">
+          <Card className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm">
+            <CardHeader className="p-0 mb-5">
               <CardTitle className="text-lg font-black text-zinc-950 flex items-center gap-2">
-                <span className="size-6 rounded-sm bg-blue-600 text-white flex items-center justify-center text-xs font-bold">1</span>
+                <span className="size-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">1</span>
                 <span>Shop & Contact Information</span>
               </CardTitle>
             </CardHeader>
@@ -115,7 +115,7 @@ export function ShopOnboard() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g. Apex Electronics & Mobile Care"
-                  className="rounded-md bg-white border-zinc-300"
+                  className="rounded-full px-4 py-2 bg-white border-zinc-300"
                 />
               </div>
 
@@ -129,7 +129,7 @@ export function ShopOnboard() {
                   value={formData.owner}
                   onChange={(e) => setFormData({ ...formData, owner: e.target.value })}
                   placeholder="e.g. Rajesh Kumar"
-                  className="rounded-md bg-white border-zinc-300"
+                  className="rounded-full px-4 py-2 bg-white border-zinc-300"
                 />
               </div>
 
@@ -143,7 +143,7 @@ export function ShopOnboard() {
                   value={formData.mobile}
                   onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
                   placeholder="+91 98450 12345"
-                  className="rounded-md bg-white border-zinc-300"
+                  className="rounded-full px-4 py-2 bg-white border-zinc-300"
                 />
               </div>
 
@@ -155,7 +155,7 @@ export function ShopOnboard() {
                   type="text"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="rounded-md bg-white border-zinc-300"
+                  className="rounded-full px-4 py-2 bg-white border-zinc-300"
                 />
               </div>
 
@@ -169,21 +169,21 @@ export function ShopOnboard() {
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   placeholder="e.g. #42, 80ft Road, Near Sony Signal, Koramangala"
-                  className="rounded-md bg-white border-zinc-300"
+                  className="rounded-full px-4 py-2 bg-white border-zinc-300"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* 2. Select Services & Base Price */}
-          <Card className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
-            <CardHeader className="p-0 border-b border-zinc-200 pb-3 mb-4">
+          <Card className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm">
+            <CardHeader className="p-0 border-b border-zinc-200 pb-3 mb-5">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg font-black text-zinc-950 flex items-center gap-2">
-                  <span className="size-6 rounded-sm bg-purple-600 text-white flex items-center justify-center text-xs font-bold">2</span>
+                  <span className="size-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold">2</span>
                   <span>Select Repaired Items & Base Prices</span>
                 </CardTitle>
-                <Badge className="bg-blue-600 text-white font-bold">
+                <Badge className="bg-blue-600 text-white font-bold rounded-full">
                   {activeCount} selected
                 </Badge>
               </div>
@@ -200,7 +200,7 @@ export function ShopOnboard() {
                     key={c.key}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => toggleCategory(c.key)}
-                    className={`p-3.5 rounded-md cursor-pointer border-2 transition-all flex flex-col justify-between ${
+                    className={`p-4 rounded-2xl cursor-pointer border-2 transition-all flex flex-col justify-between ${
                       isSelected
                         ? 'bg-blue-50 border-blue-600 shadow-sm'
                         : 'bg-zinc-50 border-zinc-300 opacity-70 hover:opacity-100'
@@ -212,7 +212,7 @@ export function ShopOnboard() {
                         <span className="text-sm font-bold text-zinc-950">{c.key}</span>
                       </div>
                       {isSelected && (
-                        <div className="size-5 rounded-sm bg-blue-600 text-white flex items-center justify-center font-bold">
+                        <div className="size-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
                           <Check size={14} />
                         </div>
                       )}
@@ -235,7 +235,7 @@ export function ShopOnboard() {
                               [c.key]: Number(e.target.value),
                             })
                           }
-                          className="w-20 px-2 py-1 text-xs font-bold rounded-sm border-2 border-blue-600 bg-white text-right"
+                          className="w-20 px-3 py-1 text-xs font-bold rounded-full border-2 border-blue-600 bg-white text-right"
                         />
                       </div>
                     )}
@@ -246,7 +246,7 @@ export function ShopOnboard() {
           </Card>
 
           {/* 3. Direct Settle Notice & Submit */}
-          <div className="p-4 rounded-md bg-green-50 border-2 border-green-600 flex items-center justify-between gap-4">
+          <div className="p-4 rounded-2xl bg-green-50 border-2 border-green-600 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <ShieldCheck size={28} className="text-green-700 shrink-0" />
               <div>
@@ -263,7 +263,7 @@ export function ShopOnboard() {
           <div className="flex justify-end gap-4">
             <Button
               type="submit"
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-wider text-sm rounded-md"
+              className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-wider text-sm rounded-full shadow-sm"
             >
               <span>Publish Shop & Launch Hub</span>
               <ArrowRight size={16} />
