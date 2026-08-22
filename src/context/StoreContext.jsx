@@ -198,7 +198,7 @@ export function StoreProvider({ children }) {
           description: `Listing for ${newShopData.name}`,
         })
       });
-      fetchShops();
+      await fetchShops();
       return { id: newShopData.technicianId };
     } catch (err) {
       console.error('Error creating listing:', err);

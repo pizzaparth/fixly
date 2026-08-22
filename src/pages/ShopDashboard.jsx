@@ -68,6 +68,14 @@ export function ShopDashboard() {
     }
   };
 
+  if (shops.length === 0) {
+    return (
+      <div className="min-h-screen bg-zinc-50 pt-24 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   if (!activeShop) {
     return (
       <div className="min-h-screen bg-zinc-50 pt-24 px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
@@ -75,6 +83,8 @@ export function ShopDashboard() {
         <h2 className="text-2xl font-black text-zinc-900 mb-2">Technician Profile Not Found</h2>
         <p className="text-zinc-600 max-w-md mx-auto">
           We could not locate your shop listings. This usually happens if the database is empty or your profile was not set up completely.
+          <br/><br/>
+          <Button onClick={() => window.location.reload()} variant="outline">Refresh Page</Button>
         </p>
       </div>
     );
