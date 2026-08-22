@@ -24,13 +24,14 @@ export function Navbar() {
       transition={{ type: 'spring', stiffness: 200, damping: 22 }}
       className="sticky top-4 z-40 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
     >
-      <div className="w-full bg-white/95 backdrop-blur-md border-2 border-zinc-900 rounded-full px-6 sm:px-8 py-3 flex items-center justify-between shadow-sm">
+      {/* Liquid Frosted Glass Pill Navbar */}
+      <div className="w-full bg-white/45 backdrop-blur-2xl backdrop-saturate-200 border border-white/70 ring-1 ring-zinc-900/10 rounded-full px-6 sm:px-8 py-3.5 flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all">
         {/* Brand Logo */}
         <Link to="/" onClick={closeMobile} className="flex items-center gap-2.5">
           <motion.span
             animate={{ rotate: [0, -8, 8, 0] }}
             transition={{ duration: 4, repeat: Infinity, repeatType: 'mirror' }}
-            className="text-2xl flex items-center"
+            className="text-2xl flex items-center drop-shadow-xs"
           >
             🔧
           </motion.span>
@@ -39,8 +40,8 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Nav Controls */}
-        <div className="hidden md:flex items-center gap-2">
+        {/* Desktop Nav Controls with Frosted Translucency */}
+        <div className="hidden md:flex items-center gap-2.5">
           {/* 1. Home / Explore */}
           <Link to="/">
             <motion.button
@@ -48,10 +49,10 @@ export function Navbar() {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.94 }}
               transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-              className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-colors ${
+              className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-all ${
                 isHome
-                  ? 'bg-black text-white'
-                  : 'bg-zinc-100 text-zinc-800 border border-zinc-300 hover:bg-zinc-200'
+                  ? 'bg-black text-white shadow-sm'
+                  : 'bg-white/40 hover:bg-white/80 text-zinc-800 border border-zinc-900/10 backdrop-blur-md'
               }`}
             >
               <Home size={16} />
@@ -67,10 +68,10 @@ export function Navbar() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.94 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-colors ${
+                className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-all ${
                   isRequests
-                    ? 'bg-black text-white'
-                    : 'bg-zinc-100 text-zinc-800 border border-zinc-300 hover:bg-zinc-200'
+                    ? 'bg-black text-white shadow-sm'
+                    : 'bg-white/40 hover:bg-white/80 text-zinc-800 border border-zinc-900/10 backdrop-blur-md'
                 }`}
               >
                 <ClipboardList size={16} />
@@ -87,10 +88,10 @@ export function Navbar() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.94 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-colors ${
+                className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-all ${
                   isShop
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-zinc-100 text-zinc-800 border border-zinc-300 hover:bg-zinc-200'
+                    ? 'bg-purple-600 text-white shadow-sm'
+                    : 'bg-white/40 hover:bg-white/80 text-zinc-800 border border-zinc-900/10 backdrop-blur-md'
                 }`}
               >
                 <Store size={16} />
@@ -107,10 +108,10 @@ export function Navbar() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.94 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-colors ${
+                className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-all ${
                   isOnboard
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-zinc-100 text-zinc-800 border border-zinc-300 hover:bg-zinc-200'
+                    ? 'bg-purple-600 text-white shadow-sm'
+                    : 'bg-white/40 hover:bg-white/80 text-zinc-800 border border-zinc-900/10 backdrop-blur-md'
                 }`}
               >
                 <Store size={16} />
@@ -130,7 +131,7 @@ export function Navbar() {
                 logout();
                 nav('/');
               }}
-              className="px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer bg-zinc-100 text-zinc-800 border border-zinc-300 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300"
+              className="px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer bg-white/40 hover:bg-rose-50/90 text-zinc-800 border border-zinc-900/10 hover:text-rose-600 hover:border-rose-300 backdrop-blur-md transition-all"
             >
               <LogOut size={16} />
               <span>{session.name.split(' ')[0]}</span>
@@ -142,7 +143,7 @@ export function Navbar() {
               whileTap={{ scale: 0.94 }}
               transition={{ type: 'spring', stiffness: 400, damping: 17 }}
               onClick={() => setAuthModalOpen(true)}
-              className="px-5 py-2 rounded-full font-bold text-sm cursor-pointer bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
+              className="px-6 py-2 rounded-full font-bold text-sm cursor-pointer bg-blue-600 text-white hover:bg-blue-700 shadow-md transition-all"
             >
               Sign in
             </motion.button>
@@ -152,7 +153,7 @@ export function Navbar() {
         {/* Mobile Hamburger Button */}
         <div className="md:hidden flex items-center gap-2">
           {session && (
-            <span className="text-xs font-black text-zinc-900 bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200">
+            <span className="text-xs font-black text-zinc-900 bg-white/60 px-3 py-1 rounded-full border border-zinc-900/10 backdrop-blur-md">
               {session.name.split(' ')[0]}
             </span>
           )}
@@ -160,7 +161,7 @@ export function Navbar() {
             type="button"
             whileTap={{ scale: 0.9 }}
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="p-2 rounded-full bg-zinc-100 border border-zinc-300 text-zinc-900 cursor-pointer"
+            className="p-2.5 rounded-full bg-white/50 backdrop-blur-md border border-zinc-900/15 text-zinc-900 cursor-pointer shadow-xs"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -168,7 +169,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Collapsible Mobile Menu Panel */}
+      {/* Collapsible Frosted Glass Mobile Menu Panel */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -176,12 +177,12 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="md:hidden mt-2 p-4 bg-white border-2 border-zinc-900 rounded-3xl shadow-xl flex flex-col gap-2.5"
+            className="md:hidden mt-2 p-4 bg-white/65 backdrop-blur-2xl backdrop-saturate-200 border border-white/70 ring-1 ring-zinc-900/10 rounded-3xl shadow-[0_16px_40px_rgba(0,0,0,0.12)] flex flex-col gap-2.5"
           >
             <Link to="/" onClick={closeMobile}>
               <div
-                className={`p-3 rounded-full font-bold text-sm flex items-center gap-2.5 ${
-                  isHome ? 'bg-black text-white' : 'bg-zinc-50 text-zinc-900 border border-zinc-200'
+                className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${
+                  isHome ? 'bg-black text-white' : 'bg-white/50 text-zinc-900 border border-zinc-900/10 backdrop-blur-md'
                 }`}
               >
                 <Home size={18} />
@@ -192,8 +193,8 @@ export function Navbar() {
             {session?.role === 'customer' && (
               <Link to="/my-requests" onClick={closeMobile}>
                 <div
-                  className={`p-3 rounded-full font-bold text-sm flex items-center gap-2.5 ${
-                    isRequests ? 'bg-black text-white' : 'bg-zinc-50 text-zinc-900 border border-zinc-200'
+                  className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${
+                    isRequests ? 'bg-black text-white' : 'bg-white/50 text-zinc-900 border border-zinc-900/10 backdrop-blur-md'
                   }`}
                 >
                   <ClipboardList size={18} />
@@ -205,8 +206,8 @@ export function Navbar() {
             {session?.role === 'shop' && (
               <Link to="/shop" onClick={closeMobile}>
                 <div
-                  className={`p-3 rounded-full font-bold text-sm flex items-center gap-2.5 ${
-                    isShop ? 'bg-purple-600 text-white' : 'bg-zinc-50 text-zinc-900 border border-zinc-200'
+                  className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${
+                    isShop ? 'bg-purple-600 text-white' : 'bg-white/50 text-zinc-900 border border-zinc-900/10 backdrop-blur-md'
                   }`}
                 >
                   <Store size={18} />
@@ -218,8 +219,8 @@ export function Navbar() {
             {!session && (
               <Link to="/onboard" onClick={closeMobile}>
                 <div
-                  className={`p-3 rounded-full font-bold text-sm flex items-center gap-2.5 ${
-                    isOnboard ? 'bg-purple-600 text-white' : 'bg-zinc-50 text-zinc-900 border border-zinc-200'
+                  className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${
+                    isOnboard ? 'bg-purple-600 text-white' : 'bg-white/50 text-zinc-900 border border-zinc-900/10 backdrop-blur-md'
                   }`}
                 >
                   <Store size={18} />
@@ -228,7 +229,7 @@ export function Navbar() {
               </Link>
             )}
 
-            <div className="pt-2 border-t border-zinc-200 flex justify-stretch">
+            <div className="pt-2 border-t border-zinc-900/10 flex justify-stretch">
               {session ? (
                 <button
                   type="button"
@@ -237,7 +238,7 @@ export function Navbar() {
                     closeMobile();
                     nav('/');
                   }}
-                  className="w-full p-3 rounded-full font-bold text-sm flex items-center justify-center gap-2 bg-rose-50 text-rose-600 border border-rose-200 cursor-pointer"
+                  className="w-full p-3.5 rounded-full font-bold text-sm flex items-center justify-center gap-2 bg-rose-50/80 text-rose-600 border border-rose-200/80 backdrop-blur-md cursor-pointer"
                 >
                   <LogOut size={18} />
                   <span>Sign out ({session.name})</span>
@@ -249,7 +250,7 @@ export function Navbar() {
                     closeMobile();
                     setAuthModalOpen(true);
                   }}
-                  className="w-full p-3 rounded-full font-bold text-sm flex items-center justify-center gap-2 bg-blue-600 text-white cursor-pointer"
+                  className="w-full p-3.5 rounded-full font-bold text-sm flex items-center justify-center gap-2 bg-blue-600 text-white shadow-md cursor-pointer"
                 >
                   <span>Sign in / Sign up</span>
                 </button>
