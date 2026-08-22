@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { User, Store, ShieldCheck, Mail, Lock, Phone, Check, MapPin } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { CATEGORIES } from '../data/mockData';
 
 export function AuthModal({ open, onClose }) {
   const { login, registerUser, addShop } = useStore();
@@ -22,18 +21,7 @@ export function AuthModal({ open, onClose }) {
   const [shopName, setShopName] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('Bengaluru');
-  const [services, setServices] = useState(() =>
-    Object.fromEntries(CATEGORIES.map((c) => [c.key, 0]))
-  );
-
   const [errors, setErrors] = useState({});
-
-  const toggleCategory = (catKey) => {
-    setServices((prev) => ({
-      ...prev,
-      [catKey]: prev[catKey] === 0 ? 500 : 0,
-    }));
-  };
 
   const validate = () => {
     const newErrors = {};
@@ -44,9 +32,6 @@ export function AuthModal({ open, onClose }) {
       if (!address.trim()) newErrors.address = true;
       if (!email.trim()) newErrors.email = true;
       if (!password) newErrors.password = true;
-
-      const selectedCategories = Object.keys(services).filter((k) => services[k] > 0);
-      if (selectedCategories.length === 0) newErrors.services = true;
     } else if (mode === 'signup') {
       if (!name.trim()) newErrors.name = true;
       if (!email.trim()) newErrors.email = true;
@@ -66,16 +51,13 @@ export function AuthModal({ open, onClose }) {
 
     try {
       if (mode === 'signup' && role === 'shop') {
-        const selectedCategories = Object.keys(services).filter((k) => services[k] > 0);
-        const basePrice = Math.min(...selectedCategories.map((k) => services[k]));
-
         const user = await registerUser({
           role: 'shop',
           name,
           email,
           password,
           phone,
-          specialties: selectedCategories,
+          specialties: [],
         });
 
         if (user) {
@@ -85,8 +67,8 @@ export function AuthModal({ open, onClose }) {
             owner: name,
             mobile: phone,
             address: `${address}, ${city}`,
-            estCost: basePrice || 500,
-            categories: selectedCategories,
+            estCost: 500,
+            categories: [],
           });
         }
         
@@ -354,57 +336,6 @@ export function AuthModal({ open, onClose }) {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4">
-              <h4 className={`text-lg font-black ${errors.services ? 'text-red-500' : 'text-zinc-900'} border-b pb-2`}>
-                Services & Quotes {errors.services && '(Select at least 1)'}
-              </h4>
-              <div className="grid grid-cols-2 gap-3">
-                {CATEGORIES.map((c) => {
-                  const isSelected = services[c.key] > 0;
-                  return (
-                    <motion.div
-                      key={c.key}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => toggleCategory(c.key)}
-                      className={`p-3 rounded-2xl cursor-pointer border flex flex-col justify-between transition-colors ${
-                        isSelected ? 'bg-purple-50 border-purple-600' : 'bg-zinc-50 border-zinc-200 hover:border-zinc-300'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xl">{c.emoji}</span>
-                          <span className="text-xs font-bold leading-tight">{c.key}</span>
-                        </div>
-                        {isSelected && (
-                          <div className="size-5 shrink-0 rounded-full bg-purple-600 text-white flex items-center justify-center">
-                            <Check size={12} />
-                          </div>
-                        )}
-                      </div>
-                      {isSelected && (
-                        <div
-                          onClick={(e) => e.stopPropagation()}
-                          className="mt-3 pt-2 border-t border-purple-200 flex flex-col gap-1"
-                        >
-                          <span className="text-[10px] font-bold text-purple-900 uppercase">Base (₹)</span>
-                          <input
-                            type="number"
-                            value={services[c.key]}
-                            onChange={(e) =>
-                              setServices({
-                                ...services,
-                                [c.key]: Number(e.target.value),
-                              })
-                            }
-                            className="w-full px-2 py-1 text-sm font-bold rounded-lg border border-purple-300 bg-white"
-                          />
-                        </div>
-                      )}
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         )}
 
