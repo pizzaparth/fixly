@@ -107,7 +107,28 @@ router.get('/technicians', async (req, res) => {
       query['location.city'] = { $regex: city, $options: 'i' };
     }
 
-    const technicians = await User.find(query).select('-password');
+    const technicians = await User.find(query).select('-password').lean();
+    
+    // Fetch latest feedback for each technician
+    for (let t of technicians) {
+      const requests = await RepairRequest.find({
+        technician: t._id,
+        'rating.score': { $exists: true, $ne: null }
+      })
+      .sort({ 'rating.ratedAt': -1 })
+      .limit(5)
+      .populate('user', 'name')
+      .lean();
+
+      t.feedback = requests.map(r => ({
+        id: r._id,
+        author: r.user?.name || 'Customer',
+        rating: r.rating.score,
+        text: r.rating.feedback,
+        date: r.rating.ratedAt ? new Date(r.rating.ratedAt).toLocaleDateString() : 'Recent',
+      }));
+    }
+
     res.json(technicians);
   } catch (error) {
     res.status(500).json({ error: error.message });

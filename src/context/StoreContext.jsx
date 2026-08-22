@@ -42,7 +42,7 @@ export function StoreProvider({ children }) {
           owner: t.name,
           mobile: t.phone,
           address: t.location?.address,
-          rating: t.rating || 5,
+          rating: t.rating ?? 0,
           reviewCount: t.ratingCount || 0,
           estCost: baseCost,
           categories: t.specialties || [],
@@ -50,7 +50,7 @@ export function StoreProvider({ children }) {
           emoji: '🔧',
           color: 'bg-blue-600 text-white',
           distanceKm: (Math.random() * 3 + 0.5).toFixed(1),
-          feedback: [],
+          feedback: t.feedback || [],
           listingId: listing?._id
         };
       });
