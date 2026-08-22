@@ -53,9 +53,9 @@ export function SolidButton({
   };
 
   const sizeStyles = {
-    sm: 'px-3 py-1.5 text-xs',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-6 py-3 text-base',
+    sm: 'px-4 py-1.5 text-xs',
+    md: 'px-5 py-2 text-sm',
+    lg: 'px-7 py-3 text-base',
   };
 
   return (
@@ -63,10 +63,10 @@ export function SolidButton({
       type={type}
       disabled={disabled}
       onClick={onClick}
-      whileHover={disabled ? {} : { scale: 1.02 }}
-      whileTap={disabled ? {} : { scale: 0.96 }}
+      whileHover={disabled ? {} : { scale: 1.03 }}
+      whileTap={disabled ? {} : { scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-      className={`rounded-md font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${variantStyles[variant] || variantStyles.primary} ${sizeStyles[size]} ${className}`}
+      className={`rounded-full font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${variantStyles[variant] || variantStyles.primary} ${sizeStyles[size]} ${className}`}
     >
       {children}
     </motion.button>
@@ -89,7 +89,7 @@ export function SolidBadge({ children, variant = 'neutral', className = '' }) {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-bold uppercase tracking-wider ${styles[variant] || styles.neutral} ${className}`}
+      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${styles[variant] || styles.neutral} ${className}`}
     >
       {children}
     </span>
@@ -107,7 +107,7 @@ export function SolidCard({ children, className = '', highlight = null }) {
 
   return (
     <div
-      className={`rounded-md bg-white border border-zinc-200 shadow-sm overflow-hidden ${highlight ? highlightStyles[highlight] : ''} ${className}`}
+      className={`rounded-3xl bg-white border border-zinc-200 shadow-sm overflow-hidden ${highlight ? highlightStyles[highlight] : ''} ${className}`}
     >
       {children}
     </div>
