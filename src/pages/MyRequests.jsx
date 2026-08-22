@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Modal } from '../components/Modal';
 import { useStore } from '../context/StoreContext';
@@ -91,28 +92,29 @@ export function MyRequests() {
           </Link>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {[
-            { key: 'all', label: 'All Requests' },
-            { key: 'pending', label: 'Pending Quotes' },
-            { key: 'ongoing', label: 'In-Progress' },
-            { key: 'completed', label: 'Completed' },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              type="button"
-              onClick={() => setActiveFilter(tab.key)}
-              className={`px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider border-2 cursor-pointer transition-colors ${
-                activeFilter === tab.key
-                  ? 'bg-black text-white border-black shadow-sm'
-                  : 'bg-white text-zinc-700 border-zinc-300 hover:border-black'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        {/* Filter Tabs using Shadcn */}
+        <Tabs 
+          value={activeFilter} 
+          onValueChange={(val) => setActiveFilter(val)} 
+          className="w-full mb-6"
+        >
+          <TabsList className="bg-zinc-100 p-1">
+            {[
+              { key: 'all', label: 'All Requests' },
+              { key: 'pending', label: 'Pending Quotes' },
+              { key: 'ongoing', label: 'In-Progress' },
+              { key: 'completed', label: 'Completed' },
+            ].map((tab) => (
+              <TabsTrigger
+                key={tab.key}
+                value={tab.key}
+                className="text-xs font-bold uppercase tracking-wider"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
 
         {/* Orders List */}
         <div className="flex flex-col gap-4">
@@ -219,19 +221,6 @@ function CustomerOrderCard({ order, onOpenRating }) {
               <CardTitle className="text-lg font-black text-zinc-950">
                 {order.item} Repair
               </CardTitle>
-              <Badge
-                className={
-                  order.status === 'pending'
-                    ? 'bg-yellow-400 text-black font-bold'
-                    : order.status === 'ongoing'
-                    ? 'bg-blue-600 text-white font-bold'
-                    : order.status === 'completed'
-                    ? 'bg-green-600 text-white font-bold'
-                    : 'bg-rose-600 text-white font-bold'
-                }
-              >
-                {order.status}
-              </Badge>
               <span className="text-sm font-black text-zinc-900">
                 Quoted: ₹{order.price}
               </span>
@@ -269,23 +258,23 @@ function CustomerOrderCard({ order, onOpenRating }) {
         {/* Status & Review CTA */}
         <div className="flex flex-col items-start md:items-end gap-2 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-zinc-200">
           {order.status === 'pending' && (
-            <div className="p-2.5 rounded-sm bg-yellow-50 border border-yellow-300 text-xs text-yellow-900 font-bold">
+            <Badge className="bg-amber-400 hover:bg-amber-500 text-amber-950 font-black h-8 px-4 text-[13px] shadow-sm border-transparent">
               ⏳ Awaiting technician quote
-            </div>
+            </Badge>
           )}
 
           {order.status === 'ongoing' && (
-            <div className="p-2.5 rounded-sm bg-blue-50 border border-blue-300 text-xs text-blue-900 font-bold">
-              🔧 Repair is in progress on workbench
-            </div>
+            <Badge className="bg-blue-600 hover:bg-blue-700 text-white font-black h-8 px-4 text-[13px] shadow-sm border-transparent">
+              🔧 Repair in progress
+            </Badge>
           )}
 
           {order.status === 'completed' && (
             <div className="flex flex-col md:items-end gap-2">
-              <div className="text-xs font-bold text-green-700 flex items-center gap-1">
-                <CheckCircle2 size={14} />
-                <span>Repair Completed & Verified</span>
-              </div>
+              <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white font-black h-8 px-4 text-[13px] shadow-sm border-transparent flex items-center gap-1.5">
+                <CheckCircle2 size={16} />
+                <span>Repair Completed</span>
+              </Badge>
               {order.rating ? (
                 <div className="flex items-center gap-1.5 p-2 rounded-sm bg-zinc-50 border border-zinc-200">
                   <span className="text-[11px] font-bold text-zinc-700">Your Rating:</span>
