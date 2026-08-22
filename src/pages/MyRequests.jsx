@@ -73,9 +73,6 @@ export function MyRequests() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-6 mb-8">
           <div>
-            <div className="flex items-center gap-2">
-              <Badge className="bg-blue-600 text-white font-bold">Customer Portal</Badge>
-            </div>
             <h1 className="text-3xl font-black text-zinc-950 mt-1 flex items-center gap-2">
               <ClipboardList size={28} className="text-blue-600" />
               <span>My Repair Requests & History</span>
