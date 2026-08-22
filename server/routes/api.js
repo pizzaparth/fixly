@@ -312,7 +312,7 @@ router.post('/requests/:id/review', async (req, res) => {
     const avgScore =
       totalRatings > 0
         ? allTechnicianRatings.reduce((sum, r) => sum + r.rating.score, 0) / totalRatings
-        : 5.0;
+        : 0;
 
     await User.findByIdAndUpdate(request.technician, {
       rating: parseFloat(avgScore.toFixed(1)),

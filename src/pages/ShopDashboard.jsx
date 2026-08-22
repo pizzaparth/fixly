@@ -30,6 +30,7 @@ import { useStore } from '../context/StoreContext';
 
 export function ShopDashboard() {
   const {
+    session,
     shops,
     orders,
     acceptOrder,
@@ -37,9 +38,9 @@ export function ShopDashboard() {
     completeOrder,
   } = useStore();
 
-  const activeShop = shops[0] || {
+  const activeShop = shops.find(s => s.id === session?.id) || shops[0] || {
     id: 's1',
-    name: 'BrewByte Repairs',
+    name: session?.name || 'BrewByte Repairs',
     owner: 'Arjun Mehta',
     mobile: '+91 98220 11234',
     address: '12, Cafe Lane, Indiranagar, Bengaluru',
@@ -226,6 +227,26 @@ export function ShopDashboard() {
                 </div>
               );
             })}
+
+            {/* Add Service Button */}
+            {CATEGORIES.filter(c => !services[c.key]).length > 0 && (
+              <select
+                className="p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 border-dashed text-xs font-bold text-zinc-600 cursor-pointer hover:bg-zinc-100 outline-none appearance-none text-center"
+                value=""
+                onChange={(e) => {
+                  if (e.target.value) {
+                    setServices({ ...services, [e.target.value]: 500 });
+                  }
+                }}
+              >
+                <option value="" disabled>+ Add Service</option>
+                {CATEGORIES.filter(c => !services[c.key]).map(c => (
+                  <option key={c.key} value={c.key}>
+                    {c.emoji} {c.key}
+                  </option>
+                ))}
+              </select>
+            )}
           </CardContent>
         </Card>
 

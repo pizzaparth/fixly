@@ -26,6 +26,8 @@ export function AuthModal({ open, onClose }) {
     Object.fromEntries(CATEGORIES.map((c) => [c.key, 0]))
   );
 
+  const [errors, setErrors] = useState({});
+
   const toggleCategory = (catKey) => {
     setServices((prev) => ({
       ...prev,
@@ -33,22 +35,38 @@ export function AuthModal({ open, onClose }) {
     }));
   };
 
+  const validate = () => {
+    const newErrors = {};
+    if (mode === 'signup' && role === 'shop') {
+      if (!shopName.trim()) newErrors.shopName = true;
+      if (!name.trim()) newErrors.name = true;
+      if (!phone.trim()) newErrors.phone = true;
+      if (!address.trim()) newErrors.address = true;
+      if (!email.trim()) newErrors.email = true;
+      if (!password) newErrors.password = true;
+
+      const selectedCategories = Object.keys(services).filter((k) => services[k] > 0);
+      if (selectedCategories.length === 0) newErrors.services = true;
+    } else if (mode === 'signup') {
+      if (!name.trim()) newErrors.name = true;
+      if (!email.trim()) newErrors.email = true;
+      if (!password) newErrors.password = true;
+    } else {
+      if (!email.trim()) newErrors.email = true;
+      if (!password) newErrors.password = true;
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const submit = async (e) => {
     e.preventDefault();
+    setErrors({});
+    if (!validate()) return;
 
     try {
       if (mode === 'signup' && role === 'shop') {
-        if (!shopName.trim() || !name.trim() || !phone.trim() || !address.trim() || !email.trim() || !password) {
-          alert('Please fill out all required shop details.');
-          return;
-        }
-        
         const selectedCategories = Object.keys(services).filter((k) => services[k] > 0);
-        if (selectedCategories.length === 0) {
-          alert('Please select at least one repair service category.');
-          return;
-        }
-
         const basePrice = Math.min(...selectedCategories.map((k) => services[k]));
 
         const user = await registerUser({
@@ -57,6 +75,7 @@ export function AuthModal({ open, onClose }) {
           email,
           password,
           phone,
+          specialties: selectedCategories,
         });
 
         if (user) {
@@ -77,10 +96,6 @@ export function AuthModal({ open, onClose }) {
       }
 
       if (mode === 'signup') {
-        if (!name.trim() || !email.trim() || !password) {
-          alert('Name, email, and password are required.');
-          return;
-        }
         await registerUser({
           role,
           name: name.trim(),
@@ -89,10 +104,6 @@ export function AuthModal({ open, onClose }) {
           phone: phone || '+91 00000 00000',
         });
       } else {
-        if (!email.trim() || !password) {
-          alert('Email and password are required.');
-          return;
-        }
         await login({
           role,
           email: email.trim(),
@@ -105,7 +116,7 @@ export function AuthModal({ open, onClose }) {
         nav('/shop');
       }
     } catch (error) {
-      alert(error.message || 'Authentication failed');
+      setErrors({ auth: error.message || 'Authentication failed' });
     }
   };
 
@@ -191,11 +202,10 @@ export function AuthModal({ open, onClose }) {
                     <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                     <Input
                       type="text"
-                      required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Priya Reddy"
-                      className="pl-10 text-sm rounded-full bg-white border-zinc-300"
+                      className={`pl-10 text-sm rounded-full bg-white border ${errors.name ? 'border-red-500' : 'border-zinc-300'}`}
                     />
                   </div>
                 </motion.div>
@@ -210,11 +220,10 @@ export function AuthModal({ open, onClose }) {
                 <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <Input
                   type="email"
-                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@domain.com"
-                  className="pl-10 text-sm rounded-full bg-white border-zinc-300"
+                  className={`pl-10 text-sm rounded-full bg-white border ${errors.email ? 'border-red-500' : 'border-zinc-300'}`}
                 />
               </div>
             </div>
@@ -231,7 +240,7 @@ export function AuthModal({ open, onClose }) {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98765 43210"
-                    className="pl-10 text-sm rounded-full bg-white border-zinc-300"
+                    className={`pl-10 text-sm rounded-full bg-white border border-zinc-300`}
                   />
                 </div>
               </div>
@@ -245,11 +254,10 @@ export function AuthModal({ open, onClose }) {
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <Input
                   type="password"
-                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="pl-10 text-sm rounded-full bg-white border-zinc-300"
+                  className={`pl-10 text-sm rounded-full bg-white border ${errors.password ? 'border-red-500' : 'border-zinc-300'}`}
                 />
               </div>
             </div>
@@ -267,11 +275,10 @@ export function AuthModal({ open, onClose }) {
                   <Store size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <Input
                     type="text"
-                    required
                     value={shopName}
                     onChange={(e) => setShopName(e.target.value)}
                     placeholder="e.g. Apex Electronics"
-                    className="pl-10 text-sm rounded-full bg-white border-zinc-300 h-11"
+                    className={`pl-10 text-sm rounded-full bg-white border h-11 ${errors.shopName ? 'border-red-500' : 'border-zinc-300'}`}
                   />
                 </div>
               </div>
@@ -284,11 +291,10 @@ export function AuthModal({ open, onClose }) {
                   <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <Input
                     type="text"
-                    required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Rajesh Kumar"
-                    className="pl-10 text-sm rounded-full bg-white border-zinc-300 h-11"
+                    className={`pl-10 text-sm rounded-full bg-white border h-11 ${errors.name ? 'border-red-500' : 'border-zinc-300'}`}
                   />
                 </div>
               </div>
@@ -301,11 +307,10 @@ export function AuthModal({ open, onClose }) {
                   <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <Input
                     type="tel"
-                    required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98450 12345"
-                    className="pl-10 text-sm rounded-full bg-white border-zinc-300 h-11"
+                    className={`pl-10 text-sm rounded-full bg-white border h-11 ${errors.phone ? 'border-red-500' : 'border-zinc-300'}`}
                   />
                 </div>
               </div>
@@ -318,11 +323,10 @@ export function AuthModal({ open, onClose }) {
                   <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <Input
                     type="text"
-                    required
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="e.g. #42, 80ft Road, Near Sony Signal"
-                    className="pl-10 text-sm rounded-full bg-white border-zinc-300 h-11"
+                    className={`pl-10 text-sm rounded-full bg-white border h-11 ${errors.address ? 'border-red-500' : 'border-zinc-300'}`}
                   />
                 </div>
               </div>
@@ -334,26 +338,26 @@ export function AuthModal({ open, onClose }) {
                 <div className="flex gap-3">
                   <Input
                     type="email"
-                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
-                    className="text-sm rounded-full bg-white border-zinc-300 h-11 w-1/2"
+                    className={`text-sm rounded-full bg-white border h-11 w-1/2 ${errors.email ? 'border-red-500' : 'border-zinc-300'}`}
                   />
                   <Input
                     type="password"
-                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
-                    className="text-sm rounded-full bg-white border-zinc-300 h-11 w-1/2"
+                    className={`text-sm rounded-full bg-white border h-11 w-1/2 ${errors.password ? 'border-red-500' : 'border-zinc-300'}`}
                   />
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-4">
-              <h4 className="text-lg font-black text-zinc-900 border-b pb-2">Services & Quotes</h4>
+              <h4 className={`text-lg font-black ${errors.services ? 'text-red-500' : 'text-zinc-900'} border-b pb-2`}>
+                Services & Quotes {errors.services && '(Select at least 1)'}
+              </h4>
               <div className="grid grid-cols-2 gap-3">
                 {CATEGORIES.map((c) => {
                   const isSelected = services[c.key] > 0;
@@ -401,6 +405,12 @@ export function AuthModal({ open, onClose }) {
                 })}
               </div>
             </div>
+          </div>
+        )}
+
+        {errors.auth && (
+          <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-bold rounded-xl text-center">
+            {errors.auth}
           </div>
         )}
 
