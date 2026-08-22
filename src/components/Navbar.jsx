@@ -22,9 +22,9 @@ export function Navbar() {
       initial={{ y: -30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 200, damping: 22 }}
-      className="sticky top-4 z-40 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+      className="sticky top-4 z-40 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
     >
-      <div className="bg-white/95 backdrop-blur-md border-2 border-zinc-900 rounded-full px-5 sm:px-6 py-3 flex items-center justify-between shadow-sm">
+      <div className="w-full bg-white/95 backdrop-blur-md border-2 border-zinc-900 rounded-full px-6 sm:px-8 py-3 flex items-center justify-between shadow-sm">
         {/* Brand Logo */}
         <Link to="/" onClick={closeMobile} className="flex items-center gap-2.5">
           <motion.span
