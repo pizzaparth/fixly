@@ -8,8 +8,8 @@ import { useStore } from '../context/StoreContext';
 
 export function AuthModal({ open, onClose }) {
   const { login } = useStore();
-  const [mode, setMode] = useState('login'); // 'login' | 'signup'
-  const [role, setRole] = useState('customer'); // 'customer' | 'shop'
+  const [mode, setMode] = useState('login');
+  const [role, setRole] = useState('customer');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -38,21 +38,21 @@ export function AuthModal({ open, onClose }) {
     >
       <form onSubmit={submit} className="flex flex-col gap-4">
         {/* Role toggle */}
-        <div className="grid grid-cols-2 gap-2 p-1 rounded-md bg-zinc-100 border border-zinc-200">
+        <div className="grid grid-cols-2 gap-2 p-1.5 rounded-full bg-zinc-100 border border-zinc-200">
           {(['customer', 'shop']).map((r) => (
             <motion.button
               key={r}
               type="button"
               whileTap={{ scale: 0.96 }}
               onClick={() => setRole(r)}
-              className={`relative py-2.5 rounded-sm text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors ${
+              className={`relative py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors ${
                 role === r ? 'text-white' : 'text-zinc-700 hover:text-black'
               }`}
             >
               {role === r && (
                 <motion.span
                   layoutId="authRoleTab"
-                  className={`absolute inset-0 rounded-sm ${r === 'shop' ? 'bg-purple-600' : 'bg-blue-600'}`}
+                  className={`absolute inset-0 rounded-full ${r === 'shop' ? 'bg-purple-600' : 'bg-blue-600'}`}
                   transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                 />
               )}
@@ -104,14 +104,14 @@ export function AuthModal({ open, onClose }) {
                 {role === 'shop' ? 'Shop Owner Name' : 'Full Name'}
               </label>
               <div className="relative">
-                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <Input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={role === 'shop' ? 'e.g. Ramesh Kumar' : 'e.g. Priya Reddy'}
-                  className="pl-9 text-sm rounded-md bg-white border-zinc-300"
+                  className="pl-10 text-sm rounded-full bg-white border-zinc-300"
                 />
               </div>
             </motion.div>
@@ -123,14 +123,14 @@ export function AuthModal({ open, onClose }) {
             Email Address
           </label>
           <div className="relative">
-            <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+            <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
             <Input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@domain.com"
-              className="pl-9 text-sm rounded-md bg-white border-zinc-300"
+              className="pl-10 text-sm rounded-full bg-white border-zinc-300"
             />
           </div>
         </div>
@@ -141,13 +141,13 @@ export function AuthModal({ open, onClose }) {
               Phone Number
             </label>
             <div className="relative">
-              <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
               <Input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+91 98765 43210"
-                className="pl-9 text-sm rounded-md bg-white border-zinc-300"
+                className="pl-10 text-sm rounded-full bg-white border-zinc-300"
               />
             </div>
           </div>
@@ -158,21 +158,21 @@ export function AuthModal({ open, onClose }) {
             Password
           </label>
           <div className="relative">
-            <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+            <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
             <Input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="pl-9 text-sm rounded-md bg-white border-zinc-300"
+              className="pl-10 text-sm rounded-full bg-white border-zinc-300"
             />
           </div>
         </div>
 
         <Button
           type="submit"
-          className={`w-full py-2.5 mt-2 text-sm font-bold text-white rounded-md ${
+          className={`w-full py-3 mt-2 text-sm font-bold text-white rounded-full ${
             role === 'shop' ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
