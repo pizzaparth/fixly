@@ -23,7 +23,8 @@ function AnimatedRoutes() {
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
       >
         <Routes location={loc}>
-          <Route path="/" element={session?.role === 'shop' ? <Navigate to="/shop" replace /> : <Home />} />
+          <Route path="/" element={<Navigate to={session?.role === 'shop' ? "/shop" : "/home"} replace />} />
+          <Route path="/home" element={session?.role === 'shop' ? <Navigate to="/shop" replace /> : <Home />} />
           <Route path="/shop" element={<ShopDashboard />} />
           <Route path="/onboard" element={<ShopOnboard />} />
           <Route path="/my-requests" element={<MyRequests />} />

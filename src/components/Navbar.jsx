@@ -10,7 +10,7 @@ export function Navbar() {
   const { session, logout, setAuthModalOpen } = useStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const isHome = loc.pathname === '/';
+  const isHome = loc.pathname === '/home';
   const isShop = loc.pathname.startsWith('/shop');
   const isOnboard = loc.pathname.startsWith('/onboard');
   const isRequests = loc.pathname.startsWith('/my-requests');
@@ -27,7 +27,7 @@ export function Navbar() {
       {/* Liquid Frosted Glass Pill Navbar */}
       <div className="w-full bg-white/45 backdrop-blur-2xl backdrop-saturate-200 border border-white/70 ring-1 ring-zinc-900/10 rounded-full px-6 sm:px-8 py-3.5 flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all">
         {/* Brand Logo */}
-        <Link to={session?.role === 'shop' ? "/shop" : "/"} onClick={closeMobile} className="flex items-center">
+        <Link to={session?.role === 'shop' ? "/shop" : "/home"} onClick={closeMobile} className="flex items-center">
           <span className="font-black text-xl text-zinc-950 tracking-tight px-4 py-1.5 rounded-full hover:bg-black hover:text-white transition-colors duration-200">
             Fixly
           </span>
@@ -37,7 +37,7 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-2.5">
           {/* 1. Home / Explore - Hidden for Shops */}
           {session?.role !== 'shop' && (
-            <Link to="/">
+            <Link to="/home">
               <motion.button
                 type="button"
                 whileHover={{ scale: 1.04 }}
@@ -106,7 +106,7 @@ export function Navbar() {
               transition={{ type: 'spring', stiffness: 400, damping: 17 }}
               onClick={() => {
                 logout();
-                nav('/');
+                nav('/home');
               }}
               className="px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer bg-white/40 hover:bg-rose-50/90 text-zinc-800 border border-zinc-900/10 hover:text-rose-600 hover:border-rose-300 backdrop-blur-md transition-all"
             >
@@ -157,7 +157,7 @@ export function Navbar() {
             className="md:hidden mt-2 p-4 bg-white/65 backdrop-blur-2xl backdrop-saturate-200 border border-white/70 ring-1 ring-zinc-900/10 rounded-3xl shadow-[0_16px_40px_rgba(0,0,0,0.12)] flex flex-col gap-2.5"
           >
             {session?.role !== 'shop' && (
-              <Link to="/" onClick={closeMobile}>
+              <Link to="/home" onClick={closeMobile}>
                 <div
                   className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${
                     isHome ? 'bg-black text-white' : 'bg-white/50 text-zinc-900 border border-zinc-900/10 backdrop-blur-md'
@@ -204,7 +204,7 @@ export function Navbar() {
                   onClick={() => {
                     logout();
                     closeMobile();
-                    nav('/');
+                    nav('/home');
                   }}
                   className="w-full p-3.5 rounded-full font-bold text-sm flex items-center justify-center gap-2 bg-rose-50/80 text-rose-600 border border-rose-200/80 backdrop-blur-md cursor-pointer"
                 >
