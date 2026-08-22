@@ -111,6 +111,12 @@ export function StoreProvider({ children }) {
           role
         })
       });
+      
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server returned an invalid response (Please restart the backend server)');
+      }
+      
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || 'Failed to login');
@@ -144,6 +150,12 @@ export function StoreProvider({ children }) {
           phone: sessionData.phone
         })
       });
+
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server returned an invalid response (Please restart the backend server)');
+      }
+
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || 'Failed to register');
