@@ -102,25 +102,7 @@ export function Navbar() {
             </Link>
           )}
 
-          {/* 4. Guest Mode (Not signed in): "List Shop" */}
-          {!session && (
-            <Link to="/onboard">
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.94 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-all ${
-                  isOnboard
-                    ? 'bg-purple-600 text-white shadow-sm'
-                    : 'bg-white/40 hover:bg-white/80 text-zinc-800 border border-zinc-900/10 backdrop-blur-md'
-                }`}
-              >
-                <Store size={16} />
-                <span>List Shop</span>
-              </motion.button>
-            </Link>
-          )}
+
 
           {/* 5. Session Auth / Sign Out */}
           {session ? (
@@ -220,18 +202,7 @@ export function Navbar() {
               </Link>
             )}
 
-            {!session && (
-              <Link to="/onboard" onClick={closeMobile}>
-                <div
-                  className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${
-                    isOnboard ? 'bg-purple-600 text-white' : 'bg-white/50 text-zinc-900 border border-zinc-900/10 backdrop-blur-md'
-                  }`}
-                >
-                  <Store size={18} />
-                  <span>List Your Shop</span>
-                </div>
-              </Link>
-            )}
+
 
             <div className="pt-2 border-t border-zinc-900/10 flex justify-stretch">
               {session ? (

@@ -1,22 +1,81 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Modal } from './Modal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { User, Store, ShieldCheck, Mail, Lock, Phone } from 'lucide-react';
+import { User, Store, ShieldCheck, Mail, Lock, Phone, Check, MapPin } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
+import { CATEGORIES } from '../data/mockData';
 
 export function AuthModal({ open, onClose }) {
-  const { login } = useStore();
+  const { login, addShop } = useStore();
+  const nav = useNavigate();
   const [mode, setMode] = useState('login');
   const [role, setRole] = useState('customer');
+  
+  // Base fields
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
+  // Extra shop fields
+  const [shopName, setShopName] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('Bengaluru');
+  const [services, setServices] = useState(() =>
+    Object.fromEntries(CATEGORIES.map((c) => [c.key, 0]))
+  );
+
+  const toggleCategory = (catKey) => {
+    setServices((prev) => ({
+      ...prev,
+      [catKey]: prev[catKey] === 0 ? 500 : 0,
+    }));
+  };
+
   const submit = (e) => {
     e.preventDefault();
+
+    if (mode === 'signup' && role === 'shop') {
+      if (!shopName.trim() || !name.trim() || !phone.trim() || !address.trim()) {
+        alert('Please fill out all required shop details.');
+        return;
+      }
+      
+      const selectedCategories = Object.keys(services).filter((k) => services[k] > 0);
+      if (selectedCategories.length === 0) {
+        alert('Please select at least one repair service category.');
+        return;
+      }
+
+      const basePrice = Math.min(...selectedCategories.map((k) => services[k]));
+
+      const newShop = addShop({
+        name: shopName,
+        owner: name,
+        mobile: phone,
+        address: `${address}, ${city}`,
+        estCost: basePrice || 500,
+        categories: selectedCategories,
+        emoji: '🔧',
+      });
+
+      login({
+        role: 'shop',
+        name: name,
+        email: email || `${shopName.toLowerCase().replace(/\s+/g, '')}@fixly.local`,
+        phone: phone,
+        shopId: newShop.id,
+      });
+
+      onClose();
+      nav('/shop');
+      return;
+    }
+
+    // Default Customer or Shop Login
     const finalEmail = email.trim() || (role === 'shop' ? 'technician@fixly.local' : 'customer@fixly.local');
     const finalName = name.trim() || (role === 'shop' ? 'Master Technician' : finalEmail.split('@')[0]);
 
@@ -27,14 +86,19 @@ export function AuthModal({ open, onClose }) {
       phone: phone || '+91 98765 43210',
     });
     onClose();
+    if (role === 'shop') {
+      nav('/shop');
+    }
   };
+
+  const isShopSignup = mode === 'signup' && role === 'shop';
 
   return (
     <Modal
       open={open}
       onClose={onClose}
       title={mode === 'login' ? 'Sign in to Fixly' : 'Create Fixly Account'}
-      maxWidth="max-w-md"
+      maxWidth={isShopSignup ? 'max-w-2xl' : 'max-w-md'}
     >
       <form onSubmit={submit} className="flex flex-col gap-4">
         {/* Role toggle */}
@@ -90,85 +154,232 @@ export function AuthModal({ open, onClose }) {
           </button>
         </div>
 
-        {/* Input fields */}
-        <AnimatePresence mode="wait">
-          {mode === 'signup' && (
-            <motion.div
-              key="name-field"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="flex flex-col gap-1"
-            >
+        {/* Dynamic Form Content */}
+        {!isShopSignup ? (
+          <>
+            <AnimatePresence mode="wait">
+              {mode === 'signup' && (
+                <motion.div
+                  key="name-field"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="flex flex-col gap-1"
+                >
+                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                    <Input
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="e.g. Priya Reddy"
+                      className="pl-10 text-sm rounded-full bg-white border-zinc-300"
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="flex flex-col gap-1">
               <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
-                {role === 'shop' ? 'Shop Owner Name' : 'Full Name'}
+                Email Address
               </label>
               <div className="relative">
-                <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <Input
-                  type="text"
+                  type="email"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder={role === 'shop' ? 'e.g. Ramesh Kumar' : 'e.g. Priya Reddy'}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@domain.com"
                   className="pl-10 text-sm rounded-full bg-white border-zinc-300"
                 />
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
 
-        <div className="flex flex-col gap-1">
-          <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
-            Email Address
-          </label>
-          <div className="relative">
-            <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
-            <Input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@domain.com"
-              className="pl-10 text-sm rounded-full bg-white border-zinc-300"
-            />
-          </div>
-        </div>
+            {mode === 'signup' && (
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    className="pl-10 text-sm rounded-full bg-white border-zinc-300"
+                  />
+                </div>
+              </div>
+            )}
 
-        {mode === 'signup' && (
-          <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
-              Phone Number
-            </label>
-            <div className="relative">
-              <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
-              <Input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="+91 98765 43210"
-                className="pl-10 text-sm rounded-full bg-white border-zinc-300"
-              />
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
+                Password
+              </label>
+              <div className="relative">
+                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <Input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="pl-10 text-sm rounded-full bg-white border-zinc-300"
+                />
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+            <div className="flex flex-col gap-3">
+              <h4 className="text-sm font-black text-zinc-900 border-b pb-1">Shop Details</h4>
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+                  Shop Name *
+                </label>
+                <div className="relative">
+                  <Store size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Input
+                    type="text"
+                    required
+                    value={shopName}
+                    onChange={(e) => setShopName(e.target.value)}
+                    placeholder="e.g. Apex Electronics"
+                    className="pl-9 text-xs rounded-full bg-white border-zinc-300 h-9"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+                  Owner Name *
+                </label>
+                <div className="relative">
+                  <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Rajesh Kumar"
+                    className="pl-9 text-xs rounded-full bg-white border-zinc-300 h-9"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+                  Phone Number *
+                </label>
+                <div className="relative">
+                  <Phone size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+91 98450 12345"
+                    className="pl-9 text-xs rounded-full bg-white border-zinc-300 h-9"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+                  Full Address *
+                </label>
+                <div className="relative">
+                  <MapPin size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Input
+                    type="text"
+                    required
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="e.g. #42, 80ft Road, Near Sony Signal"
+                    className="pl-9 text-xs rounded-full bg-white border-zinc-300 h-9"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+                  Email & Password *
+                </label>
+                <div className="flex gap-2">
+                  <Input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                    className="text-xs rounded-full bg-white border-zinc-300 h-9 w-1/2"
+                  />
+                  <Input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    className="text-xs rounded-full bg-white border-zinc-300 h-9 w-1/2"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <h4 className="text-sm font-black text-zinc-900 border-b pb-1">Services & Quotes</h4>
+              <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-1">
+                {CATEGORIES.map((c) => {
+                  const isSelected = services[c.key] > 0;
+                  return (
+                    <motion.div
+                      key={c.key}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => toggleCategory(c.key)}
+                      className={`p-2 rounded-xl cursor-pointer border flex flex-col justify-between transition-colors ${
+                        isSelected ? 'bg-purple-50 border-purple-600' : 'bg-zinc-50 border-zinc-200 hover:border-zinc-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm">{c.emoji}</span>
+                          <span className="text-[10px] font-bold leading-tight">{c.key}</span>
+                        </div>
+                        {isSelected && (
+                          <div className="size-4 shrink-0 rounded-full bg-purple-600 text-white flex items-center justify-center">
+                            <Check size={10} />
+                          </div>
+                        )}
+                      </div>
+                      {isSelected && (
+                        <div
+                          onClick={(e) => e.stopPropagation()}
+                          className="mt-2 pt-1 border-t border-purple-200 flex flex-col gap-0.5"
+                        >
+                          <span className="text-[8px] font-bold text-purple-900 uppercase">Base (₹)</span>
+                          <input
+                            type="number"
+                            value={services[c.key]}
+                            onChange={(e) =>
+                              setServices({
+                                ...services,
+                                [c.key]: Number(e.target.value),
+                              })
+                            }
+                            className="w-full px-1.5 py-0.5 text-xs font-bold rounded-md border border-purple-300 bg-white"
+                          />
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
-
-        <div className="flex flex-col gap-1">
-          <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
-            Password
-          </label>
-          <div className="relative">
-            <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
-            <Input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="pl-10 text-sm rounded-full bg-white border-zinc-300"
-            />
-          </div>
-        </div>
 
         <Button
           type="submit"
@@ -176,7 +387,7 @@ export function AuthModal({ open, onClose }) {
             role === 'shop' ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
-          {mode === 'login' ? `Sign In as ${role === 'shop' ? 'Repair Shop' : 'Customer'}` : 'Create Free Account'}
+          {mode === 'login' ? `Sign In as ${role === 'shop' ? 'Repair Shop' : 'Customer'}` : (role === 'shop' ? 'Publish Shop & Create Account' : 'Create Free Account')}
         </Button>
 
         <div className="flex items-center justify-center gap-1.5 text-xs text-zinc-500 pt-2 border-t border-zinc-100">
