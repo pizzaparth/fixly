@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Modal } from './Modal';
-import { SolidButton } from './ui-custom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { User, Store, ShieldCheck, Mail, Lock, Phone } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
@@ -104,13 +105,13 @@ export function AuthModal({ open, onClose }) {
               </label>
               <div className="relative">
                 <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                <input
+                <Input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={role === 'shop' ? 'e.g. Ramesh Kumar' : 'e.g. Priya Reddy'}
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  className="pl-9 text-sm rounded-md bg-white border-zinc-300"
                 />
               </div>
             </motion.div>
@@ -123,13 +124,13 @@ export function AuthModal({ open, onClose }) {
           </label>
           <div className="relative">
             <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-            <input
+            <Input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@domain.com"
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="pl-9 text-sm rounded-md bg-white border-zinc-300"
             />
           </div>
         </div>
@@ -141,12 +142,12 @@ export function AuthModal({ open, onClose }) {
             </label>
             <div className="relative">
               <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-              <input
+              <Input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+91 98765 43210"
-                className="w-full pl-9 pr-3 py-2 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="pl-9 text-sm rounded-md bg-white border-zinc-300"
               />
             </div>
           </div>
@@ -158,24 +159,25 @@ export function AuthModal({ open, onClose }) {
           </label>
           <div className="relative">
             <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-            <input
+            <Input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="pl-9 text-sm rounded-md bg-white border-zinc-300"
             />
           </div>
         </div>
 
-        <SolidButton
+        <Button
           type="submit"
-          variant={role === 'shop' ? 'purple' : 'blue'}
-          className="w-full py-2.5 mt-2 text-sm font-bold"
+          className={`w-full py-2.5 mt-2 text-sm font-bold text-white rounded-md ${
+            role === 'shop' ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-600 hover:bg-blue-700'
+          }`}
         >
           {mode === 'login' ? `Sign In as ${role === 'shop' ? 'Repair Shop' : 'Customer'}` : 'Create Free Account'}
-        </SolidButton>
+        </Button>
 
         <div className="flex items-center justify-center gap-1.5 text-xs text-zinc-500 pt-2 border-t border-zinc-100">
           <ShieldCheck size={14} className="text-green-600" />
