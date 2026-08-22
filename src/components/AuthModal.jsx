@@ -81,11 +81,14 @@ export function AuthModal({ open, onClose }) {
       return;
     }
 
+    const fallbackEmail = email.trim() || (role === 'shop' ? 'technician@fixly.local' : 'customer@fixly.local');
+    const fallbackName = name.trim() || fallbackEmail.split('@')[0];
+
     // Normal customer login or signup
     await login({
       role,
-      name: finalEmail.split('@')[0],
-      email: finalEmail,
+      name: fallbackName,
+      email: fallbackEmail,
       password: password || 'password123',
       phone: phone || '+91 98765 43210',
     });
