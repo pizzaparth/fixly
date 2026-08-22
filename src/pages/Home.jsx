@@ -112,6 +112,13 @@ export function Home() {
                   [12.9345, 77.6265], // Koramangala
                   [12.9696, 77.7500], // Whitefield
                   [12.9121, 77.6446], // HSR Layout
+                  [12.9915, 77.5927], // Vasanth Nagar
+                  [12.9279, 77.6271], // BTM Layout
+                  [12.9856, 77.5225], // Rajajinagar
+                  [13.0280, 77.5409], // Yeshwanthpur
+                  [12.8913, 77.5840], // JP Nagar
+                  [12.9591, 77.7319], // Marathahalli
+                  [12.9983, 77.5533], // Malleshwaram
                 ].map((pos, idx) => (
                   <CircleMarker 
                     key={idx} 
