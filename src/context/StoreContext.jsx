@@ -43,6 +43,7 @@ export function StoreProvider({ children }) {
           reviewCount: t.ratingCount || 0,
           estCost: listing?.priceRange?.min || 500,
           categories: t.specialties || [],
+          servicePrices: listing?.servicePrices || {},
           emoji: '🔧',
           color: 'bg-blue-600 text-white',
           distanceKm: (Math.random() * 3 + 0.5).toFixed(1),
@@ -298,6 +299,17 @@ export function StoreProvider({ children }) {
     }
   };
 
+  const updateServices = async (technicianId, services) => {
+    try {
+      await fetch(`/api/listings/technician/${technicianId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ services })
+      });
+      fetchShops();
+    } catch (err) { console.error('Error updating services:', err); }
+  };
+
   const value = {
     session,
     login,
@@ -314,6 +326,7 @@ export function StoreProvider({ children }) {
     rejectOrder,
     completeOrder,
     rateOrder,
+    updateServices,
     authModalOpen,
     setAuthModalOpen,
     activeShopModalId,

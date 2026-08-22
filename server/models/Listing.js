@@ -43,6 +43,11 @@ const listingSchema = new mongoose.Schema(
       type: String,
       default: '1-3 days',
     },
+    servicePrices: {
+      type: Map,
+      of: Number,
+      default: {},
+    },
     isActive: {
       type: Boolean,
       default: true,

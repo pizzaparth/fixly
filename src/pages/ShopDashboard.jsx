@@ -36,6 +36,7 @@ export function ShopDashboard() {
     acceptOrder,
     rejectOrder,
     completeOrder,
+    updateServices,
   } = useStore();
 
   const activeShop = shops.find(s => s.id === session?.id);
@@ -51,10 +52,23 @@ export function ShopDashboard() {
 
   const [services, setServices] = useState(() => {
     if (!activeShop) return {};
-    return Object.fromEntries(
+    
+    // First try the backend dict, fallback to defaults
+    const backendDict = activeShop.servicePrices || {};
+    const fallbackDict = Object.fromEntries(
       (activeShop.categories || []).map((c) => [c, activeShop.estCost || 500])
     );
+    
+    // Merge them
+    return { ...fallbackDict, ...backendDict };
   });
+
+  const saveServicesToBackend = (newServices) => {
+    setServices(newServices);
+    if (activeShop?.id) {
+      updateServices(activeShop.id, newServices);
+    }
+  };
 
   if (!activeShop) return null;
   const [editingCategory, setEditingCategory] = useState(null);
@@ -199,10 +213,16 @@ export function ShopDashboard() {
                             [catKey]: Number(e.target.value),
                           })
                         }
-                        onBlur={() => setEditingCategory(null)}
-                        onKeyDown={(e) =>
-                          e.key === 'Enter' && setEditingCategory(null)
-                        }
+                        onBlur={() => {
+                          setEditingCategory(null);
+                          saveServicesToBackend(services);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            setEditingCategory(null);
+                            saveServicesToBackend(services);
+                          }
+                        }}
                         className="w-20 h-8 text-xs font-bold rounded-full border-2 border-blue-600 text-right bg-white"
                       />
                     ) : (
@@ -227,7 +247,7 @@ export function ShopDashboard() {
                 value=""
                 onChange={(e) => {
                   if (e.target.value) {
-                    setServices({ ...services, [e.target.value]: 500 });
+                    saveServicesToBackend({ ...services, [e.target.value]: 500 });
                   }
                 }}
               >

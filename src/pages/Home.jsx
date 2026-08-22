@@ -364,12 +364,12 @@ function FullWidthShopCard({ shop, index, onOpen }) {
 
           {/* Right action & price block */}
           <div className="flex md:flex-col items-center md:items-end justify-between gap-3 shrink-0 pt-4 md:pt-0 border-t md:border-t-0 border-zinc-200">
-            <div className="text-left md:text-right">
-              <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
-                Estimated Price
+            <div className="flex-1 text-right">
+              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">
+                {activeCategory !== 'All' && shop.categories.includes(activeCategory) ? `${activeCategory} Base` : 'Est. Base'}
               </span>
-              <span className="text-2xl sm:text-3xl font-black text-zinc-950 block">
-                ~₹{shop.estCost}
+              <span className="text-lg font-black text-zinc-950 block leading-none mt-1">
+                ~₹{(activeCategory !== 'All' ? shop.servicePrices?.[activeCategory] : null) || shop.estCost}
               </span>
             </div>
 

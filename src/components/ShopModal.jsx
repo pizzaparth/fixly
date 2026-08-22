@@ -83,6 +83,8 @@ export function ShopModal({
     e.preventDefault();
     if (!orderForm.item || !orderForm.productName || !orderForm.mobile) return;
 
+    const selectedPrice = (orderForm.item && shop.servicePrices?.[orderForm.item]) || shop.estCost;
+
     createOrder({
       customerName: orderForm.customerName || session?.name || 'Customer',
       customerEmail: session?.email || 'customer@fixly.local',
@@ -91,7 +93,7 @@ export function ShopModal({
       item: orderForm.item,
       issue: `${orderForm.productName} - ${orderForm.issue}`,
       shopId: shop.id,
-      price: shop.estCost,
+      price: selectedPrice,
       pickupAt: orderForm.pickupAt,
     });
 
@@ -383,8 +385,8 @@ export function ShopModal({
             />
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-900">
-            <p className="font-bold">Estimated Base Cost: ₹{shop.estCost}</p>
+          <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200">
+            <p className="font-bold">Estimated Base Cost: ₹{(orderForm.item && shop.servicePrices?.[orderForm.item]) || shop.estCost}</p>
             <p className="text-[11px] text-blue-700 mt-0.5">
               The technician will verify the item and confirm the exact quote upon request acceptance.
             </p>

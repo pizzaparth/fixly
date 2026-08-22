@@ -162,6 +162,32 @@ router.post('/listings', async (req, res) => {
   }
 });
 
+// Update services and prices
+router.patch('/listings/technician/:techId', async (req, res) => {
+  try {
+    const { services } = req.body; // e.g. { Laptop: 500, Mobile: 600 }
+    const categories = Object.keys(services);
+    
+    // Update Listing
+    await Listing.findOneAndUpdate(
+      { technician: req.params.techId },
+      { 
+        productTypes: categories,
+        servicePrices: services 
+      }
+    );
+
+    // Update User specialties
+    await User.findByIdAndUpdate(req.params.techId, {
+      specialties: categories
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // ==========================================
 // 3. REPAIR REQUESTS & LIFECYCLE
 // ==========================================
