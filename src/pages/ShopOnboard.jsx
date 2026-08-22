@@ -2,8 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CATEGORIES } from '../data/mockData';
-import { SolidButton, SolidCard, SolidBadge } from '../components/ui-custom';
-import { Store, Check, ArrowRight, ShieldCheck, MapPin, Phone, User } from 'lucide-react';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Store, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export function ShopOnboard() {
@@ -70,15 +79,11 @@ export function ShopOnboard() {
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="border-b-2 border-zinc-900 pb-6 mb-8"
-        >
+        <div className="border-b border-zinc-200 pb-6 mb-8">
           <div className="flex items-center gap-2">
-            <SolidBadge variant="purple">Partner Network</SolidBadge>
+            <Badge className="bg-purple-600 text-white font-bold">Partner Network</Badge>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-zinc-950 mt-2 flex items-center gap-3">
             <Store size={32} className="text-purple-600" />
@@ -87,28 +92,30 @@ export function ShopOnboard() {
           <p className="text-sm sm:text-base text-zinc-600 mt-2 font-medium">
             Join Fixly to connect with customers in your neighborhood, receive repair requests, and set your own transparent prices.
           </p>
-        </motion.div>
+        </div>
 
         <form onSubmit={handlePublish} className="flex flex-col gap-8">
           {/* 1. Shop Basic Info */}
-          <div className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
-            <h2 className="text-lg font-black text-zinc-950 mb-4 flex items-center gap-2">
-              <span className="size-6 rounded-sm bg-blue-600 text-white flex items-center justify-center text-xs font-bold">1</span>
-              <span>Shop & Contact Information</span>
-            </h2>
+          <Card className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
+            <CardHeader className="p-0 mb-4">
+              <CardTitle className="text-lg font-black text-zinc-950 flex items-center gap-2">
+                <span className="size-6 rounded-sm bg-blue-600 text-white flex items-center justify-center text-xs font-bold">1</span>
+                <span>Shop & Contact Information</span>
+              </CardTitle>
+            </CardHeader>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <CardContent className="p-0 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
                 <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Shop / Business Name *
                 </label>
-                <input
+                <Input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g. Apex Electronics & Mobile Care"
-                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                  className="rounded-md bg-white border-zinc-300"
                 />
               </div>
 
@@ -116,13 +123,13 @@ export function ShopOnboard() {
                 <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Owner / Master Technician *
                 </label>
-                <input
+                <Input
                   type="text"
                   required
                   value={formData.owner}
                   onChange={(e) => setFormData({ ...formData, owner: e.target.value })}
                   placeholder="e.g. Rajesh Kumar"
-                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                  className="rounded-md bg-white border-zinc-300"
                 />
               </div>
 
@@ -130,13 +137,13 @@ export function ShopOnboard() {
                 <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Business Mobile Number *
                 </label>
-                <input
+                <Input
                   type="tel"
                   required
                   value={formData.mobile}
                   onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
                   placeholder="+91 98450 12345"
-                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                  className="rounded-md bg-white border-zinc-300"
                 />
               </div>
 
@@ -144,11 +151,11 @@ export function ShopOnboard() {
                 <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   City / Region
                 </label>
-                <input
+                <Input
                   type="text"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                  className="rounded-md bg-white border-zinc-300"
                 />
               </div>
 
@@ -156,35 +163,36 @@ export function ShopOnboard() {
                 <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Full Shop Address / Landmark *
                 </label>
-                <input
+                <Input
                   type="text"
                   required
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   placeholder="e.g. #42, 80ft Road, Near Sony Signal, Koramangala"
-                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                  className="rounded-md bg-white border-zinc-300"
                 />
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* 2. Select Services & Base Price */}
-          <div className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
-            <div className="flex items-center justify-between border-b border-zinc-200 pb-3 mb-4">
-              <h2 className="text-lg font-black text-zinc-950 flex items-center gap-2">
-                <span className="size-6 rounded-sm bg-purple-600 text-white flex items-center justify-center text-xs font-bold">2</span>
-                <span>Select Repaired Items & Base Prices</span>
-              </h2>
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">
-                {activeCount} selected
-              </span>
-            </div>
+          <Card className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
+            <CardHeader className="p-0 border-b border-zinc-200 pb-3 mb-4">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-black text-zinc-950 flex items-center gap-2">
+                  <span className="size-6 rounded-sm bg-purple-600 text-white flex items-center justify-center text-xs font-bold">2</span>
+                  <span>Select Repaired Items & Base Prices</span>
+                </CardTitle>
+                <Badge className="bg-blue-600 text-white font-bold">
+                  {activeCount} selected
+                </Badge>
+              </div>
+              <CardDescription className="text-xs text-zinc-600 mt-2 font-medium">
+                Click on the categories your shop repairs and specify your starting base estimate for diagnostics or typical servicing.
+              </CardDescription>
+            </CardHeader>
 
-            <p className="text-xs text-zinc-600 mb-4 font-medium">
-              Click on the categories your shop repairs and specify your starting base estimate for diagnostics or typical servicing.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <CardContent className="p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {CATEGORIES.map((c) => {
                 const isSelected = services[c.key] > 0;
                 return (
@@ -234,8 +242,8 @@ export function ShopOnboard() {
                   </motion.div>
                 );
               })}
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* 3. Direct Settle Notice & Submit */}
           <div className="p-4 rounded-md bg-green-50 border-2 border-green-600 flex items-center justify-between gap-4">
@@ -253,15 +261,13 @@ export function ShopOnboard() {
           </div>
 
           <div className="flex justify-end gap-4">
-            <SolidButton
+            <Button
               type="submit"
-              variant="blue"
-              size="lg"
-              className="px-8 font-black uppercase tracking-wider text-sm"
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-wider text-sm rounded-md"
             >
               <span>Publish Shop & Launch Hub</span>
               <ArrowRight size={16} />
-            </SolidButton>
+            </Button>
           </div>
         </form>
       </div>
