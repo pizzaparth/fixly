@@ -1,13 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
   MapPin,
-  Leaf,
   ArrowRight,
   X,
-  Phone,
-  User,
 } from 'lucide-react';
 import { CATEGORIES } from '../data/mockData';
 import { Stars } from '../components/ui-custom';
@@ -28,6 +25,7 @@ export function Home() {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [isFocused, setIsFocused] = useState(false);
+  const searchInputRef = useRef(null);
 
   // Filtered shops based on search query and category
   const filteredShops = useMemo(() => {
@@ -62,18 +60,7 @@ export function Home() {
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
       {/* 1. Hero Section */}
       <section className="bg-white pt-10 pb-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Top Tag */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black text-white text-xs font-bold uppercase tracking-wider mb-5 shadow-sm"
-          >
-            <Leaf size={14} className="text-green-400" />
-            <span>Fix It, Don't Replace It · Sustainable Local Repairs</span>
-          </motion.div>
-
+        <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
           {/* Main Title */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
@@ -96,36 +83,65 @@ export function Home() {
             your item repair lifecycle with zero platform fees.
           </motion.p>
 
-          {/* Fully Rounded Expanding Animated Search Bar */}
+          {/* Horizontally Expanding Search Bar on Click/Focus */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.15 }}
-            className="mt-8 flex justify-center"
+            className="mt-8 flex justify-center w-full px-2"
           >
             <motion.div
-              animate={{ width: isFocused ? '100%' : '88%' }}
-              transition={{ type: 'spring', stiffness: 280, damping: 24 }}
-              className="max-w-2xl w-full bg-white border-2 border-zinc-900 rounded-full shadow-md px-4 py-2.5 flex items-center gap-3"
+              layout
+              animate={{
+                maxWidth: isFocused || query ? '860px' : '440px',
+                boxShadow: isFocused
+                  ? '0 20px 35px -5px rgba(0, 0, 0, 0.12), 0 0 0 2px #2563eb'
+                  : '0 4px 14px 0 rgba(0, 0, 0, 0.06)',
+              }}
+              transition={{ type: 'spring', stiffness: 280, damping: 25 }}
+              onClick={() => searchInputRef.current?.focus()}
+              className="w-full bg-white border-2 border-zinc-900 rounded-full py-2.5 px-4 flex items-center gap-3 cursor-text transition-colors"
             >
-              <div className="size-9 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0">
+              <motion.div
+                animate={{
+                  scale: isFocused ? 1.08 : 1,
+                  rotate: isFocused ? 90 : 0,
+                }}
+                transition={{ type: 'spring', stiffness: 350, damping: 20 }}
+                className={`size-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+                  isFocused ? 'bg-blue-600 text-white' : 'bg-zinc-950 text-white'
+                }`}
+              >
                 <Search size={18} />
-              </div>
+              </motion.div>
               <input
+                ref={searchInputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                placeholder="Search by product, shop name, or issue (Laptop, AC, Screen...)"
+                placeholder={
+                  isFocused
+                    ? 'Search by model, shop name, or issue (e.g. MacBook screen, AC gas, iPhone battery)...'
+                    : 'Search repair shops or appliances...'
+                }
                 className="w-full text-sm sm:text-base text-zinc-900 placeholder:text-zinc-400 bg-transparent outline-none font-medium"
               />
               {query && (
-                <button
-                  onClick={() => setQuery('')}
-                  className="p-1.5 text-zinc-400 hover:text-black rounded-full cursor-pointer"
+                <motion.button
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setQuery('');
+                    searchInputRef.current?.focus();
+                  }}
+                  className="p-1.5 text-zinc-400 hover:text-black rounded-full cursor-pointer hover:bg-zinc-100"
                 >
                   <X size={18} />
-                </button>
+                </motion.button>
               )}
             </motion.div>
           </motion.div>
