@@ -144,20 +144,20 @@ export function ShopModal({
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <CardTitle className="text-2xl font-black text-zinc-950">{shop.name}</CardTitle>
+                <CardTitle className="text-3xl font-black text-zinc-950">{shop.name}</CardTitle>
                 <Badge className="bg-purple-600 text-white font-bold rounded-full">Verified Expert</Badge>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-2 text-xs text-zinc-600">
-                <p className="flex items-center gap-1.5 font-medium">
-                  <User size={14} className="text-zinc-500 shrink-0" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-sm text-zinc-700">
+                <p className="flex items-center gap-2 font-medium">
+                  <User size={16} className="text-zinc-500 shrink-0" />
                   <span>Owner: <strong className="text-zinc-900">{shop.owner}</strong></span>
                 </p>
-                <p className="flex items-center gap-1.5 font-medium">
-                  <Phone size={14} className="text-zinc-500 shrink-0" />
+                <p className="flex items-center gap-2 font-medium">
+                  <Phone size={16} className="text-zinc-500 shrink-0" />
                   <span>{shop.mobile}</span>
                 </p>
-                <p className="flex items-center gap-1.5 font-medium sm:col-span-2">
-                  <MapPin size={14} className="text-blue-600 shrink-0" />
+                <p className="flex items-center gap-2 font-medium sm:col-span-2">
+                  <MapPin size={16} className="text-blue-600 shrink-0" />
                   <span>{shop.address} ({shop.distanceKm} km away)</span>
                 </p>
               </div>
@@ -360,9 +360,9 @@ export function ShopModal({
             />
           </div>
 
-          <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200">
+          <div className="p-4 rounded-2xl bg-blue-600 border border-blue-600 text-white shadow-sm">
             <p className="font-bold">Estimated Base Cost: ₹{(orderForm.item && shop.servicePrices?.[orderForm.item]) || shop.estCost}</p>
-            <p className="text-[11px] text-blue-700 mt-0.5">
+            <p className="text-xs text-blue-50 mt-0.5 font-medium">
               The technician will verify the item and confirm the exact quote upon request acceptance.
             </p>
           </div>

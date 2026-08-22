@@ -36,7 +36,7 @@ export function Modal({
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={onClose}
-                className="p-2 rounded-full bg-zinc-100 text-zinc-700 hover:bg-zinc-200 hover:text-black border border-zinc-300 cursor-pointer"
+                className="p-2 rounded-full bg-zinc-100 text-zinc-700 hover:bg-black hover:text-white border border-zinc-300 hover:border-black cursor-pointer transition-colors"
               >
                 <X size={18} />
               </motion.button>

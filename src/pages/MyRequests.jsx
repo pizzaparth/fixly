@@ -45,7 +45,7 @@ export function MyRequests() {
     e.preventDefault();
     if (!ratingTarget) return;
 
-    rateOrder(ratingTarget.id, rateForm.score, '');
+    rateOrder(ratingTarget.id, { score: rateForm.score, feedback: '' });
 
     setRatingTarget(null);
     setRateForm({ score: 5, feedback: '' });

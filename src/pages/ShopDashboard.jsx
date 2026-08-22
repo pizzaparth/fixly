@@ -487,7 +487,7 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-base font-black text-zinc-950">{order.customerName}</span>
+              <span className="text-lg font-black text-zinc-950">{order.customerName}</span>
               <Badge
                 className={`rounded-full ${
                   order.status === 'pending'
@@ -501,12 +501,12 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
               >
                 {order.status}
               </Badge>
-              <span className="text-xs font-bold text-blue-600">₹{order.price}</span>
+              <span className="text-sm font-bold text-blue-600">₹{order.price}</span>
             </div>
-            <p className="text-xs text-zinc-700 font-medium mt-1">
+            <p className="text-sm text-zinc-700 font-medium mt-1">
               <strong>{order.item}:</strong> {order.issue}
             </p>
-            <div className="flex flex-wrap items-center gap-3 mt-1.5 text-[11px] text-zinc-500">
+            <div className="flex flex-wrap items-center gap-3 mt-1.5 text-xs sm:text-sm text-zinc-500 font-medium">
               <span>📍 {order.address}</span>
               <span>•</span>
               <span>📞 {order.mobile}</span>
@@ -514,7 +514,7 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
               <span>🕒 {order.requestedAt}</span>
             </div>
             {order.pickupAt && (
-              <p className="text-xs text-zinc-700 font-semibold mt-1">
+              <p className="text-sm text-zinc-700 font-semibold mt-1">
                 📅 Drop-off: {order.pickupAt} {order.completionAt && `• Ready: ${order.completionAt}`}
               </p>
             )}
@@ -528,18 +528,18 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
               <Button
                 size="sm"
                 onClick={onAccept}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-full px-4"
+                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-full px-4"
               >
-                <Check size={14} />
+                <Check size={16} />
                 <span>Accept & Quote</span>
               </Button>
               <Button
                 variant="destructive"
                 size="sm"
                 onClick={onReject}
-                className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-full px-4"
+                className="bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-full px-4"
               >
-                <X size={14} />
+                <X size={16} />
                 <span>Reject</span>
               </Button>
             </>
@@ -549,22 +549,22 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
             <Button
               size="sm"
               onClick={onComplete}
-              className="bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-full px-4"
+              className="bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-full px-4"
             >
-              <CheckCircle2 size={15} />
+              <CheckCircle2 size={16} />
               <span>Mark as Completed</span>
             </Button>
           )}
 
           {order.status === 'completed' && (
             <div className="text-right">
-              <span className="text-xs font-bold text-green-700 block">
+              <span className="text-sm font-bold text-green-700 block">
                 ✓ Settled directly with customer
               </span>
               {order.rating && (
-                <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                  <Stars rating={order.rating.score} size={12} />
-                  <span className="text-zinc-600 text-[11px]">"{order.rating.feedback}"</span>
+                <div className="mt-1 flex items-center justify-end gap-1 text-sm">
+                  <Stars rating={order.rating.score} size={14} />
+                  <span className="text-zinc-600 text-xs font-medium">"{order.rating.feedback}"</span>
                 </div>
               )}
             </div>

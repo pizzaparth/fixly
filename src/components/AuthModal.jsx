@@ -340,14 +340,14 @@ export function AuthModal({ open, onClose }) {
         )}
 
         {errors.auth && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-bold rounded-xl text-center">
+          <div className="py-2 px-4 bg-rose-500 text-white border border-transparent text-xs font-bold rounded-full text-center shadow-sm">
             {errors.auth}
           </div>
         )}
 
         <Button
           type="submit"
-          className={`w-full py-3 mt-2 text-sm font-bold text-white rounded-full ${
+          className={`w-full h-12 mt-2 text-base font-bold text-white rounded-full ${
             role === 'shop' ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
