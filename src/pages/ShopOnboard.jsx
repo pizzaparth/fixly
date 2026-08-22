@@ -1,0 +1,270 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { CATEGORIES } from '../data/mockData';
+import { SolidButton, SolidCard, SolidBadge } from '../components/ui-custom';
+import { Store, Check, ArrowRight, ShieldCheck, MapPin, Phone, User } from 'lucide-react';
+import { useStore } from '../context/StoreContext';
+
+export function ShopOnboard() {
+  const nav = useNavigate();
+  const { addShop, login } = useStore();
+
+  const [formData, setFormData] = useState({
+    name: '',
+    owner: '',
+    mobile: '',
+    address: '',
+    city: 'Bengaluru',
+  });
+
+  const [services, setServices] = useState(() =>
+    Object.fromEntries(CATEGORIES.map((c) => [c.key, 0]))
+  );
+
+  const toggleCategory = (catKey) => {
+    setServices((prev) => ({
+      ...prev,
+      [catKey]: prev[catKey] === 0 ? 500 : 0,
+    }));
+  };
+
+  const handlePublish = (e) => {
+    e.preventDefault();
+    if (!formData.name.trim() || !formData.owner.trim() || !formData.mobile.trim()) {
+      alert('Please fill out all required shop details.');
+      return;
+    }
+
+    const selectedCategories = Object.keys(services).filter((k) => services[k] > 0);
+    if (selectedCategories.length === 0) {
+      alert('Please select at least one repair service category.');
+      return;
+    }
+
+    const basePrice = Math.min(...selectedCategories.map((k) => services[k]));
+
+    const newShop = addShop({
+      name: formData.name,
+      owner: formData.owner,
+      mobile: formData.mobile,
+      address: `${formData.address}, ${formData.city}`,
+      estCost: basePrice || 500,
+      categories: selectedCategories,
+      emoji: '🔧',
+    });
+
+    // Auto-login as the shop
+    login({
+      role: 'shop',
+      name: formData.owner,
+      email: `${formData.name.toLowerCase().replace(/\s+/g, '')}@fixly.local`,
+      phone: formData.mobile,
+      shopId: newShop.id,
+    });
+
+    nav('/shop');
+  };
+
+  const activeCount = Object.values(services).filter((val) => val > 0).length;
+
+  return (
+    <div className="min-h-screen bg-white text-zinc-900 pb-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="border-b-2 border-zinc-900 pb-6 mb-8"
+        >
+          <div className="flex items-center gap-2">
+            <SolidBadge variant="purple">Partner Network</SolidBadge>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black text-zinc-950 mt-2 flex items-center gap-3">
+            <Store size={32} className="text-purple-600" />
+            <span>List Your Repair Shop</span>
+          </h1>
+          <p className="text-sm sm:text-base text-zinc-600 mt-2 font-medium">
+            Join Fixly to connect with customers in your neighborhood, receive repair requests, and set your own transparent prices.
+          </p>
+        </motion.div>
+
+        <form onSubmit={handlePublish} className="flex flex-col gap-8">
+          {/* 1. Shop Basic Info */}
+          <div className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
+            <h2 className="text-lg font-black text-zinc-950 mb-4 flex items-center gap-2">
+              <span className="size-6 rounded-sm bg-blue-600 text-white flex items-center justify-center text-xs font-bold">1</span>
+              <span>Shop & Contact Information</span>
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
+                  Shop / Business Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g. Apex Electronics & Mobile Care"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
+                  Owner / Master Technician *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.owner}
+                  onChange={(e) => setFormData({ ...formData, owner: e.target.value })}
+                  placeholder="e.g. Rajesh Kumar"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
+                  Business Mobile Number *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  value={formData.mobile}
+                  onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                  placeholder="+91 98450 12345"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
+                  City / Region
+                </label>
+                <input
+                  type="text"
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                />
+              </div>
+
+              <div className="sm:col-span-2 flex flex-col gap-1">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
+                  Full Shop Address / Landmark *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  placeholder="e.g. #42, 80ft Road, Near Sony Signal, Koramangala"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 2. Select Services & Base Price */}
+          <div className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
+            <div className="flex items-center justify-between border-b border-zinc-200 pb-3 mb-4">
+              <h2 className="text-lg font-black text-zinc-950 flex items-center gap-2">
+                <span className="size-6 rounded-sm bg-purple-600 text-white flex items-center justify-center text-xs font-bold">2</span>
+                <span>Select Repaired Items & Base Prices</span>
+              </h2>
+              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">
+                {activeCount} selected
+              </span>
+            </div>
+
+            <p className="text-xs text-zinc-600 mb-4 font-medium">
+              Click on the categories your shop repairs and specify your starting base estimate for diagnostics or typical servicing.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {CATEGORIES.map((c) => {
+                const isSelected = services[c.key] > 0;
+                return (
+                  <motion.div
+                    key={c.key}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => toggleCategory(c.key)}
+                    className={`p-3.5 rounded-md cursor-pointer border-2 transition-all flex flex-col justify-between ${
+                      isSelected
+                        ? 'bg-blue-50 border-blue-600 shadow-sm'
+                        : 'bg-zinc-50 border-zinc-300 opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-2xl">{c.emoji}</span>
+                        <span className="text-sm font-bold text-zinc-950">{c.key}</span>
+                      </div>
+                      {isSelected && (
+                        <div className="size-5 rounded-sm bg-blue-600 text-white flex items-center justify-center font-bold">
+                          <Check size={14} />
+                        </div>
+                      )}
+                    </div>
+
+                    {isSelected && (
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="mt-3 pt-2 border-t border-blue-200 flex items-center justify-between gap-2"
+                      >
+                        <span className="text-[11px] font-bold text-blue-900 uppercase tracking-wider">
+                          Base Quote (₹):
+                        </span>
+                        <input
+                          type="number"
+                          value={services[c.key]}
+                          onChange={(e) =>
+                            setServices({
+                              ...services,
+                              [c.key]: Number(e.target.value),
+                            })
+                          }
+                          className="w-20 px-2 py-1 text-xs font-bold rounded-sm border-2 border-blue-600 bg-white text-right"
+                        />
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 3. Direct Settle Notice & Submit */}
+          <div className="p-4 rounded-md bg-green-50 border-2 border-green-600 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <ShieldCheck size={28} className="text-green-700 shrink-0" />
+              <div>
+                <p className="text-xs font-bold text-green-950 uppercase tracking-wider">
+                  Direct Payment Promise
+                </p>
+                <p className="text-xs text-green-800 font-medium">
+                  Fixly collects 0% commission fees. Customers pay you directly via Cash, UPI, or Card upon collection.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-4">
+            <SolidButton
+              type="submit"
+              variant="blue"
+              size="lg"
+              className="px-8 font-black uppercase tracking-wider text-sm"
+            >
+              <span>Publish Shop & Launch Hub</span>
+              <ArrowRight size={16} />
+            </SolidButton>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
