@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
   app.use(express.static(distPath));
   
   // React Router fallback
-  app.get('*', (req, res) => {
+  app.get(/.*/, (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
   });
 }
