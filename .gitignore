@@ -27,3 +27,4 @@ dist-ssr
 .env.example
 skills-lock.json
 test
+secret.md
