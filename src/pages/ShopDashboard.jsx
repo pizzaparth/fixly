@@ -68,7 +68,18 @@ export function ShopDashboard() {
     }
   };
 
-  if (!activeShop) return null;
+  if (!activeShop) {
+    return (
+      <div className="min-h-screen bg-zinc-50 pt-24 px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
+        <Store className="size-16 text-zinc-300 mb-4" />
+        <h2 className="text-2xl font-black text-zinc-900 mb-2">Technician Profile Not Found</h2>
+        <p className="text-zinc-600 max-w-md mx-auto">
+          We could not locate your shop listings. This usually happens if the database is empty or your profile was not set up completely.
+        </p>
+      </div>
+    );
+  }
+
   const [editingCategory, setEditingCategory] = useState(null);
 
   const pendingOrders = orders.filter((o) => o.status === 'pending');
