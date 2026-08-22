@@ -142,7 +142,7 @@ export function ShopModal({
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] bg-black text-white px-5 py-3 rounded-md font-bold text-sm border-2 border-zinc-900 shadow-2xl flex items-center gap-2"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] bg-black text-white px-6 py-3 rounded-full font-bold text-sm border-2 border-zinc-900 shadow-2xl flex items-center gap-2"
           >
             <CheckCircle2 size={18} className="text-green-400" />
             <span>{toastMessage}</span>
@@ -154,14 +154,14 @@ export function ShopModal({
       <Modal open={true} onClose={onClose} title={shop.name} maxWidth="max-w-3xl">
         <div className="flex flex-col gap-6">
           {/* Header Card */}
-          <Card className="flex flex-col sm:flex-row items-start gap-4 p-4 rounded-md bg-zinc-50 border border-zinc-200 shadow-none">
-            <div className="size-20 rounded-md bg-blue-600 flex items-center justify-center text-4xl text-white shadow-sm shrink-0 font-bold">
+          <Card className="flex flex-col sm:flex-row items-start gap-4 p-5 rounded-2xl bg-zinc-50 border border-zinc-200 shadow-none">
+            <div className="size-20 rounded-2xl bg-blue-600 flex items-center justify-center text-4xl text-white shadow-sm shrink-0 font-bold">
               {shop.emoji}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle className="text-2xl font-black text-zinc-950">{shop.name}</CardTitle>
-                <Badge className="bg-purple-600 text-white font-bold">Verified Expert</Badge>
+                <Badge className="bg-purple-600 text-white font-bold rounded-full">Verified Expert</Badge>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-2 text-xs text-zinc-600">
                 <p className="flex items-center gap-1.5 font-medium">
@@ -182,7 +182,7 @@ export function ShopModal({
 
           {/* Quick Metrics */}
           <div className="grid grid-cols-3 gap-3">
-            <Card className="p-3 rounded-md bg-white border border-zinc-200 text-center shadow-none">
+            <Card className="p-4 rounded-2xl bg-white border border-zinc-200 text-center shadow-none">
               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">
                 Avg. Estimate
               </span>
@@ -190,7 +190,7 @@ export function ShopModal({
                 ₹{shop.estCost}
               </span>
             </Card>
-            <Card className="p-3 rounded-md bg-white border border-zinc-200 text-center shadow-none">
+            <Card className="p-4 rounded-2xl bg-white border border-zinc-200 text-center shadow-none">
               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">
                 Shop Rating
               </span>
@@ -198,7 +198,7 @@ export function ShopModal({
                 <Stars rating={shop.rating} size={16} count={shop.reviewCount} />
               </div>
             </Card>
-            <Card className="p-3 rounded-md bg-white border border-zinc-200 text-center shadow-none">
+            <Card className="p-4 rounded-2xl bg-white border border-zinc-200 text-center shadow-none">
               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">
                 Turnaround
               </span>
@@ -210,17 +210,17 @@ export function ShopModal({
 
           {/* Supported Categories */}
           <div>
-            <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-2">
+            <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-2.5">
               Supported Repair Categories
             </span>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {shop.categories.map((c) => {
                 const meta = CATEGORIES.find((cat) => cat.key === c);
                 return (
                   <Badge
                     key={c}
                     variant="outline"
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-zinc-100 border-zinc-300 text-xs font-bold text-zinc-900"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-zinc-100 border-zinc-300 text-xs font-bold text-zinc-900 rounded-full"
                   >
                     <span>{meta?.emoji || '🔧'}</span>
                     <span>{c}</span>
@@ -231,24 +231,24 @@ export function ShopModal({
           </div>
 
           {/* Action CTAs */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-zinc-200">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-zinc-200">
             <Button
               onClick={() => requireAuth(() => setOrderOpen(true))}
-              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md"
+              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-sm"
             >
               <ShoppingBag size={16} />
               <span>Order Repair</span>
             </Button>
             <Button
               onClick={() => requireAuth(() => setFeedbackOpen(true))}
-              className="w-full py-2.5 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-md"
+              className="w-full py-3 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-full shadow-sm"
             >
               <MessageCircle size={16} />
               <span>Write Feedback</span>
             </Button>
             <Button
               onClick={() => requireAuth(() => setRateOpen(true))}
-              className="w-full py-2.5 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-md"
+              className="w-full py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-full shadow-sm"
             >
               <Star size={16} />
               <span>Rate Shop</span>
@@ -273,7 +273,7 @@ export function ShopModal({
               {shop.feedback?.map((f, i) => (
                 <Card
                   key={f.id || i}
-                  className="p-3 rounded-md bg-zinc-50 border border-zinc-200 flex flex-col gap-1 shadow-none"
+                  className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200 flex flex-col gap-1 shadow-none"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-zinc-900">{f.author}</span>
@@ -304,7 +304,7 @@ export function ShopModal({
               required
               value={orderForm.item}
               onChange={(e) => setOrderForm({ ...orderForm, item: e.target.value })}
-              className="w-full px-3 py-2 text-sm rounded-md bg-white border border-zinc-300 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
+              className="w-full px-4 py-2.5 text-sm rounded-full bg-white border border-zinc-300 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-600 font-medium"
             >
               <option value="">Select a category...</option>
               {shop.categories.map((cat) => (
@@ -325,7 +325,7 @@ export function ShopModal({
               value={orderForm.productName}
               onChange={(e) => setOrderForm({ ...orderForm, productName: e.target.value })}
               placeholder="e.g. MacBook Pro M1 2020 / Samsung 55' Smart TV"
-              className="text-sm rounded-md bg-white border-zinc-300"
+              className="text-sm rounded-full px-4 py-2 bg-white border-zinc-300"
             />
           </div>
 
@@ -339,7 +339,7 @@ export function ShopModal({
               value={orderForm.issue}
               onChange={(e) => setOrderForm({ ...orderForm, issue: e.target.value })}
               placeholder="What seems to be broken or malfunctioning?"
-              className="text-sm rounded-md bg-white border-zinc-300 resize-none"
+              className="text-sm rounded-2xl px-4 py-2 bg-white border-zinc-300 resize-none"
             />
           </div>
 
@@ -354,7 +354,7 @@ export function ShopModal({
                 value={orderForm.mobile}
                 onChange={(e) => setOrderForm({ ...orderForm, mobile: e.target.value })}
                 placeholder="+91 98220 11234"
-                className="text-sm rounded-md bg-white border-zinc-300"
+                className="text-sm rounded-full px-4 py-2 bg-white border-zinc-300"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -365,7 +365,7 @@ export function ShopModal({
                 type="date"
                 value={orderForm.pickupAt}
                 onChange={(e) => setOrderForm({ ...orderForm, pickupAt: e.target.value })}
-                className="text-sm rounded-md bg-white border-zinc-300"
+                className="text-sm rounded-full px-4 py-2 bg-white border-zinc-300"
               />
             </div>
           </div>
@@ -379,18 +379,18 @@ export function ShopModal({
               value={orderForm.address}
               onChange={(e) => setOrderForm({ ...orderForm, address: e.target.value })}
               placeholder="e.g. Indiranagar, Bengaluru"
-              className="text-sm rounded-md bg-white border-zinc-300"
+              className="text-sm rounded-full px-4 py-2 bg-white border-zinc-300"
             />
           </div>
 
-          <div className="p-3 rounded-md bg-blue-50 border border-blue-200 text-xs text-blue-900">
-            <p className="font-semibold">Estimated Base Cost: ₹{shop.estCost}</p>
+          <div className="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-900">
+            <p className="font-bold">Estimated Base Cost: ₹{shop.estCost}</p>
             <p className="text-[11px] text-blue-700 mt-0.5">
               The technician will verify the item and confirm the exact quote upon request acceptance.
             </p>
           </div>
 
-          <Button type="submit" className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md mt-1">
+          <Button type="submit" className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full mt-1">
             Submit Repair Request
           </Button>
         </form>
@@ -404,7 +404,7 @@ export function ShopModal({
         maxWidth="max-w-md"
       >
         <form onSubmit={handleFeedbackSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col items-center gap-1.5 p-3 rounded-md bg-zinc-50 border border-zinc-200">
+          <div className="flex flex-col items-center gap-1.5 p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200">
             <span className="text-xs font-bold text-zinc-600 uppercase tracking-wide">
               Rating
             </span>
@@ -439,11 +439,11 @@ export function ShopModal({
               value={feedbackForm.text}
               onChange={(e) => setFeedbackForm({ ...feedbackForm, text: e.target.value })}
               placeholder="Describe your repair experience, speed, and communication…"
-              className="text-sm rounded-md bg-white border-zinc-300 resize-none"
+              className="text-sm rounded-2xl px-4 py-2.5 bg-white border-zinc-300 resize-none"
             />
           </div>
 
-          <Button type="submit" className="w-full py-2.5 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-md">
+          <Button type="submit" className="w-full py-3 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-full">
             Publish Review
           </Button>
         </form>
@@ -483,7 +483,7 @@ export function ShopModal({
           <Button
             onClick={handleRatingSubmit}
             disabled={rateValue === 0}
-            className="w-full py-2.5 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-md"
+            className="w-full py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-full"
           >
             Submit {rateValue > 0 ? `${rateValue}-Star` : ''} Rating
           </Button>
