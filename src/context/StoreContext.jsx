@@ -33,6 +33,9 @@ export function StoreProvider({ children }) {
 
       const mappedShops = technicians.map(t => {
         const listing = listings.find(l => l.technician?._id === t._id || l.technician === t._id);
+        const prices = Object.values(listing?.servicePrices || {});
+        const baseCost = prices.length > 0 ? Math.min(...prices) : (listing?.priceRange?.min || 500);
+
         return {
           id: t._id,
           name: listing?.title || t.name,
@@ -41,7 +44,7 @@ export function StoreProvider({ children }) {
           address: t.location?.address,
           rating: t.rating || 5,
           reviewCount: t.ratingCount || 0,
-          estCost: listing?.priceRange?.min || 500,
+          estCost: baseCost,
           categories: t.specialties || [],
           servicePrices: listing?.servicePrices || {},
           emoji: '🔧',

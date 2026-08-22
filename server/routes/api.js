@@ -167,13 +167,16 @@ router.patch('/listings/technician/:techId', async (req, res) => {
   try {
     const { services } = req.body; // e.g. { Laptop: 500, Mobile: 600 }
     const categories = Object.keys(services);
+    const prices = Object.values(services);
+    const minPrice = prices.length > 0 ? Math.min(...prices) : 500;
     
     // Update Listing
     await Listing.findOneAndUpdate(
       { technician: req.params.techId },
       { 
         productTypes: categories,
-        servicePrices: services 
+        servicePrices: services,
+        'priceRange.min': minPrice 
       }
     );
 
