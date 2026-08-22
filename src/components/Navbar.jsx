@@ -27,7 +27,7 @@ export function Navbar() {
       {/* Liquid Frosted Glass Pill Navbar */}
       <div className="w-full bg-white/45 backdrop-blur-2xl backdrop-saturate-200 border border-white/70 ring-1 ring-zinc-900/10 rounded-full px-6 sm:px-8 py-3.5 flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all">
         {/* Brand Logo */}
-        <Link to="/" onClick={closeMobile} className="flex items-center gap-2.5">
+        <Link to={session?.role === 'shop' ? "/shop" : "/"} onClick={closeMobile} className="flex items-center gap-2.5">
           <motion.span
             animate={{ rotate: [0, -8, 8, 0] }}
             transition={{ duration: 4, repeat: Infinity, repeatType: 'mirror' }}
@@ -42,23 +42,25 @@ export function Navbar() {
 
         {/* Desktop Nav Controls with Frosted Translucency */}
         <div className="hidden md:flex items-center gap-2.5">
-          {/* 1. Home / Explore */}
-          <Link to="/">
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.94 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-              className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-all ${
-                isHome
-                  ? 'bg-black text-white shadow-sm'
-                  : 'bg-white/40 hover:bg-white/80 text-zinc-800 border border-zinc-900/10 backdrop-blur-md'
-              }`}
-            >
-              <Home size={16} />
-              <span>Home</span>
-            </motion.button>
-          </Link>
+          {/* 1. Home / Explore - Hidden for Shops */}
+          {session?.role !== 'shop' && (
+            <Link to="/">
+              <motion.button
+                type="button"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.94 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                className={`px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer transition-all ${
+                  isHome
+                    ? 'bg-black text-white shadow-sm'
+                    : 'bg-white/40 hover:bg-white/80 text-zinc-800 border border-zinc-900/10 backdrop-blur-md'
+                }`}
+              >
+                <Home size={16} />
+                <span>Home</span>
+              </motion.button>
+            </Link>
+          )}
 
           {/* 2. Customer Mode: Only "My Repairs" (No "List Shop") */}
           {session?.role === 'customer' && (
@@ -179,16 +181,18 @@ export function Navbar() {
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             className="md:hidden mt-2 p-4 bg-white/65 backdrop-blur-2xl backdrop-saturate-200 border border-white/70 ring-1 ring-zinc-900/10 rounded-3xl shadow-[0_16px_40px_rgba(0,0,0,0.12)] flex flex-col gap-2.5"
           >
-            <Link to="/" onClick={closeMobile}>
-              <div
-                className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${
-                  isHome ? 'bg-black text-white' : 'bg-white/50 text-zinc-900 border border-zinc-900/10 backdrop-blur-md'
-                }`}
-              >
-                <Home size={18} />
-                <span>Home / Explore</span>
-              </div>
-            </Link>
+            {session?.role !== 'shop' && (
+              <Link to="/" onClick={closeMobile}>
+                <div
+                  className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${
+                    isHome ? 'bg-black text-white' : 'bg-white/50 text-zinc-900 border border-zinc-900/10 backdrop-blur-md'
+                  }`}
+                >
+                  <Home size={18} />
+                  <span>Home / Explore</span>
+                </div>
+              </Link>
+            )}
 
             {session?.role === 'customer' && (
               <Link to="/my-requests" onClick={closeMobile}>
