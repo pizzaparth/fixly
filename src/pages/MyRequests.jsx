@@ -230,7 +230,7 @@ function CustomerOrderCard({ order, onOpenRating }) {
               <strong>Issue:</strong> {order.issue}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 p-3 rounded-3xl bg-zinc-50 border border-zinc-200 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-xs">
               <div className="flex items-center gap-1.5 font-semibold text-zinc-800">
                 <span>🏪 Shop:</span>
                 <span className="text-zinc-950">{order.shopName}</span>
@@ -248,7 +248,7 @@ function CustomerOrderCard({ order, onOpenRating }) {
               {order.completionAt && (
                 <div className="flex items-center gap-1.5 text-green-700 font-bold sm:col-span-2">
                   <CheckCircle2 size={13} />
-                  <span>Estimated Completion: {order.completionAt}</span>
+                  <span>Completed on: {order.completionAt}</span>
                 </div>
               )}
             </div>
