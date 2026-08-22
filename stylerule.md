@@ -1,137 +1,182 @@
 # Fixly - Styling & Design System Rules (`stylerule.md`)
 
-> **Theme Aesthetic:** Deep Solid Black (OLED / Pitch Black) with high-contrast Crisp White typography, Light Grey accents/secondary text, and subtle dark zinc borders.
+> **Theme Aesthetic:** Crisp Solid White Background with a vibrant, high-contrast palette of **Solid Pink, Blue, Purple, Green, and Yellow** color blocks.  
+> **Geometry Rule:** **Strictly NO Pill Elements** (`rounded-full` is prohibited). All components use crisp rectangular or subtle square-box geometry (`rounded-none`, `rounded-sm`, or `rounded-md`).
 
 ---
 
-## 1. Core Color Palette & Design Tokens
+## 1. Core Color Palette & Solid Color Roles
 
-Fixly is strictly styled with a minimalist, high-contrast **Solid Black** aesthetic.
+Fixly utilizes a clean, high-contrast **Solid Color Block** design language on a pure white canvas. All colors are opaque and solid (no muddy gradients or low-opacity blurs).
 
-| Token | Hex / Value | Semantic Role |
-| :--- | :--- | :--- |
-| **Canvas / Background** | `#000000` / `oklch(0 0 0)` | True solid black for primary viewport background |
-| **Card / Surface** | `#09090b` / `oklch(0.12 0 0)` | Slightly elevated dark surface for cards, dialogs, dropdowns |
-| **Subtle Surface** | `#121215` / `oklch(0.16 0 0)` | Hover states, tab backgrounds, secondary action containers |
-| **Border / Divider** | `#27272a` / `oklch(0.24 0 0)` | Crisp subtle border dividing layout sections and cards |
-| **Primary Text** | `#ffffff` / `oklch(1 0 0)` | High-contrast white for headings, primary text, and active titles |
-| **Secondary Text** | `#a1a1aa` / `oklch(0.72 0 0)` | Light grey for body copy, labels, descriptions, sub-headings |
-| **Muted Text / Placeholder** | `#71717a` / `oklch(0.55 0 0)` | Subtle grey for timestamps, metadata, input placeholders |
-| **Primary Element / CTA** | `#ffffff` text on `#000000` or `#ffffff` bg with `#000000` text | High-contrast primary action buttons |
-| **Secondary Element** | `#27272a` bg with `#ffffff` text | Secondary actions, badges, toggle triggers |
-| **Destructive / Alert** | `#ef4444` / `oklch(0.6 0.22 25)` | Rejection warnings, deletion actions, validation errors |
-| **Success / Confirmation** | `#22c55e` / `oklch(0.7 0.18 145)` | Completed repairs, accepted quotes, status indicators |
-| **Warning / Pending** | `#eab308` / `oklch(0.75 0.16 85)` | Pending review states, quote approval notices |
+| Color Role | Solid Hex / Tailwind Token | Foreground Text | Semantic Usage |
+| :--- | :--- | :--- | :--- |
+| **Canvas / Background** | `#ffffff` (`bg-white`) | `#09090b` (`text-zinc-950`) | Primary application viewport and page background |
+| **Card / Container Surface** | `#ffffff` / `#f8fafc` / `#f4f4f5` | `#09090b` (`text-zinc-950`) | Standard content containers with solid borders |
+| **Solid Blue** | `#2563eb` (`bg-blue-600`) | `#ffffff` (`text-white`) | Primary actions, appliance/gadget categories, In-Progress status |
+| **Solid Purple** | `#7c3aed` (`bg-purple-600`) | `#ffffff` (`text-white`) | Technician badges, verified badges, analytics highlights |
+| **Solid Pink** | `#ec4899` (`bg-pink-600`) / `#f43f5e` | `#ffffff` (`text-white`) | Featured offers, callouts, urgent alerts, favorites |
+| **Solid Green** | `#16a34a` (`bg-green-600`) | `#ffffff` (`text-white`) | Completed repairs, accepted quotes, positive ratings |
+| **Solid Yellow** | `#facc15` (`bg-yellow-400`) | `#000000` (`text-black`) | Pending requests, quote reviews, star ratings, notices |
+| **Solid Black / Dark Zinc** | `#000000` (`bg-black`) / `#18181b` | `#ffffff` (`text-white`) | Primary text, high-contrast solid buttons, headers |
+| **Borders & Dividers** | `#e4e4e7` / `#18181b` (`border-zinc-200` / `border-black`) | N/A | Crisp dividing lines, card outlines, table borders |
+| **Muted / Secondary Text** | `#52525b` / `#71717a` (`text-zinc-600`) | N/A | Subheadings, descriptions, secondary metadata |
 
 ---
 
-## 2. Typography & Fonts
+## 2. Geometric Rules: STRICTLY NO PILLS
+
+* 🚫 **`rounded-full` is strictly prohibited** on buttons, badges, tags, inputs, cards, search bars, and avatars.
+* ✅ **Permitted Border Radii:**
+  * `rounded-none` (0px) — Sharp neo-brutalist / modern geometric box edges.
+  * `rounded-sm` (2px / 0.125rem) — Crisp tags, badges, input controls.
+  * `rounded-md` (6px / 0.375rem) — Cards, dialog modals, containers.
+* **Avatars & Icons:** Must be square or subtle rounded-sm (`rounded-md` or `rounded-none`, never circular `rounded-full`).
+* **Badges & Tags:** Rectangular block format (e.g. `rounded-sm px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide`).
+
+---
+
+## 3. Typography & Hierarchy
 
 * **Font Family:** `Geist Variable`, `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`
 * **Hierarchy:**
-  * **Page Title / Hero:** `text-3xl sm:text-4xl font-bold tracking-tight text-white`
-  * **Section Heading:** `text-xl sm:text-2xl font-semibold tracking-tight text-white`
-  * **Card Title:** `text-lg font-semibold text-white`
-  * **Body / Standard Copy:** `text-sm sm:text-base text-zinc-300` (light grey readability)
-  * **Subtext / Helper Text:** `text-xs text-zinc-400`
-  * **Badge / Label Text:** `text-xs font-medium text-zinc-200 uppercase tracking-wider`
+  * **Hero / Main Title:** `text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-zinc-950`
+  * **Section Heading:** `text-xl sm:text-2xl font-bold tracking-tight text-zinc-900`
+  * **Card Title:** `text-lg font-bold text-zinc-900`
+  * **Body Copy:** `text-sm sm:text-base font-normal text-zinc-700 leading-relaxed`
+  * **Meta / Subtext:** `text-xs font-medium text-zinc-500`
+  * **Badge Text:** `text-xs font-bold uppercase tracking-wider`
 
 ---
 
-## 3. Component & Layout Rules (Strict shadcn/Tailwind Guidelines)
+## 4. Component Rules & Solid Block Patterns
 
-### 3.1. Layout & Spacing
-* **Flexbox & Grid Gaps:** Always use `gap-*` (e.g. `flex flex-col gap-4` or `grid gap-6`). **Never** use `space-x-*` or `space-y-*`.
-* **Equal Dimensions:** Always use `size-*` for square elements/avatars/icons (e.g., `size-10`, `size-4`) instead of `w-10 h-10`.
-* **Truncation:** Use the `truncate` utility instead of manual multi-class overflow rules.
-* **Containers:** Use max-width containers with centered margin (e.g. `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`).
+### 4.1. Buttons & Action Triggers
+Buttons must have crisp rectangular edges (`rounded-md` or `rounded-sm`), bold weight, and solid color backgrounds.
 
-### 3.2. Cards & Surfaces
-* Cards must use solid dark surfaces with subtle borders:
+```jsx
+// Primary Action (Solid Black or Solid Blue)
+<Button className="rounded-md bg-black text-white hover:bg-zinc-800 font-semibold px-5 py-2.5 shadow-sm">
+  Request Repair
+</Button>
+
+// Category / Feature CTA (Solid Blue)
+<Button className="rounded-md bg-blue-600 text-white hover:bg-blue-700 font-semibold px-4 py-2">
+  Find Technicians
+</Button>
+
+// Urgent / Highlight CTA (Solid Pink)
+<Button className="rounded-md bg-pink-600 text-white hover:bg-pink-700 font-semibold">
+  Get Fast Quote
+</Button>
+
+// Outline / Secondary Action
+<Button variant="outline" className="rounded-md border-2 border-zinc-900 bg-white text-zinc-900 hover:bg-zinc-100 font-semibold">
+  View Details
+</Button>
+```
+
+### 4.2. Status Badges & Category Labels (No Pills)
+Always use rectangular badges with solid color blocks and clear contrast:
+
+* **Pending Quote:**
   ```jsx
-  <Card className="bg-zinc-950 border-zinc-800 text-white shadow-none">
-    <CardHeader>
-      <CardTitle className="text-white">Technician Details</CardTitle>
-      <CardDescription className="text-zinc-400">Verified repair expert</CardDescription>
-    </CardHeader>
-    <CardContent className="text-zinc-300">
-      {/* Content */}
-    </CardContent>
-  </Card>
+  <Badge className="rounded-sm bg-yellow-400 text-black border border-yellow-500 font-bold uppercase text-[11px] px-2 py-0.5">
+    Pending Quote
+  </Badge>
   ```
-* Always use the full composition: `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, and `CardFooter`.
-
-### 3.3. Buttons & Interactive Controls
-* **Primary Button:** White background with black text for maximum emphasis:
+* **Accepted / In-Progress:**
   ```jsx
-  <Button className="bg-white text-black hover:bg-zinc-200 font-medium">
-    Request Repair
-  </Button>
+  <Badge className="rounded-sm bg-blue-600 text-white font-bold uppercase text-[11px] px-2 py-0.5">
+    In-Progress
+  </Badge>
   ```
-* **Secondary / Outline Button:** Dark zinc outline or background with crisp white text:
+* **Completed / Verified:**
   ```jsx
-  <Button variant="outline" className="border-zinc-800 bg-zinc-900/50 text-zinc-200 hover:bg-zinc-800 hover:text-white">
-    View Quotes
-  </Button>
+  <Badge className="rounded-sm bg-green-600 text-white font-bold uppercase text-[11px] px-2 py-0.5">
+    Completed
+  </Badge>
   ```
-* **Ghost Button:** `text-zinc-400 hover:text-white hover:bg-zinc-900`
-* **Icons in Buttons:** Use `data-icon="inline-start"` or `data-icon="inline-end"` without redundant sizing classes.
-
-### 3.4. Forms & Inputs
-* Always compose forms using `FieldGroup` + `Field` with `<Label className="text-zinc-300">`.
-* Input surfaces must be dark with subtle borders and clear focus rings:
+* **Rejected / Cancelled:**
   ```jsx
-  <Input className="bg-zinc-900/80 border-zinc-800 text-white placeholder:text-zinc-500 focus-visible:ring-zinc-400" />
+  <Badge className="rounded-sm bg-rose-600 text-white font-bold uppercase text-[11px] px-2 py-0.5">
+    Rejected
+  </Badge>
   ```
-* Use `data-invalid` on `Field` and `aria-invalid` on the input element for error states.
+* **Specialty / Technician Tag (Purple):**
+  ```jsx
+  <Badge className="rounded-sm bg-purple-600 text-white font-bold uppercase text-[11px] px-2 py-0.5">
+    Electronics Expert
+  </Badge>
+  ```
 
-### 3.5. Status Badges & Indicators
-* Use `Badge` components with high-contrast dark variants:
-  * **Pending:** `bg-amber-500/10 text-amber-400 border border-amber-500/20`
-  * **In-Progress:** `bg-blue-500/10 text-blue-400 border border-blue-500/20`
-  * **Completed:** `bg-emerald-500/10 text-emerald-400 border border-emerald-500/20`
-  * **Rejected:** `bg-rose-500/10 text-rose-400 border border-rose-500/20`
-  * **Neutral / Category:** `bg-zinc-800 text-zinc-300 border border-zinc-700`
+### 4.3. Cards & Container Blocks
+* White background with solid borders, subtle contrast, and clean block headers.
+* Never use circular avatar icons; use square or `rounded-md` avatars.
+```jsx
+<Card className="rounded-md bg-white border border-zinc-200 shadow-sm overflow-hidden">
+  <CardHeader className="border-b border-zinc-100 bg-zinc-50/50 p-4">
+    <div className="flex items-center justify-between">
+      <CardTitle className="text-zinc-900 font-bold">Laptop Screen Repair</CardTitle>
+      <Badge className="rounded-sm bg-blue-600 text-white font-semibold">Electronics</Badge>
+    </div>
+    <CardDescription className="text-zinc-600 mt-1">Estimated: ₹1,500 - ₹3,000</CardDescription>
+  </CardHeader>
+  <CardContent className="p-4 text-zinc-700">
+    {/* Body */}
+  </CardContent>
+</Card>
+```
 
-### 3.6. Overlays, Dialogs & Sheets
-* Modals, sheets, and alert dialogs must have `DialogTitle` / `SheetTitle` for accessibility (use `className="sr-only"` if hidden).
-* Overlay backdrop: `bg-black/80 backdrop-blur-sm`.
-* Modal surface: `bg-zinc-950 border border-zinc-800 text-white`.
+### 4.4. Category Cards (Solid Vibrant Accents)
+Each repair category is differentiated with a distinct solid color theme banner or icon block:
+* **Smartphones & Laptops:** Solid Blue accent (`bg-blue-600 text-white`)
+* **Home Appliances (AC, Fridge, Washing Machine):** Solid Purple accent (`bg-purple-600 text-white`)
+* **Kitchen & Small Electronics:** Solid Pink accent (`bg-pink-600 text-white`)
+* **Watches & Audio Gear:** Solid Yellow accent (`bg-yellow-400 text-black`)
+* **Furniture & General Repairs:** Solid Green accent (`bg-green-600 text-white`)
+
+### 4.5. Forms & Inputs
+* Solid white background with crisp dark borders:
+```jsx
+<Input className="rounded-md bg-white border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:border-transparent" />
+```
 
 ---
 
-## 4. CSS Variables Mapping (Solid Black Theme)
+## 5. CSS Variables Mapping (Solid White + Vibrant Palette)
 
-In `src/index.css`, the root theme values are configured to true black:
+In `src/index.css`, `:root` is configured with a pure white background and high-contrast dark foreground:
 
 ```css
 :root {
-  --background: oklch(0 0 0);           /* Solid Pitch Black */
-  --foreground: oklch(0.985 0 0);       /* Pure White */
-  --card: oklch(0.1 0 0);               /* Deep Dark Surface #09090b */
-  --card-foreground: oklch(0.985 0 0);  /* Pure White */
-  --popover: oklch(0.1 0 0);            /* Deep Dark Surface */
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);          /* Pure White */
-  --primary-foreground: oklch(0 0 0);   /* Pure Black */
-  --secondary: oklch(0.2 0 0);          /* Dark Zinc #27272a */
-  --secondary-foreground: oklch(0.95 0 0); /* Light Grey / White */
-  --muted: oklch(0.18 0 0);             /* Muted Dark Background */
-  --muted-foreground: oklch(0.7 0 0);   /* Light Grey Text #a1a1aa */
-  --accent: oklch(0.2 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.6 0.22 25);
-  --border: oklch(0.24 0 0);            /* Dark Border #27272a */
-  --input: oklch(0.24 0 0);
-  --ring: oklch(0.8 0 0);               /* Subtle Bright Focus Ring */
-  --radius: 0.5rem;
+  --background: oklch(1 0 0);           /* Pure Solid White #ffffff */
+  --foreground: oklch(0.12 0 0);        /* Deep Black / Zinc #18181b */
+  --card: oklch(1 0 0);                 /* Pure Solid White */
+  --card-foreground: oklch(0.12 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0 0);
+  --primary: oklch(0.12 0 0);           /* Solid Black CTA */
+  --primary-foreground: oklch(1 0 0);   /* White Text */
+  --secondary: oklch(0.96 0 0);         /* Crisp Light Surface */
+  --secondary-foreground: oklch(0.12 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.45 0 0);  /* Dark Neutral #52525b */
+  --accent: oklch(0.96 0 0);
+  --accent-foreground: oklch(0.12 0 0);
+  --destructive: oklch(0.55 0.22 25);   /* Solid Rose */
+  --border: oklch(0.88 0 0);            /* Crisp Light Border #e4e4e7 */
+  --input: oklch(0.88 0 0);
+  --ring: oklch(0.5 0.2 250);           /* Vibrant Blue Focus Ring */
+  --radius: 0.375rem;                   /* 6px max - NO PILLS */
 }
 ```
 
 ---
 
-## 5. Golden Rules for Developers
-1. **Never use bright generic colors** (e.g. `bg-blue-500`, `bg-purple-600`) for primary layout containers. Stick to monochrome solid black, charcoal, zinc, and crisp white.
-2. **Never leave text unstyled or with low contrast.** Primary headings must be pure white (`text-white`), body copy light grey (`text-zinc-300` / `text-zinc-400`).
-3. **Use semantic components first.** Use `Badge`, `Card`, `Separator`, `Skeleton`, `Dialog`, `Button` from shadcn rather than custom `div`s.
-4. **Conditional classes must use `cn()`** from `@/lib/utils`.
+## 6. Developer Checklist
+1. ❌ **Never** write `rounded-full` anywhere in JSX classes.
+2. ✅ Use `rounded-none`, `rounded-sm`, or `rounded-md` exclusively.
+3. ✅ Use solid vibrant color blocks (Pink, Blue, Purple, Green, Yellow, Black) for category cards, badges, and status indicators.
+4. ✅ Keep the canvas pure solid white (`bg-white`) with high-contrast text (`text-zinc-900` / `text-zinc-700`).
+5. ✅ Always check that icons inside buttons use `data-icon` and follow shadcn composition guidelines.
