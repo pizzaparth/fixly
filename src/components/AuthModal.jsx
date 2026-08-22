@@ -237,85 +237,90 @@ export function AuthModal({ open, onClose }) {
             </div>
           </>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-            <div className="flex flex-col gap-3">
-              <h4 className="text-sm font-black text-zinc-900 border-b pb-1">Shop Details</h4>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+          <div className="flex flex-col gap-8 mt-2">
+            <div className="flex flex-col gap-4">
+              <h4 className="text-lg font-black text-zinc-900 border-b pb-2">Shop Details</h4>
+              
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Shop Name *
                 </label>
                 <div className="relative">
-                  <Store size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Store size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <Input
                     type="text"
                     required
                     value={shopName}
                     onChange={(e) => setShopName(e.target.value)}
                     placeholder="e.g. Apex Electronics"
-                    className="pl-9 text-xs rounded-full bg-white border-zinc-300 h-9"
+                    className="pl-10 text-sm rounded-full bg-white border-zinc-300 h-11"
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Owner Name *
                 </label>
                 <div className="relative">
-                  <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <Input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Rajesh Kumar"
-                    className="pl-9 text-xs rounded-full bg-white border-zinc-300 h-9"
+                    className="pl-10 text-sm rounded-full bg-white border-zinc-300 h-11"
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Phone Number *
                 </label>
                 <div className="relative">
-                  <Phone size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <Input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98450 12345"
-                    className="pl-9 text-xs rounded-full bg-white border-zinc-300 h-9"
+                    className="pl-10 text-sm rounded-full bg-white border-zinc-300 h-11"
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Full Address *
                 </label>
                 <div className="relative">
-                  <MapPin size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <Input
                     type="text"
                     required
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="e.g. #42, 80ft Road, Near Sony Signal"
-                    className="pl-9 text-xs rounded-full bg-white border-zinc-300 h-9"
+                    className="pl-10 text-sm rounded-full bg-white border-zinc-300 h-11"
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold text-zinc-700 uppercase tracking-wide">
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Email & Password *
                 </label>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <Input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
-                    className="text-xs rounded-full bg-white border-zinc-300 h-9 w-1/2"
+                    className="text-sm rounded-full bg-white border-zinc-300 h-11 w-1/2"
                   />
                   <Input
                     type="password"
@@ -323,15 +328,15 @@ export function AuthModal({ open, onClose }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
-                    className="text-xs rounded-full bg-white border-zinc-300 h-9 w-1/2"
+                    className="text-sm rounded-full bg-white border-zinc-300 h-11 w-1/2"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col gap-3">
-              <h4 className="text-sm font-black text-zinc-900 border-b pb-1">Services & Quotes</h4>
-              <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-1">
+            <div className="flex flex-col gap-4">
+              <h4 className="text-lg font-black text-zinc-900 border-b pb-2">Services & Quotes</h4>
+              <div className="grid grid-cols-2 gap-3">
                 {CATEGORIES.map((c) => {
                   const isSelected = services[c.key] > 0;
                   return (
@@ -339,27 +344,27 @@ export function AuthModal({ open, onClose }) {
                       key={c.key}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => toggleCategory(c.key)}
-                      className={`p-2 rounded-xl cursor-pointer border flex flex-col justify-between transition-colors ${
+                      className={`p-3 rounded-2xl cursor-pointer border flex flex-col justify-between transition-colors ${
                         isSelected ? 'bg-purple-50 border-purple-600' : 'bg-zinc-50 border-zinc-200 hover:border-zinc-300'
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-1">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{c.emoji}</span>
-                          <span className="text-[10px] font-bold leading-tight">{c.key}</span>
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xl">{c.emoji}</span>
+                          <span className="text-xs font-bold leading-tight">{c.key}</span>
                         </div>
                         {isSelected && (
-                          <div className="size-4 shrink-0 rounded-full bg-purple-600 text-white flex items-center justify-center">
-                            <Check size={10} />
+                          <div className="size-5 shrink-0 rounded-full bg-purple-600 text-white flex items-center justify-center">
+                            <Check size={12} />
                           </div>
                         )}
                       </div>
                       {isSelected && (
                         <div
                           onClick={(e) => e.stopPropagation()}
-                          className="mt-2 pt-1 border-t border-purple-200 flex flex-col gap-0.5"
+                          className="mt-3 pt-2 border-t border-purple-200 flex flex-col gap-1"
                         >
-                          <span className="text-[8px] font-bold text-purple-900 uppercase">Base (₹)</span>
+                          <span className="text-[10px] font-bold text-purple-900 uppercase">Base (₹)</span>
                           <input
                             type="number"
                             value={services[c.key]}
@@ -369,7 +374,7 @@ export function AuthModal({ open, onClose }) {
                                 [c.key]: Number(e.target.value),
                               })
                             }
-                            className="w-full px-1.5 py-0.5 text-xs font-bold rounded-md border border-purple-300 bg-white"
+                            className="w-full px-2 py-1 text-sm font-bold rounded-lg border border-purple-300 bg-white"
                           />
                         </div>
                       )}

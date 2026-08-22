@@ -27,15 +27,8 @@ export function Navbar() {
       {/* Liquid Frosted Glass Pill Navbar */}
       <div className="w-full bg-white/45 backdrop-blur-2xl backdrop-saturate-200 border border-white/70 ring-1 ring-zinc-900/10 rounded-full px-6 sm:px-8 py-3.5 flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all">
         {/* Brand Logo */}
-        <Link to={session?.role === 'shop' ? "/shop" : "/"} onClick={closeMobile} className="flex items-center gap-2.5">
-          <motion.span
-            animate={{ rotate: [0, -8, 8, 0] }}
-            transition={{ duration: 4, repeat: Infinity, repeatType: 'mirror' }}
-            className="text-2xl flex items-center drop-shadow-xs"
-          >
-            🔧
-          </motion.span>
-          <span className="font-black text-xl text-zinc-950 tracking-tight">
+        <Link to={session?.role === 'shop' ? "/shop" : "/"} onClick={closeMobile} className="flex items-center">
+          <span className="font-black text-xl text-zinc-950 tracking-tight px-4 py-1.5 rounded-full hover:bg-black hover:text-white transition-colors duration-200">
             Fixly
           </span>
         </Link>
