@@ -16,6 +16,32 @@ Fixly solves this by offering a dual-sided platform:
 1. For Consumers: A seamless web application to discover nearby repair shops on an interactive map, view estimated repair costs based on device categories, book repair requests instantly, and track the live status of their repair jobs.
 2. For Technicians: A comprehensive dashboard to list their services, manage incoming repair requests, provide exact quotes, update job statuses, and build their reputation through verified customer ratings.
 
+## Platform Previews
+
+### 1. Interactive Map Discovery
+![Home Page & Map Discovery](public/home.png)
+*The main landing page featuring an interactive map for discovering local repair experts.*
+
+### 2. Shop Details & Profile
+![Shop Info Card](public/infocard.png)
+*Detailed profile view of a local repair shop, showing contact details, location, and verified status.*
+
+### 3. Repair Booking & Transparent Quoting
+![Repair Request Form](public/requestForm.png)
+*Consumers can select their product category and get an upfront estimated base cost before submitting a repair request.*
+
+### 4. Technician Triage Dashboard
+![Technician Dashboard](public/shop.png)
+*A comprehensive Kanban-style dashboard for technicians to manage incoming requests, issue quotes, and track earnings.*
+
+### 5. Customer Tracking Portal
+![Customer Requests](public/rename.png)
+*Consumers can track the live status of their repairs, view quotes, and drop-off deadlines.*
+
+### 6. Seamless Authentication
+![Auth Modal](public/auth.png)
+*A unified, animated authentication modal for both consumers and repair technicians.*
+
 ## Core Features
 - Interactive Map Discovery: Discover repair shops geographically using a high-definition Leaflet map integration.
 - Transparent Quoting System: Consumers see an estimated base cost upfront. Technicians review the issue and provide an exact, binding quote.
