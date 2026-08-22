@@ -115,11 +115,14 @@ export function StoreProvider({ children }) {
       });
       const data = await res.json();
       if (data.success) {
-        setSession({
+        const userToSet = {
           ...data.user,
           role: data.user.role === 'technician' ? 'shop' : 'consumer'
-        });
+        };
+        setSession(userToSet);
+        return userToSet;
       }
+      return null;
     } catch (err) {
       console.error('Login error:', err);
     }
@@ -131,13 +134,24 @@ export function StoreProvider({ children }) {
   };
 
   const addShop = async (newShopData) => {
-    // We already create the user inside login(), but we need to create a listing.
-    // The previous frontend flow calls addShop, then login.
-    // In our async flow, we should do both. But wait, if addShop is called, 
-    // it's just dummy data. The user will call login immediately after.
-    // We can just rely on login() to create the technician. 
-    // Wait, the AuthModal uses addShop first. Let's fix that below.
-    return { id: 'temp' }; // Returning temp, true creation is handled by real backend.
+    try {
+      await fetch('/api/listings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          technicianId: newShopData.technicianId,
+          title: newShopData.name,
+          category: newShopData.categories[0] || 'General',
+          productTypes: newShopData.categories,
+          priceRange: { min: newShopData.estCost, max: newShopData.estCost + 500 },
+          description: `Listing for ${newShopData.name}`,
+        })
+      });
+      fetchShops();
+      return { id: newShopData.technicianId };
+    } catch (err) {
+      console.error('Error creating listing:', err);
+    }
   };
 
   const updateShopServices = (shopId, servicesRecord) => {
