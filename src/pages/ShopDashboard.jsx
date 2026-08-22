@@ -96,16 +96,16 @@ export function ShopDashboard() {
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 1. Header Banner */}
-        <Card className="p-6 rounded-md bg-zinc-50 border-2 border-zinc-900 mb-8 shadow-sm">
+        <Card className="p-6 rounded-3xl bg-zinc-50 border-2 border-zinc-900 mb-8 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="size-16 rounded-md bg-purple-600 flex items-center justify-center text-4xl text-white font-black shrink-0 shadow-sm">
+              <div className="size-16 rounded-2xl bg-purple-600 flex items-center justify-center text-4xl text-white font-black shrink-0 shadow-sm">
                 {activeShop.emoji || '🔧'}
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-2xl font-black text-zinc-950">{activeShop.name}</h1>
-                  <Badge className="bg-purple-600 text-white font-bold">
+                  <Badge className="bg-purple-600 text-white font-bold rounded-full">
                     Technician Console
                   </Badge>
                 </div>
@@ -125,8 +125,8 @@ export function ShopDashboard() {
               </div>
             </div>
 
-            <div className="p-4 rounded-md bg-zinc-950 text-white flex items-center gap-4 border border-black shrink-0">
-              <div className="size-11 rounded-sm bg-green-600 flex items-center justify-center text-white font-bold">
+            <div className="p-4 rounded-2xl bg-zinc-950 text-white flex items-center gap-4 border border-black shrink-0">
+              <div className="size-11 rounded-full bg-green-600 flex items-center justify-center text-white font-bold">
                 <TrendingUp size={22} />
               </div>
               <div>
@@ -167,7 +167,7 @@ export function ShopDashboard() {
         </div>
 
         {/* 3. Services & Base Rates Editor */}
-        <Card className="mb-10 p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
+        <Card className="mb-10 p-6 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm">
           <CardHeader className="p-0 border-b border-zinc-200 pb-3 mb-4">
             <CardTitle className="text-lg font-black text-zinc-950">
               My Repair Services & Base Quotes
@@ -185,7 +185,7 @@ export function ShopDashboard() {
               return (
                 <div
                   key={catKey}
-                  className="p-3 rounded-md bg-zinc-50 border border-zinc-200 flex items-center justify-between gap-2"
+                  className="p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 flex items-center justify-between gap-2"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span className="text-xl">{meta?.emoji || '🔧'}</span>
@@ -210,13 +210,13 @@ export function ShopDashboard() {
                         onKeyDown={(e) =>
                           e.key === 'Enter' && setEditingCategory(null)
                         }
-                        className="w-20 h-7 text-xs font-bold rounded-sm border-2 border-blue-600 text-right bg-white"
+                        className="w-20 h-8 text-xs font-bold rounded-full border-2 border-blue-600 text-right bg-white"
                       />
                     ) : (
                       <button
                         type="button"
                         onClick={() => setEditingCategory(catKey)}
-                        className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-white border border-zinc-300 hover:border-black text-xs font-black text-zinc-900 cursor-pointer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-zinc-300 hover:border-black text-xs font-black text-zinc-900 cursor-pointer"
                       >
                         <span>₹{services[catKey]}</span>
                         <Pencil size={11} className="text-zinc-400" />
@@ -230,7 +230,7 @@ export function ShopDashboard() {
         </Card>
 
         {/* 4. Order Management Hub */}
-        <Card className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
+        <Card className="p-6 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-4 mb-6">
             <div>
               <CardTitle className="text-xl font-black text-zinc-950">
@@ -242,7 +242,7 @@ export function ShopDashboard() {
             </div>
 
             {/* Tab switchers */}
-            <div className="flex p-1 rounded-md bg-zinc-100 border border-zinc-200">
+            <div className="flex p-1.5 rounded-full bg-zinc-100 border border-zinc-200">
               {[
                 { key: 'pending', label: 'Pending', count: pendingOrders.length },
                 { key: 'ongoing', label: 'In-Progress', count: ongoingOrders.length },
@@ -252,7 +252,7 @@ export function ShopDashboard() {
                   key={tab.key}
                   type="button"
                   onClick={() => setActiveTab(tab.key)}
-                  className={`relative px-4 py-1.5 rounded-sm text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors ${
+                  className={`relative px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors ${
                     activeTab === tab.key
                       ? 'text-white'
                       : 'text-zinc-600 hover:text-black'
@@ -261,7 +261,7 @@ export function ShopDashboard() {
                   {activeTab === tab.key && (
                     <motion.div
                       layoutId="shopOrderTab"
-                      className={`absolute inset-0 rounded-sm ${
+                      className={`absolute inset-0 rounded-full ${
                         tab.key === 'pending'
                           ? 'bg-yellow-500'
                           : tab.key === 'ongoing'
@@ -290,7 +290,7 @@ export function ShopDashboard() {
               className="flex flex-col gap-4"
             >
               {displayedOrders.length === 0 ? (
-                <div className="text-center py-12 p-6 rounded-md bg-zinc-50 border border-zinc-200">
+                <div className="text-center py-12 p-6 rounded-2xl bg-zinc-50 border border-zinc-200">
                   <p className="text-sm font-bold text-zinc-600">
                     No {activeTab} repair requests right now.
                   </p>
@@ -331,12 +331,12 @@ export function ShopDashboard() {
       >
         {acceptTarget && (
           <form onSubmit={handleAcceptConfirm} className="flex flex-col gap-4">
-            <div className="p-3.5 rounded-md bg-zinc-50 border border-zinc-200">
+            <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-zinc-900">
                   Customer: {acceptTarget.customerName}
                 </span>
-                <Badge className="bg-blue-600 text-white font-bold">{acceptTarget.item}</Badge>
+                <Badge className="bg-blue-600 text-white font-bold rounded-full">{acceptTarget.item}</Badge>
               </div>
               <p className="text-xs text-zinc-600 mt-1">
                 <strong>Issue:</strong> {acceptTarget.issue}
@@ -356,7 +356,7 @@ export function ShopDashboard() {
                 value={acceptForm.price}
                 onChange={(e) => setAcceptForm({ ...acceptForm, price: e.target.value })}
                 placeholder="e.g. 650"
-                className="font-bold rounded-md bg-white border-zinc-300"
+                className="font-bold rounded-full px-4 bg-white border-zinc-300"
               />
             </div>
 
@@ -370,7 +370,7 @@ export function ShopDashboard() {
                   required
                   value={acceptForm.pickup}
                   onChange={(e) => setAcceptForm({ ...acceptForm, pickup: e.target.value })}
-                  className="text-xs rounded-md bg-white border-zinc-300"
+                  className="text-xs rounded-full px-4 bg-white border-zinc-300"
                 />
               </div>
 
@@ -383,7 +383,7 @@ export function ShopDashboard() {
                   required
                   value={acceptForm.complete}
                   onChange={(e) => setAcceptForm({ ...acceptForm, complete: e.target.value })}
-                  className="text-xs rounded-md bg-white border-zinc-300"
+                  className="text-xs rounded-full px-4 bg-white border-zinc-300"
                 />
               </div>
             </div>
@@ -397,18 +397,18 @@ export function ShopDashboard() {
                 value={acceptForm.notes}
                 onChange={(e) => setAcceptForm({ ...acceptForm, notes: e.target.value })}
                 placeholder="Bring original charger / backup your data before drop-off…"
-                className="text-xs rounded-md bg-white border-zinc-300 resize-none"
+                className="text-xs rounded-2xl px-4 py-2 bg-white border-zinc-300 resize-none"
               />
             </div>
 
-            <div className="p-3 rounded-md bg-green-50 border border-green-200 text-xs text-green-900">
+            <div className="p-3.5 rounded-2xl bg-green-50 border border-green-200 text-xs text-green-900">
               <p className="font-bold">Customer Notification Preview:</p>
               <p className="text-[11px] text-green-800 mt-0.5">
                 The user's interface will update immediately with this quote, scheduled drop-off slot, and collection deadline.
               </p>
             </div>
 
-            <Button type="submit" className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md">
+            <Button type="submit" className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full">
               Confirm & Start Repair Job
             </Button>
           </form>
@@ -420,12 +420,12 @@ export function ShopDashboard() {
 
 function MetricCard({ title, value, color, icon, subtitle }) {
   return (
-    <Card className="p-5 rounded-md bg-white border-2 border-zinc-900 shadow-sm flex flex-col justify-between">
+    <Card className="p-6 rounded-3xl bg-white border-2 border-zinc-900 shadow-sm flex flex-col justify-between">
       <div className="flex items-center justify-between">
         <CardDescription className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
           {title}
         </CardDescription>
-        <div className={`size-8 rounded-sm flex items-center justify-center font-bold ${color}`}>
+        <div className={`size-9 rounded-full flex items-center justify-center font-bold ${color}`}>
           {icon}
         </div>
       </div>
@@ -447,16 +447,16 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.96 }}
     >
-      <Card className="p-5 rounded-md bg-zinc-50 border border-zinc-300 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <Card className="p-5 rounded-2xl bg-zinc-50 border border-zinc-300 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-none">
         <div className="flex items-start gap-3.5 min-w-0">
-          <div className="size-12 rounded-sm bg-blue-600 text-white flex items-center justify-center text-2xl shrink-0 font-bold">
+          <div className="size-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-2xl shrink-0 font-bold">
             {catMeta?.emoji || '🔧'}
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-base font-black text-zinc-950">{order.customerName}</span>
               <Badge
-                className={
+                className={`rounded-full ${
                   order.status === 'pending'
                     ? 'bg-yellow-400 text-black font-bold'
                     : order.status === 'ongoing'
@@ -464,7 +464,7 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
                     : order.status === 'completed'
                     ? 'bg-green-600 text-white font-bold'
                     : 'bg-rose-600 text-white font-bold'
-                }
+                }`}
               >
                 {order.status}
               </Badge>
@@ -495,7 +495,7 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
               <Button
                 size="sm"
                 onClick={onAccept}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-md"
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-full px-4"
               >
                 <Check size={14} />
                 <span>Accept & Quote</span>
@@ -504,7 +504,7 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
                 variant="destructive"
                 size="sm"
                 onClick={onReject}
-                className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-md"
+                className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-full px-4"
               >
                 <X size={14} />
                 <span>Reject</span>
@@ -516,7 +516,7 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
             <Button
               size="sm"
               onClick={onComplete}
-              className="bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-md"
+              className="bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-full px-4"
             >
               <CheckCircle2 size={15} />
               <span>Mark as Completed</span>
