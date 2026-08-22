@@ -6,6 +6,8 @@ import {
   ArrowRight,
   X,
 } from 'lucide-react';
+import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet';
+import L from 'leaflet';
 import { CATEGORIES } from '../data/mockData';
 import { Stars } from '../components/ui-custom';
 import {
@@ -82,6 +84,43 @@ export function Home() {
             Discover verified nearby technicians, receive upfront quotes, and track
             your item repair lifecycle with zero platform fees.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.12, type: 'spring', stiffness: 200, damping: 22 }}
+            className="w-full max-w-4xl mx-auto mt-10 mb-2"
+          >
+            <h3 className="text-xl font-bold text-zinc-900 mb-4 text-left">Find a repair shop near you</h3>
+            <div className="h-64 sm:h-80 w-full rounded-3xl overflow-hidden border-2 border-zinc-900 shadow-sm relative z-0">
+              <MapContainer 
+                center={[12.9716, 77.5946]} 
+                zoom={12} 
+                scrollWheelZoom={false} 
+                style={{ height: '100%', width: '100%' }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {/* Hardcoded Red Circles for locations in Bengaluru */}
+                {[
+                  [12.9783, 77.6408], // Indiranagar
+                  [12.9298, 77.5844], // Jayanagar
+                  [12.9345, 77.6265], // Koramangala
+                  [12.9696, 77.7500], // Whitefield
+                  [12.9121, 77.6446], // HSR Layout
+                ].map((pos, idx) => (
+                  <CircleMarker 
+                    key={idx} 
+                    center={pos} 
+                    radius={12}
+                    pathOptions={{ color: 'red', fillColor: '#ef4444', fillOpacity: 0.5, weight: 2 }}
+                  />
+                ))}
+              </MapContainer>
+            </div>
+          </motion.div>
 
           {/* Horizontally Expanding Search Bar on Click/Focus */}
           <motion.div
