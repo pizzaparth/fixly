@@ -1,5 +1,6 @@
 import express from 'express';
 import { User, Listing, RepairRequest } from '../models/index.js';
+import bcrypt from 'bcryptjs';
 
 const router = express.Router();
 
@@ -8,26 +9,70 @@ const router = express.Router();
 // ==========================================
 
 // Auto-login or register user / technician
-router.post('/auth/login-or-register', async (req, res) => {
+router.post('/auth/register', async (req, res) => {
   try {
     const { email, name, password, role = 'consumer', location, phone, specialties } = req.body;
+
+    if (!email || !password || !name) {
+      return res.status(400).json({ error: 'Email, name, and password are required' });
+    }
+
+    let user = await User.findOne({ email: email.toLowerCase().trim() });
+    if (user) {
+      return res.status(400).json({ error: 'User with this email already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user = await User.create({
+      email: email.toLowerCase().trim(),
+      name: name.trim(),
+      password: hashedPassword,
+      role,
+      location: location || {},
+      phone: phone || '',
+      specialties: specialties || [],
+    });
+
+    res.json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        location: user.location,
+        phone: user.phone,
+        rating: user.rating,
+        ratingCount: user.ratingCount,
+        specialties: user.specialties,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post('/auth/login', async (req, res) => {
+  try {
+    const { email, password, role } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
     let user = await User.findOne({ email: email.toLowerCase().trim() });
-
     if (!user) {
-      user = await User.create({
-        email: email.toLowerCase().trim(),
-        name: name || email.split('@')[0],
-        password,
-        role,
-        location: location || {},
-        phone: phone || '',
-        specialties: specialties || [],
-      });
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    if (role && user.role !== role) {
+      return res.status(403).json({ error: `Account exists but is not registered as a ${role}` });
     }
 
     res.json({

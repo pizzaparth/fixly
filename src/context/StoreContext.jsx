@@ -102,18 +102,19 @@ export function StoreProvider({ children }) {
   const login = async (sessionData) => {
     try {
       const role = sessionData.role === 'shop' ? 'technician' : 'consumer';
-      const res = await fetch('/api/auth/login-or-register', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: sessionData.email || `${sessionData.name.replace(/\s+/g, '')}@example.com`,
-          name: sessionData.name,
-          password: sessionData.password || 'password123',
-          role,
-          phone: sessionData.phone
+          email: sessionData.email,
+          password: sessionData.password,
+          role
         })
       });
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to login');
+      }
       if (data.success) {
         const userToSet = {
           ...data.user,
@@ -125,6 +126,40 @@ export function StoreProvider({ children }) {
       return null;
     } catch (err) {
       console.error('Login error:', err);
+      throw err;
+    }
+  };
+
+  const registerUser = async (sessionData) => {
+    try {
+      const role = sessionData.role === 'shop' ? 'technician' : 'consumer';
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: sessionData.email,
+          name: sessionData.name,
+          password: sessionData.password,
+          role,
+          phone: sessionData.phone
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to register');
+      }
+      if (data.success) {
+        const userToSet = {
+          ...data.user,
+          role: data.user.role === 'technician' ? 'shop' : 'customer'
+        };
+        setSession(userToSet);
+        return userToSet;
+      }
+      return null;
+    } catch (err) {
+      console.error('Register error:', err);
+      throw err;
     }
   };
 
