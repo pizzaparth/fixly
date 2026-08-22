@@ -25,9 +25,9 @@ function AnimatedRoutes() {
         <Routes location={loc}>
           <Route path="/" element={<Navigate to={session?.role === 'shop' ? "/shop" : "/home"} replace />} />
           <Route path="/home" element={session?.role === 'shop' ? <Navigate to="/shop" replace /> : <Home />} />
-          <Route path="/shop" element={<ShopDashboard />} />
+          <Route path="/shop" element={session?.role === 'shop' ? <ShopDashboard /> : <Navigate to="/home" replace />} />
           <Route path="/onboard" element={<ShopOnboard />} />
-          <Route path="/my-requests" element={<MyRequests />} />
+          <Route path="/my-requests" element={session?.role === 'customer' ? <MyRequests /> : <Navigate to="/home" replace />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

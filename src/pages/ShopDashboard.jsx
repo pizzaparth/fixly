@@ -38,18 +38,7 @@ export function ShopDashboard() {
     completeOrder,
   } = useStore();
 
-  const activeShop = shops.find(s => s.id === session?.id) || shops[0] || {
-    id: 's1',
-    name: session?.name || 'BrewByte Repairs',
-    owner: 'Arjun Mehta',
-    mobile: '+91 98220 11234',
-    address: '12, Cafe Lane, Indiranagar, Bengaluru',
-    rating: 4.7,
-    reviewCount: 128,
-    estCost: 650,
-    categories: ['Laptop', 'Mobile', 'Charger', 'Information Cables'],
-    emoji: '💻',
-  };
+  const activeShop = shops.find(s => s.id === session?.id);
 
   const [activeTab, setActiveTab] = useState('pending');
   const [acceptTarget, setAcceptTarget] = useState(null);
@@ -60,11 +49,14 @@ export function ShopDashboard() {
     notes: '',
   });
 
-  const [services, setServices] = useState(() =>
-    Object.fromEntries(
+  const [services, setServices] = useState(() => {
+    if (!activeShop) return {};
+    return Object.fromEntries(
       (activeShop.categories || []).map((c) => [c, activeShop.estCost || 500])
-    )
-  );
+    );
+  });
+
+  if (!activeShop) return null;
   const [editingCategory, setEditingCategory] = useState(null);
 
   const pendingOrders = orders.filter((o) => o.status === 'pending');
