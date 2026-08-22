@@ -108,7 +108,7 @@ export function Navbar() {
                 logout();
                 nav('/home');
               }}
-              className="px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer bg-white/40 hover:bg-rose-50/90 text-zinc-800 border border-zinc-900/10 hover:text-rose-600 hover:border-rose-300 backdrop-blur-md transition-all"
+              className="px-5 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 cursor-pointer bg-white/40 hover:bg-rose-600 text-zinc-800 border border-zinc-900/10 hover:text-white hover:border-rose-600 backdrop-blur-md transition-all"
             >
               <LogOut size={16} />
               <span>{session.name.split(' ')[0]}</span>
@@ -206,7 +206,7 @@ export function Navbar() {
                     closeMobile();
                     nav('/home');
                   }}
-                  className="w-full p-3.5 rounded-full font-bold text-sm flex items-center justify-center gap-2 bg-rose-50/80 text-rose-600 border border-rose-200/80 backdrop-blur-md cursor-pointer"
+                  className="w-full p-3.5 rounded-full font-bold text-sm flex items-center justify-center gap-2 bg-rose-50/80 text-rose-600 border border-rose-200/80 hover:bg-rose-600 hover:text-white hover:border-rose-600 backdrop-blur-md cursor-pointer transition-colors"
                 >
                   <LogOut size={18} />
                   <span>Sign out ({session.name})</span>

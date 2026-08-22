@@ -128,3 +128,31 @@
     @apply font-sans;
     }
 }
+/* Custom Leaflet Zoom Controls */
+.leaflet-bar {
+  border: 2px solid #18181b !important; /* matches border-zinc-900 */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 9999px !important;
+  overflow: hidden !important;
+  background-color: #18181b !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+
+.leaflet-bar a {
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  background-color: white !important;
+  color: black !important;
+  font-weight: 900 !important;
+  font-size: 16px !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: black !important;
+  color: white !important;
+}
