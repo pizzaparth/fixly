@@ -220,6 +220,7 @@ export function Home() {
                   key={shop.id}
                   shop={shop}
                   index={i}
+                  activeCategory={activeCategory}
                   onOpen={() => setActiveShopModalId(shop.id)}
                 />
               ))}
@@ -267,6 +268,7 @@ export function Home() {
                       key={shop.id}
                       shop={shop}
                       index={idx * 3 + i}
+                      activeCategory={activeCategory}
                       onOpen={() => setActiveShopModalId(shop.id)}
                     />
                   ))}
@@ -307,7 +309,7 @@ function CategoryChip({ label, emoji, active, onClick }) {
   );
 }
 
-function FullWidthShopCard({ shop, index, onOpen }) {
+function FullWidthShopCard({ shop, index, activeCategory, onOpen }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
