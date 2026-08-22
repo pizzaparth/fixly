@@ -56,7 +56,7 @@ export function Navbar() {
           )}
 
           {/* 2. Customer Mode: Only "My Repairs" (No "List Shop") */}
-          {session?.role === 'customer' && (
+          {(session?.role === 'customer' || session?.role === 'consumer') && (
             <Link to="/my-requests">
               <motion.button
                 type="button"
@@ -169,7 +169,7 @@ export function Navbar() {
               </Link>
             )}
 
-            {session?.role === 'customer' && (
+            {(session?.role === 'customer' || session?.role === 'consumer') && (
               <Link to="/my-requests" onClick={closeMobile}>
                 <div
                   className={`p-3.5 rounded-full font-bold text-sm flex items-center gap-2.5 transition-colors ${

@@ -117,7 +117,7 @@ export function StoreProvider({ children }) {
       if (data.success) {
         const userToSet = {
           ...data.user,
-          role: data.user.role === 'technician' ? 'shop' : 'consumer'
+          role: data.user.role === 'technician' ? 'shop' : 'customer'
         };
         setSession(userToSet);
         return userToSet;
