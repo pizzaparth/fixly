@@ -137,10 +137,10 @@ export function ShopModal({
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <CardTitle className="text-3xl font-black text-zinc-950">{shop.name}</CardTitle>
+                <CardTitle className="text-xl sm:text-2xl font-black text-zinc-950">{shop.name}</CardTitle>
                 <Badge className="bg-purple-600 text-white font-bold rounded-full">Verified Expert</Badge>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-sm text-zinc-700">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-xs sm:text-sm text-zinc-700">
                 <p className="flex items-center gap-2 font-medium">
                   <User size={16} className="text-zinc-500 shrink-0" />
                   <span>Owner: <strong className="text-zinc-900">{shop.owner}</strong></span>
@@ -205,17 +205,17 @@ export function ShopModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-zinc-200">
+          <div className="flex flex-col sm:flex-row gap-3 w-full pt-2 border-t border-zinc-200">
             <Button
               onClick={() => requireAuth(() => setOrderOpen(true))}
-              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-sm"
+              className="w-full sm:w-auto py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-sm"
             >
               <ShoppingBag size={16} />
               <span>Order Repair</span>
             </Button>
             <Button
               onClick={() => requireAuth(() => setRateOpen(true))}
-              className="w-full py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-full shadow-sm"
+              className="w-full sm:w-auto py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-full shadow-sm"
             >
               <Star size={16} />
               <span>Rate Shop</span>

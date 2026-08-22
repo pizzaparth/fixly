@@ -122,14 +122,14 @@ export function ShopDashboard() {
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card className="p-6 rounded-3xl bg-zinc-50 border-2 border-zinc-900 mb-8 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="size-16 rounded-2xl bg-purple-600 flex items-center justify-center text-4xl text-white font-black shrink-0 shadow-sm">
                 {activeShop.emoji || '🔧'}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-2xl font-black text-zinc-950">{activeShop.name}</h1>
+                  <h1 className="text-2xl sm:text-3xl font-black text-zinc-950">{activeShop.name}</h1>
                   <Badge className="bg-purple-600 text-white font-bold rounded-full">
                     Technician Console
                   </Badge>
@@ -166,7 +166,7 @@ export function ShopDashboard() {
           </div>
         </Card>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <MetricCard
             title="Pending Requests"
             value={pendingOrders.length}
@@ -298,7 +298,7 @@ export function ShopDashboard() {
                   key={tab.key}
                   type="button"
                   onClick={() => setActiveTab(tab.key)}
-                  className={`relative px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors ${
+                  className={`relative px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider cursor-pointer transition-colors ${
                     activeTab === tab.key
                       ? 'text-white'
                       : 'text-zinc-600 hover:text-black'
@@ -532,7 +532,7 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-zinc-200">
+        <div className="flex flex-wrap items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-zinc-200">
           {order.status === 'pending' && (
             <>
               <Button

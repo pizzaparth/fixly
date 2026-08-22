@@ -80,8 +80,8 @@ export function MyRequests() {
             </p>
           </div>
 
-          <Link to="/">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md">
+          <Link to="/" className="w-full sm:w-auto">
+            <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md">
               <span>+ New Repair Request</span>
             </Button>
           </Link>

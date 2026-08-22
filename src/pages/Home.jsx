@@ -58,7 +58,7 @@ export function Home() {
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
-      <section className="bg-white pt-10 pb-6 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white pt-6 sm:pt-10 pb-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
@@ -334,7 +334,7 @@ function CategoryChip({ label, emoji, active, onClick }) {
       whileTap={{ scale: 0.95 }}
       whileHover={{ y: -2 }}
       onClick={onClick}
-      className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider border-2 cursor-pointer transition-colors ${
+      className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider border-2 cursor-pointer transition-colors ${
         active
           ? 'bg-black text-white border-black shadow-sm'
           : 'bg-white text-zinc-800 border-zinc-300 hover:border-black'
@@ -357,9 +357,9 @@ function FullWidthShopCard({ shop, index, activeCategory, onOpen }) {
       className="w-full"
     >
       <Card className="w-full rounded-3xl bg-white border-2 border-zinc-900 shadow-sm hover:shadow-md transition-all overflow-hidden p-0">
-        <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="p-4 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-start gap-5 min-w-0">
-            <div className="size-16 sm:size-20 rounded-2xl bg-blue-600 flex items-center justify-center text-4xl sm:text-5xl text-white font-bold shrink-0 shadow-sm">
+            <div className="size-14 sm:size-16 md:size-20 rounded-2xl bg-blue-600 flex items-center justify-center text-4xl sm:text-5xl text-white font-bold shrink-0 shadow-sm">
               {shop.emoji}
             </div>
             <div className="min-w-0 flex-1">
@@ -399,7 +399,7 @@ function FullWidthShopCard({ shop, index, activeCategory, onOpen }) {
             </div>
           </div>
 
-          <div className="flex md:flex-col items-center md:items-end justify-between gap-3 shrink-0 pt-4 md:pt-0 border-t md:border-t-0 border-zinc-200">
+          <div className="flex flex-col items-stretch gap-3 shrink-0 pt-4 md:pt-0 border-t md:border-t-0 border-zinc-200 md:items-end">
             <div className="flex-1 text-right">
               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">
                 {activeCategory !== 'All' && shop.categories.includes(activeCategory) ? `${activeCategory} Base` : 'Est. Base'}
@@ -411,7 +411,7 @@ function FullWidthShopCard({ shop, index, activeCategory, onOpen }) {
 
             <Button
               onClick={onOpen}
-              className="bg-black hover:bg-zinc-800 text-white text-sm font-bold uppercase tracking-wider rounded-full px-6 py-2.5 shadow-sm"
+              className="w-full md:w-auto bg-black hover:bg-zinc-800 text-white text-sm font-bold uppercase tracking-wider rounded-full px-6 py-2.5 shadow-sm"
             >
               <span>View Profile & Book</span>
               <ArrowRight size={15} />
