@@ -10,30 +10,33 @@ import {
   TrendingUp,
   Store,
   Phone,
-  MapPin,
-  Calendar,
-  AlertCircle,
-  IndianRupee,
   User,
-  ShieldCheck,
 } from 'lucide-react';
 import { CATEGORIES } from '../data/mockData';
-import { SolidButton, SolidBadge, Stars } from '../components/ui-custom';
+import { Stars } from '../components/ui-custom';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Modal } from '../components/Modal';
 import { useStore } from '../context/StoreContext';
 
 export function ShopDashboard() {
   const {
-    session,
     shops,
     orders,
     acceptOrder,
     rejectOrder,
     completeOrder,
-    setAuthModalOpen,
   } = useStore();
 
-  // Find active technician's shop or fallback to first shop
   const activeShop = shops[0] || {
     id: 's1',
     name: 'BrewByte Repairs',
@@ -47,7 +50,7 @@ export function ShopDashboard() {
     emoji: '💻',
   };
 
-  const [activeTab, setActiveTab] = useState('pending'); // 'pending' | 'ongoing' | 'completed'
+  const [activeTab, setActiveTab] = useState('pending');
   const [acceptTarget, setAcceptTarget] = useState(null);
   const [acceptForm, setAcceptForm] = useState({
     pickup: '',
@@ -63,7 +66,6 @@ export function ShopDashboard() {
   );
   const [editingCategory, setEditingCategory] = useState(null);
 
-  // Counts and Earnings
   const pendingOrders = orders.filter((o) => o.status === 'pending');
   const ongoingOrders = orders.filter((o) => o.status === 'ongoing');
   const completedOrders = orders.filter((o) => o.status === 'completed');
@@ -75,7 +77,6 @@ export function ShopDashboard() {
 
   const displayedOrders = orders.filter((o) => o.status === activeTab);
 
-  // Accept Handler
   const handleAcceptConfirm = (e) => {
     e.preventDefault();
     if (!acceptTarget) return;
@@ -95,50 +96,50 @@ export function ShopDashboard() {
     <div className="min-h-screen bg-white text-zinc-900 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 1. Header Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-md bg-zinc-50 border-2 border-zinc-900 mb-8"
-        >
-          <div className="flex items-center gap-4">
-            <div className="size-16 rounded-md bg-purple-600 flex items-center justify-center text-4xl text-white font-black shrink-0 shadow-sm">
-              {activeShop.emoji || '🔧'}
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black text-zinc-950">{activeShop.name}</h1>
-                <SolidBadge variant="purple">Technician Console</SolidBadge>
+        <Card className="p-6 rounded-md bg-zinc-50 border-2 border-zinc-900 mb-8 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="size-16 rounded-md bg-purple-600 flex items-center justify-center text-4xl text-white font-black shrink-0 shadow-sm">
+                {activeShop.emoji || '🔧'}
               </div>
-              <div className="flex flex-wrap items-center gap-3 mt-1.5 text-xs text-zinc-600 font-medium">
-                <span className="flex items-center gap-1">
-                  <User size={13} className="text-zinc-400" />
-                  {activeShop.owner}
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Phone size={13} className="text-zinc-400" />
-                  {activeShop.mobile}
-                </span>
-                <span>•</span>
-                <Stars rating={activeShop.rating} size={13} count={activeShop.reviewCount} />
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-2xl font-black text-zinc-950">{activeShop.name}</h1>
+                  <Badge className="bg-purple-600 text-white font-bold">
+                    Technician Console
+                  </Badge>
+                </div>
+                <div className="flex flex-wrap items-center gap-3 mt-1.5 text-xs text-zinc-600 font-medium">
+                  <span className="flex items-center gap-1">
+                    <User size={13} className="text-zinc-400" />
+                    {activeShop.owner}
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <Phone size={13} className="text-zinc-400" />
+                    {activeShop.mobile}
+                  </span>
+                  <span>•</span>
+                  <Stars rating={activeShop.rating} size={13} count={activeShop.reviewCount} />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="p-4 rounded-md bg-zinc-950 text-white flex items-center gap-4 border border-black shrink-0">
-            <div className="size-11 rounded-sm bg-green-600 flex items-center justify-center text-white font-bold">
-              <TrendingUp size={22} />
-            </div>
-            <div>
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">
-                Total Direct Earnings
-              </span>
-              <span className="text-2xl font-black text-white block mt-0.5">
-                ₹{totalEarnings.toLocaleString()}
-              </span>
+            <div className="p-4 rounded-md bg-zinc-950 text-white flex items-center gap-4 border border-black shrink-0">
+              <div className="size-11 rounded-sm bg-green-600 flex items-center justify-center text-white font-bold">
+                <TrendingUp size={22} />
+              </div>
+              <div>
+                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">
+                  Total Direct Earnings
+                </span>
+                <span className="text-2xl font-black text-white block mt-0.5">
+                  ₹{totalEarnings.toLocaleString()}
+                </span>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </Card>
 
         {/* 2. Key Metrics Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -166,19 +167,17 @@ export function ShopDashboard() {
         </div>
 
         {/* 3. Services & Base Rates Editor */}
-        <section className="mb-10 p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
-          <div className="flex items-center justify-between border-b border-zinc-200 pb-3 mb-4">
-            <div>
-              <h2 className="text-lg font-black text-zinc-950">
-                My Repair Services & Base Quotes
-              </h2>
-              <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider mt-0.5">
-                Click price to update base estimate for customers
-              </p>
-            </div>
-          </div>
+        <Card className="mb-10 p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
+          <CardHeader className="p-0 border-b border-zinc-200 pb-3 mb-4">
+            <CardTitle className="text-lg font-black text-zinc-950">
+              My Repair Services & Base Quotes
+            </CardTitle>
+            <CardDescription className="text-xs text-zinc-500 font-bold uppercase tracking-wider mt-0.5">
+              Click price to update base estimate for customers
+            </CardDescription>
+          </CardHeader>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <CardContent className="p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {Object.keys(services).map((catKey) => {
               const meta = CATEGORIES.find((c) => c.key === catKey);
               const isEditing = editingCategory === catKey;
@@ -197,7 +196,7 @@ export function ShopDashboard() {
 
                   <div>
                     {isEditing ? (
-                      <input
+                      <Input
                         autoFocus
                         type="number"
                         value={services[catKey]}
@@ -211,7 +210,7 @@ export function ShopDashboard() {
                         onKeyDown={(e) =>
                           e.key === 'Enter' && setEditingCategory(null)
                         }
-                        className="w-20 px-2 py-1 text-xs font-bold rounded-sm border-2 border-blue-600 text-right bg-white"
+                        className="w-20 h-7 text-xs font-bold rounded-sm border-2 border-blue-600 text-right bg-white"
                       />
                     ) : (
                       <button
@@ -227,22 +226,22 @@ export function ShopDashboard() {
                 </div>
               );
             })}
-          </div>
-        </section>
+          </CardContent>
+        </Card>
 
         {/* 4. Order Management Hub */}
-        <section className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
+        <Card className="p-6 rounded-md bg-white border-2 border-zinc-900 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-4 mb-6">
             <div>
-              <h2 className="text-xl font-black text-zinc-950">
+              <CardTitle className="text-xl font-black text-zinc-950">
                 Repair Orders & Job Triage
-              </h2>
-              <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider mt-0.5">
+              </CardTitle>
+              <CardDescription className="text-xs text-zinc-500 font-bold uppercase tracking-wider mt-0.5">
                 Review pending submissions, accept quotes, and complete servicing
-              </p>
+              </CardDescription>
             </div>
 
-            {/* Tab switchers with Spring Animation */}
+            {/* Tab switchers */}
             <div className="flex p-1 rounded-md bg-zinc-100 border border-zinc-200">
               {[
                 { key: 'pending', label: 'Pending', count: pendingOrders.length },
@@ -320,7 +319,7 @@ export function ShopDashboard() {
               )}
             </motion.div>
           </AnimatePresence>
-        </section>
+        </Card>
       </div>
 
       {/* Accept & Quote Dialog Modal */}
@@ -337,7 +336,7 @@ export function ShopDashboard() {
                 <span className="text-xs font-bold text-zinc-900">
                   Customer: {acceptTarget.customerName}
                 </span>
-                <SolidBadge variant="blue">{acceptTarget.item}</SolidBadge>
+                <Badge className="bg-blue-600 text-white font-bold">{acceptTarget.item}</Badge>
               </div>
               <p className="text-xs text-zinc-600 mt-1">
                 <strong>Issue:</strong> {acceptTarget.issue}
@@ -351,13 +350,13 @@ export function ShopDashboard() {
               <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                 Exact Quoted Repair Price (₹) *
               </label>
-              <input
+              <Input
                 type="number"
                 required
                 value={acceptForm.price}
                 onChange={(e) => setAcceptForm({ ...acceptForm, price: e.target.value })}
                 placeholder="e.g. 650"
-                className="w-full px-3 py-2 text-sm font-bold rounded-md bg-white border border-zinc-300 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="font-bold rounded-md bg-white border-zinc-300"
               />
             </div>
 
@@ -366,12 +365,12 @@ export function ShopDashboard() {
                 <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Drop-off / Submission Window *
                 </label>
-                <input
+                <Input
                   type="datetime-local"
                   required
                   value={acceptForm.pickup}
                   onChange={(e) => setAcceptForm({ ...acceptForm, pickup: e.target.value })}
-                  className="w-full px-3 py-2 text-xs font-medium rounded-md bg-white border border-zinc-300 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="text-xs rounded-md bg-white border-zinc-300"
                 />
               </div>
 
@@ -379,12 +378,12 @@ export function ShopDashboard() {
                 <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                   Estimated Ready by *
                 </label>
-                <input
+                <Input
                   type="datetime-local"
                   required
                   value={acceptForm.complete}
                   onChange={(e) => setAcceptForm({ ...acceptForm, complete: e.target.value })}
-                  className="w-full px-3 py-2 text-xs font-medium rounded-md bg-white border border-zinc-300 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="text-xs rounded-md bg-white border-zinc-300"
                 />
               </div>
             </div>
@@ -393,12 +392,12 @@ export function ShopDashboard() {
               <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
                 Technician Notes / Instructions
               </label>
-              <textarea
+              <Textarea
                 rows={2}
                 value={acceptForm.notes}
                 onChange={(e) => setAcceptForm({ ...acceptForm, notes: e.target.value })}
                 placeholder="Bring original charger / backup your data before drop-off…"
-                className="w-full px-3 py-2 text-xs rounded-md bg-white border border-zinc-300 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+                className="text-xs rounded-md bg-white border-zinc-300 resize-none"
               />
             </div>
 
@@ -409,9 +408,9 @@ export function ShopDashboard() {
               </p>
             </div>
 
-            <SolidButton type="submit" variant="blue" className="w-full py-2.5 font-bold">
+            <Button type="submit" className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md">
               Confirm & Start Repair Job
-            </SolidButton>
+            </Button>
           </form>
         )}
       </Modal>
@@ -421,25 +420,20 @@ export function ShopDashboard() {
 
 function MetricCard({ title, value, color, icon, subtitle }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ y: -3 }}
-      className="p-5 rounded-md bg-white border-2 border-zinc-900 shadow-sm flex flex-col justify-between"
-    >
+    <Card className="p-5 rounded-md bg-white border-2 border-zinc-900 shadow-sm flex flex-col justify-between">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
+        <CardDescription className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
           {title}
-        </span>
+        </CardDescription>
         <div className={`size-8 rounded-sm flex items-center justify-center font-bold ${color}`}>
           {icon}
         </div>
       </div>
       <div className="mt-4">
-        <span className="text-3xl font-black text-zinc-950 block">{value}</span>
-        <span className="text-xs text-zinc-500 font-medium mt-1 block">{subtitle}</span>
+        <CardTitle className="text-3xl font-black text-zinc-950 block">{value}</CardTitle>
+        <CardDescription className="text-xs text-zinc-500 font-medium mt-1 block">{subtitle}</CardDescription>
       </div>
-    </motion.div>
+    </Card>
   );
 }
 
@@ -452,87 +446,98 @@ function OrderRow({ order, onAccept, onReject, onComplete }) {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.96 }}
-      className="p-5 rounded-md bg-zinc-50 border border-zinc-300 flex flex-col md:flex-row md:items-center justify-between gap-4"
     >
-      <div className="flex items-start gap-3.5 min-w-0">
-        <div className="size-12 rounded-sm bg-blue-600 text-white flex items-center justify-center text-2xl shrink-0 font-bold">
-          {catMeta?.emoji || '🔧'}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-base font-black text-zinc-950">{order.customerName}</span>
-            <SolidBadge variant={order.status}>{order.status}</SolidBadge>
-            <span className="text-xs font-bold text-blue-600">₹{order.price}</span>
+      <Card className="p-5 rounded-md bg-zinc-50 border border-zinc-300 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-start gap-3.5 min-w-0">
+          <div className="size-12 rounded-sm bg-blue-600 text-white flex items-center justify-center text-2xl shrink-0 font-bold">
+            {catMeta?.emoji || '🔧'}
           </div>
-          <p className="text-xs text-zinc-700 font-medium mt-1">
-            <strong>{order.item}:</strong> {order.issue}
-          </p>
-          <div className="flex flex-wrap items-center gap-3 mt-1.5 text-[11px] text-zinc-500">
-            <span>📍 {order.address}</span>
-            <span>•</span>
-            <span>📞 {order.mobile}</span>
-            <span>•</span>
-            <span>🕒 {order.requestedAt}</span>
-          </div>
-          {order.pickupAt && (
-            <p className="text-xs text-zinc-700 font-semibold mt-1">
-              📅 Drop-off: {order.pickupAt} {order.completionAt && `• Ready: ${order.completionAt}`}
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-base font-black text-zinc-950">{order.customerName}</span>
+              <Badge
+                className={
+                  order.status === 'pending'
+                    ? 'bg-yellow-400 text-black font-bold'
+                    : order.status === 'ongoing'
+                    ? 'bg-blue-600 text-white font-bold'
+                    : order.status === 'completed'
+                    ? 'bg-green-600 text-white font-bold'
+                    : 'bg-rose-600 text-white font-bold'
+                }
+              >
+                {order.status}
+              </Badge>
+              <span className="text-xs font-bold text-blue-600">₹{order.price}</span>
+            </div>
+            <p className="text-xs text-zinc-700 font-medium mt-1">
+              <strong>{order.item}:</strong> {order.issue}
             </p>
-          )}
-        </div>
-      </div>
-
-      {/* Action triggers */}
-      <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-zinc-200">
-        {order.status === 'pending' && (
-          <>
-            <SolidButton
-              variant="blue"
-              size="sm"
-              onClick={onAccept}
-              className="text-xs font-bold"
-            >
-              <Check size={14} />
-              <span>Accept & Quote</span>
-            </SolidButton>
-            <SolidButton
-              variant="danger"
-              size="sm"
-              onClick={onReject}
-              className="text-xs font-bold"
-            >
-              <X size={14} />
-              <span>Reject</span>
-            </SolidButton>
-          </>
-        )}
-
-        {order.status === 'ongoing' && (
-          <SolidButton
-            variant="green"
-            size="sm"
-            onClick={onComplete}
-            className="text-xs font-bold"
-          >
-            <CheckCircle2 size={15} />
-            <span>Mark as Completed & Settle</span>
-          </SolidButton>
-        )}
-
-        {order.status === 'completed' && (
-          <div className="text-right">
-            <span className="text-xs font-bold text-green-700 block">
-              ✓ Settled directly with customer
-            </span>
-            {order.rating && (
-              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                <Stars rating={order.rating.score} size={12} />
-                <span className="text-zinc-600 text-[11px]">"{order.rating.feedback}"</span>
-              </div>
+            <div className="flex flex-wrap items-center gap-3 mt-1.5 text-[11px] text-zinc-500">
+              <span>📍 {order.address}</span>
+              <span>•</span>
+              <span>📞 {order.mobile}</span>
+              <span>•</span>
+              <span>🕒 {order.requestedAt}</span>
+            </div>
+            {order.pickupAt && (
+              <p className="text-xs text-zinc-700 font-semibold mt-1">
+                📅 Drop-off: {order.pickupAt} {order.completionAt && `• Ready: ${order.completionAt}`}
+              </p>
             )}
           </div>
-        )}
-      </div>
+        </div>
+
+        {/* Action triggers */}
+        <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-zinc-200">
+          {order.status === 'pending' && (
+            <>
+              <Button
+                size="sm"
+                onClick={onAccept}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-md"
+              >
+                <Check size={14} />
+                <span>Accept & Quote</span>
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={onReject}
+                className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-md"
+              >
+                <X size={14} />
+                <span>Reject</span>
+              </Button>
+            </>
+          )}
+
+          {order.status === 'ongoing' && (
+            <Button
+              size="sm"
+              onClick={onComplete}
+              className="bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-md"
+            >
+              <CheckCircle2 size={15} />
+              <span>Mark as Completed</span>
+            </Button>
+          )}
+
+          {order.status === 'completed' && (
+            <div className="text-right">
+              <span className="text-xs font-bold text-green-700 block">
+                ✓ Settled directly with customer
+              </span>
+              {order.rating && (
+                <div className="mt-1 flex items-center justify-end gap-1 text-xs">
+                  <Stars rating={order.rating.score} size={12} />
+                  <span className="text-zinc-600 text-[11px]">"{order.rating.feedback}"</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </Card>
     </motion.div>
   );
 }
