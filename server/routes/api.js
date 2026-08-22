@@ -212,6 +212,48 @@ router.patch('/listings/technician/:techId', async (req, res) => {
   }
 });
 
+// Direct shop rating (without order)
+router.post('/technicians/:id/rate', async (req, res) => {
+  try {
+    const { score } = req.body;
+    
+    // We create a dummy completed request just to store the rating
+    const request = await RepairRequest.create({
+      user: req.body.userId || req.params.id, // Fallback if no user
+      technician: req.params.id,
+      productCategory: 'Direct Rating',
+      issueDescription: 'Direct Rating',
+      estimatedCost: 0,
+      status: 'completed',
+      rating: {
+        score: Number(score),
+        feedback: '',
+        ratedAt: new Date(),
+      }
+    });
+
+    // Recalculate
+    const allTechnicianRatings = await RepairRequest.find({
+      technician: req.params.id,
+      'rating.score': { $exists: true, $ne: null },
+    });
+
+    const totalRatings = allTechnicianRatings.length;
+    const avgScore = totalRatings > 0 
+      ? allTechnicianRatings.reduce((sum, r) => sum + r.rating.score, 0) / totalRatings 
+      : 0;
+
+    await User.findByIdAndUpdate(req.params.id, {
+      rating: parseFloat(avgScore.toFixed(1)),
+      ratingCount: totalRatings,
+    });
+
+    res.json({ success: true, avgScore });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // ==========================================
 // 3. REPAIR REQUESTS & LIFECYCLE
 // ==========================================

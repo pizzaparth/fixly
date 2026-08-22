@@ -44,14 +44,11 @@ export function MyRequests() {
     e.preventDefault();
     if (!ratingTarget) return;
 
-    rateOrder(ratingTarget.id, {
-      score: rateForm.score,
-      feedback: rateForm.feedback || 'Great repair service!',
-    });
+    rateOrder(ratingTarget.id, rateForm.score, '');
 
     setRatingTarget(null);
     setRateForm({ score: 5, feedback: '' });
-    showToast('Your rating and review has been submitted!');
+    showToast('Your rating has been submitted!');
   };
 
   return (
@@ -197,22 +194,8 @@ export function MyRequests() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-1">
-              <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
-                Your Feedback
-              </label>
-              <Textarea
-                rows={3}
-                required
-                value={rateForm.feedback}
-                onChange={(e) => setRateForm({ ...rateForm, feedback: e.target.value })}
-                placeholder="How was the repair quality, speed, and communication?"
-                className="text-sm rounded-md bg-white border-zinc-300 resize-none"
-              />
-            </div>
-
-            <Button type="submit" className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md">
-              Submit Review
+            <Button type="submit" className="w-full py-3 bg-black hover:bg-zinc-800 text-white font-bold rounded-full">
+              Submit Rating
             </Button>
           </form>
         )}

@@ -210,10 +210,19 @@ export function StoreProvider({ children }) {
     fetchShops();
   };
 
-  const addFeedback = () => {};
-  const addRating = () => {};
+  const addRating = async (shopId, score) => {
+    try {
+      await fetch(`/api/technicians/${shopId}/rate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score, userId: session?.id })
+      });
+      fetchShops();
+    } catch (err) { console.error('Error adding direct rating:', err); }
+  };
 
-  const createOrder = async ({ customerName, customerEmail, mobile, address, item, issue, shopId, price }) => {
+
+  const createOrder = async ({ customerName, customerEmail, mobile, address, item, issue, shopId, price, pickupAt }) => {
     try {
       const targetShop = shops.find((s) => s.id === shopId);
       const listingId = targetShop?.listingId;
@@ -322,7 +331,6 @@ export function StoreProvider({ children }) {
     orders,
     addShop,
     updateShopServices,
-    addFeedback,
     addRating,
     createOrder,
     acceptOrder,

@@ -34,7 +34,6 @@ export function ShopModal({
     session,
     setAuthModalOpen,
     createOrder,
-    addFeedback,
     addRating,
   } = useStore();
 
@@ -45,7 +44,6 @@ export function ShopModal({
 
   // Sub-modal states
   const [orderOpen, setOrderOpen] = useState(false);
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [rateOpen, setRateOpen] = useState(false);
 
   // Form states
@@ -59,7 +57,6 @@ export function ShopModal({
     pickupAt: '',
   });
 
-  const [feedbackForm, setFeedbackForm] = useState({ rating: 5, text: '' });
   const [rateValue, setRateValue] = useState(0);
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -110,21 +107,6 @@ export function ShopModal({
     showToast(`Repair request submitted to ${shop.name}!`);
   };
 
-  // 2. Submit Feedback
-  const handleFeedbackSubmit = (e) => {
-    e.preventDefault();
-    if (!feedbackForm.text.trim()) return;
-
-    addFeedback(shop.id, {
-      author: session?.name || 'Verified Customer',
-      rating: feedbackForm.rating,
-      text: feedbackForm.text,
-    });
-
-    setFeedbackOpen(false);
-    setFeedbackForm({ rating: 5, text: '' });
-    showToast('Thank you! Your feedback has been published.');
-  };
 
   // 3. Submit Rating
   const handleRatingSubmit = () => {
@@ -233,20 +215,13 @@ export function ShopModal({
           </div>
 
           {/* Action CTAs */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-zinc-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-zinc-200">
             <Button
               onClick={() => requireAuth(() => setOrderOpen(true))}
               className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-sm"
             >
               <ShoppingBag size={16} />
               <span>Order Repair</span>
-            </Button>
-            <Button
-              onClick={() => requireAuth(() => setFeedbackOpen(true))}
-              className="w-full py-3 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-full shadow-sm"
-            >
-              <MessageCircle size={16} />
-              <span>Write Feedback</span>
             </Button>
             <Button
               onClick={() => requireAuth(() => setRateOpen(true))}
@@ -394,59 +369,6 @@ export function ShopModal({
 
           <Button type="submit" className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full mt-1">
             Submit Repair Request
-          </Button>
-        </form>
-      </Modal>
-
-      {/* Sub-Modal 2: Write Feedback */}
-      <Modal
-        open={feedbackOpen}
-        onClose={() => setFeedbackOpen(false)}
-        title="Share Your Feedback"
-        maxWidth="max-w-md"
-      >
-        <form onSubmit={handleFeedbackSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col items-center gap-1.5 p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200">
-            <span className="text-xs font-bold text-zinc-600 uppercase tracking-wide">
-              Rating
-            </span>
-            <div className="flex items-center gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setFeedbackForm({ ...feedbackForm, rating: star })}
-                  className="cursor-pointer"
-                >
-                  <Star
-                    size={30}
-                    className={
-                      star <= feedbackForm.rating
-                        ? 'fill-yellow-400 text-yellow-500'
-                        : 'text-zinc-300'
-                    }
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
-              Review Comment *
-            </label>
-            <Textarea
-              required
-              rows={4}
-              value={feedbackForm.text}
-              onChange={(e) => setFeedbackForm({ ...feedbackForm, text: e.target.value })}
-              placeholder="Describe your repair experience, speed, and communication…"
-              className="text-sm rounded-2xl px-4 py-2.5 bg-white border-zinc-300 resize-none"
-            />
-          </div>
-
-          <Button type="submit" className="w-full py-3 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-full">
-            Publish Review
           </Button>
         </form>
       </Modal>
