@@ -289,6 +289,7 @@ export function StoreProvider({ children }) {
   const value = {
     session,
     login,
+    registerUser,
     logout,
     shops,
     orders,

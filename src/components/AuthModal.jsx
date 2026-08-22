@@ -9,18 +9,16 @@ import { useStore } from '../context/StoreContext';
 import { CATEGORIES } from '../data/mockData';
 
 export function AuthModal({ open, onClose }) {
-  const { login, addShop } = useStore();
+  const { login, registerUser, addShop } = useStore();
   const nav = useNavigate();
   const [mode, setMode] = useState('login');
   const [role, setRole] = useState('customer');
   
-  // Base fields
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
-  // Extra shop fields
   const [shopName, setShopName] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('Bengaluru');
@@ -38,63 +36,76 @@ export function AuthModal({ open, onClose }) {
   const submit = async (e) => {
     e.preventDefault();
 
-    if (mode === 'signup' && role === 'shop') {
-      if (!shopName.trim() || !name.trim() || !phone.trim() || !address.trim()) {
-        alert('Please fill out all required shop details.');
+    try {
+      if (mode === 'signup' && role === 'shop') {
+        if (!shopName.trim() || !name.trim() || !phone.trim() || !address.trim() || !email.trim() || !password) {
+          alert('Please fill out all required shop details.');
+          return;
+        }
+        
+        const selectedCategories = Object.keys(services).filter((k) => services[k] > 0);
+        if (selectedCategories.length === 0) {
+          alert('Please select at least one repair service category.');
+          return;
+        }
+
+        const basePrice = Math.min(...selectedCategories.map((k) => services[k]));
+
+        const user = await registerUser({
+          role: 'shop',
+          name,
+          email,
+          password,
+          phone,
+        });
+
+        if (user) {
+          await addShop({
+            technicianId: user.id,
+            name: shopName,
+            owner: name,
+            mobile: phone,
+            address: `${address}, ${city}`,
+            estCost: basePrice || 500,
+            categories: selectedCategories,
+          });
+        }
+        
+        onClose();
+        nav('/shop');
         return;
       }
-      
-      const selectedCategories = Object.keys(services).filter((k) => services[k] > 0);
-      if (selectedCategories.length === 0) {
-        alert('Please select at least one repair service category.');
-        return;
-      }
 
-      const basePrice = Math.min(...selectedCategories.map((k) => services[k]));
-
-      // 1. Create technician user via login
-      const user = await login({
-        role: 'shop',
-        name: name,
-        email: email || `${shopName.toLowerCase().replace(/\s+/g, '')}@fixly.local`,
-        password,
-        phone,
-      });
-
-      if (user) {
-        // 2. Create listing via addShop
-        await addShop({
-          technicianId: user.id,
-          name: shopName,
-          owner: name,
-          mobile: phone,
-          address: `${address}, ${city}`,
-          estCost: basePrice || 500,
-          categories: selectedCategories,
+      if (mode === 'signup') {
+        if (!name.trim() || !email.trim() || !password) {
+          alert('Name, email, and password are required.');
+          return;
+        }
+        await registerUser({
+          role,
+          name: name.trim(),
+          email: email.trim(),
+          password,
+          phone: phone || '+91 00000 00000',
+        });
+      } else {
+        if (!email.trim() || !password) {
+          alert('Email and password are required.');
+          return;
+        }
+        await login({
+          role,
+          email: email.trim(),
+          password,
         });
       }
-      
+
       onClose();
       if (role === 'shop') {
         nav('/shop');
       }
-      return;
-    }
-
-    const fallbackEmail = email.trim() || (role === 'shop' ? 'technician@fixly.local' : 'customer@fixly.local');
-    const fallbackName = name.trim() || fallbackEmail.split('@')[0];
-
-    // Normal customer login or signup
-    await login({
-      role,
-      name: fallbackName,
-      email: fallbackEmail,
-      password: password || 'password123',
-      phone: phone || '+91 98765 43210',
-    });
-    onClose();
-    if (role === 'shop') {
-      nav('/shop');
+    } catch (error) {
+      alert(error.message || 'Authentication failed');
     }
   };
 
@@ -402,10 +413,6 @@ export function AuthModal({ open, onClose }) {
           {mode === 'login' ? `Sign In as ${role === 'shop' ? 'Repair Shop' : 'Customer'}` : (role === 'shop' ? 'Publish Shop & Create Account' : 'Create Free Account')}
         </Button>
 
-        <div className="flex items-center justify-center gap-1.5 text-xs text-zinc-500 pt-2 border-t border-zinc-100">
-          <ShieldCheck size={14} className="text-green-600" />
-          <span>Demo mode active · Auto credentials filled</span>
-        </div>
       </form>
     </Modal>
   );
